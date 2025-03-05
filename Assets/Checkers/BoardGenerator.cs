@@ -25,9 +25,9 @@ public class BoardGenerator : MonoBehaviour
 
                 Renderer chooseColor = squareSpace.GetComponent<Renderer>();
                 if ((row + column) % 2 == 0)
-                    chooseColor.material = redField;
-                else 
                     chooseColor.material = blackField;
+                else 
+                    chooseColor.material = redField;
             }
         }
     }
