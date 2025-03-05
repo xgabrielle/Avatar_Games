@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 124754487}
   - component: {fileID: 124754486}
+  - component: {fileID: 124754488}
   m_Layer: 0
   m_Name: GameSetup
   m_TagString: Untagged
@@ -167,6 +168,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &124754488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124754485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c19b97af8a4734caeca0a38f54cfce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whitePieces: {fileID: 7694669525635706861, guid: fbf74ac82109eee4d87ae2147f4deddf, type: 3}
+  redPieces: {fileID: 3428984186603343193, guid: 42011e7458c312a4ca51301cdc62163e, type: 3}
 --- !u!1 &745185959
 GameObject:
   m_ObjectHideFlags: 0

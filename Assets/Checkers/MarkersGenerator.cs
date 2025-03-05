@@ -1,0 +1,40 @@
+using UnityEngine;
+
+public class MarkersGenerator : MonoBehaviour
+{
+    [SerializeField] private GameObject whitePieces;
+    [SerializeField] private GameObject redPieces;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        StartField();
+    }
+
+    void StartField()
+    {
+        for (int row = 0 ; row < 8; row++)
+        {
+            for (int column = 0; column < 3; column++)
+            {
+                if ((row + column) % 2 == 0)
+                {
+                    Instantiate(whitePieces, new Vector3(row, 0.5f, column), Quaternion.identity);
+                }
+                
+            }
+            
+        }
+
+        for (int row = 0; row < 8; row++)
+        {
+            for (int column = 5; column < 8; column++)
+            {
+                if ((row + column) % 2 == 0)
+                { 
+                    Instantiate(redPieces, new Vector3(row, 0.5f, column), Quaternion.identity);
+                }
+            }
+        }
+        
+    }
+}
