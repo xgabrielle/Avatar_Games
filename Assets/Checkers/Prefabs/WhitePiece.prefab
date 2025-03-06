@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4080396645167780209}
   m_Layer: 0
   m_Name: WhitePiece
-  m_TagString: Untagged
+  m_TagString: WhiteMarker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
