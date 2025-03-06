@@ -38,7 +38,8 @@ public class CheckerGame : MonoBehaviour
 
     void NewMarkerPos(Vector3 newMarkerPos)
     {
-        marker.transform.position = newMarkerPos + new Vector3(0,0.5f,0);
+        markerPos = newMarkerPos;
+        marker.transform.position = markerPos + new Vector3(0,0.5f,0);
     }
 
     private void Update()
@@ -76,6 +77,11 @@ public class CheckerGame : MonoBehaviour
         float newPosX = Math.Abs(targetPos.x-startPos.x);
         float newPosZ = Math.Abs(targetPos.z-startPos.z);
         
+        if (newPosX > 1 || newPosZ > 1)
+        {
+            return false;
+            // need to change this for when jumping over opposite team
+        }
         return Mathf.Approximately(newPosX, newPosZ);
     }
 
