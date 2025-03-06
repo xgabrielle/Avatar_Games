@@ -7,6 +7,7 @@ public class BoardGenerator : MonoBehaviour
     [SerializeField] private Material blackField;
     [SerializeField] private Material redField;
     [SerializeField] private int boardSize = 8;
+    internal GameObject squareSpace;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,7 +21,7 @@ public class BoardGenerator : MonoBehaviour
         {
             for (int column = 0; column < boardSize; column++)
             {
-                GameObject squareSpace = Instantiate(fieldPrefab, new Vector3(row, 0, column), quaternion.identity);
+                squareSpace = Instantiate(fieldPrefab, new Vector3(row, 0, column), quaternion.identity);
                 squareSpace.transform.parent = transform;
 
                 Renderer chooseColor = squareSpace.GetComponent<Renderer>();
