@@ -9,8 +9,13 @@ public class CheckerGame : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 markerPos;
     [SerializeField] private Material yellow;
+    [SerializeField] private Material blue;
+    [SerializeField] private Material originalColor;
+    
 
     private GameObject marker;
+    private GameObject previousMarker;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -58,6 +63,8 @@ public class CheckerGame : MonoBehaviour
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
 
+                    PlayingMarker(marker);
+
                 }
                 
                 if (hit.collider.CompareTag("BoardSquare"))
@@ -81,6 +88,20 @@ public class CheckerGame : MonoBehaviour
         float newPosZ = Math.Abs(targetPos.z-startPos.z);
         
         return Mathf.Approximately(newPosX, newPosZ);
+    }
+
+    void PlayingMarker(GameObject marker)
+    {
+        Renderer chooseColor = this.marker.GetComponent<Renderer>();
+
+        if (previousMarker != null && previousMarker != marker)
+        {
+            previousMarker.GetComponent<Renderer>().material = originalColor;
+        }
+
+        previousMarker = marker;
+        chooseColor.material = blue;
+
     }
 
     void PlayerMove()
