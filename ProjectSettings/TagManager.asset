@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BoardSquare
   - WhiteMarker
+  - DarkMarker
   layers:
   - Default
   - TransparentFX

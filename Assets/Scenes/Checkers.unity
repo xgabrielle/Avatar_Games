@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 124754486}
   - component: {fileID: 124754488}
   - component: {fileID: 124754489}
+  - component: {fileID: 124754490}
   m_Layer: 0
   m_Name: GameSetup
   m_TagString: Untagged
@@ -198,6 +199,18 @@ MonoBehaviour:
   yellow: {fileID: 2100000, guid: 3cbae87a5db750a4b8e81c5e17e1d7d2, type: 2}
   blue: {fileID: 2100000, guid: 45a8d5ee79e2ccf46a1c2ca194a82783, type: 2}
   originalColor: {fileID: 2100000, guid: 036dec900ff06b0458579a699b01986a, type: 2}
+--- !u!114 &124754490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124754485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 949d719ca38570d438c1555b100a67d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &745185959
 GameObject:
   m_ObjectHideFlags: 0
