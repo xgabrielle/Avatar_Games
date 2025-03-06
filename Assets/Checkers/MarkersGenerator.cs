@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class MarkersGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject whitePieces;
-    [SerializeField] private GameObject redPieces;
+    [SerializeField] internal GameObject whitePieces;
+    [SerializeField] internal GameObject redPieces;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
