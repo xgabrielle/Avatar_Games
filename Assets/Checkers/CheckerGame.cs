@@ -11,8 +11,6 @@ public class CheckerGame : MonoBehaviour
     [SerializeField] private Material yellow;
     [SerializeField] private Material blue;
     [SerializeField] private Material originalColor;
-    
-
     private GameObject marker;
     private GameObject previousMarker;
     
@@ -28,11 +26,7 @@ public class CheckerGame : MonoBehaviour
         
         if (DiagonalMove(markerPos, targetPosition))
         {
-            
             Renderer chooseColor = square.GetComponent<Renderer>();
-            Debug.Log("markerpos: " + markerPos);
-            Debug.Log("targetpos: " + targetPosition);
-            Debug.Log("yellow square "+square.transform.position);
             chooseColor.material = yellow;
             NewMarkerPos(targetPosition);
             
@@ -45,7 +39,6 @@ public class CheckerGame : MonoBehaviour
     void NewMarkerPos(Vector3 newMarkerPos)
     {
         marker.transform.position = newMarkerPos + new Vector3(0,0.5f,0);
-
     }
 
     private void Update()
@@ -59,19 +52,15 @@ public class CheckerGame : MonoBehaviour
             {
                 if (hit.collider.CompareTag("WhiteMarker"))
                 {
-                    Debug.Log("Marker hit");
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
-
                     PlayingMarker(marker);
 
                 }
                 
                 if (hit.collider.CompareTag("BoardSquare"))
                 {
-                    Debug.Log("Target hit");
                     targetPosition = hit.collider.transform.position;
-                    Debug.Log("Target Position: " + targetPosition);
                     AvailableMove(hit.collider.gameObject);
                     
                 }
