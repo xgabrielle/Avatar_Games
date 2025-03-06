@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CheckerGame : MonoBehaviour
 {
-   
-  
     private Vector3 targetPosition;
     private Vector3 markerPos;
     [SerializeField] private Material yellow;
@@ -26,9 +24,14 @@ public class CheckerGame : MonoBehaviour
         
         if (DiagonalMove(markerPos, targetPosition))
         {
+            Debug.Log($"TargetPos: {targetPosition}");
             Renderer chooseColor = square.GetComponent<Renderer>();
             chooseColor.material = yellow;
-            NewMarkerPos(targetPosition);
+
+            if (targetPosition.z > markerPos.z)
+            { 
+                NewMarkerPos(targetPosition);
+            }
             
         } else
             Debug.Log("Not a possible move");
@@ -74,15 +77,13 @@ public class CheckerGame : MonoBehaviour
     
     internal static bool DiagonalMove(Vector3 startPos, Vector3 targetPos)
     {
-        float newPosX = Math.Abs(targetPos.x-startPos.x);
+        float newPosX = Mathf.Abs(targetPos.x-startPos.x);
         float newPosZ = Math.Abs(targetPos.z-startPos.z);
         
-        if (newPosX > 1 || newPosZ > 1)
-        {
-            return false;
-            // need to change this for when jumping over opposite team
-        }
-        return Mathf.Approximately(newPosX, newPosZ);
+        if (Mathf.Approximately(newPosX,1) && Mathf.Approximately(newPosZ,1)) 
+            return Mathf.Approximately(newPosX, newPosZ);
+        return false;
+
     }
 
     void PlayingMarker(GameObject marker)
