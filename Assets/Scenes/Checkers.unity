@@ -196,6 +196,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yellow: {fileID: 2100000, guid: 3cbae87a5db750a4b8e81c5e17e1d7d2, type: 2}
+  blue: {fileID: 2100000, guid: 45a8d5ee79e2ccf46a1c2ca194a82783, type: 2}
+  originalColor: {fileID: 2100000, guid: 036dec900ff06b0458579a699b01986a, type: 2}
 --- !u!1 &745185959
 GameObject:
   m_ObjectHideFlags: 0
