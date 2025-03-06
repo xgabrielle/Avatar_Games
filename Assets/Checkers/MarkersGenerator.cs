@@ -18,7 +18,7 @@ public class MarkersGenerator : MonoBehaviour
             {
                 if ((row + column) % 2 == 0)
                 {
-                    Instantiate(whitePieces, new Vector3(row, 0.5f, column), Quaternion.identity);
+                    Instantiate(whitePieces, new Vector3(row, 0.6f, column), Quaternion.identity);
                 }
                 
             }
@@ -31,7 +31,7 @@ public class MarkersGenerator : MonoBehaviour
             {
                 if ((row + column) % 2 == 0)
                 { 
-                    Instantiate(redPieces, new Vector3(row, 0.5f, column), Quaternion.identity);
+                    Instantiate(redPieces, new Vector3(row, 0.6f, column), Quaternion.identity);
                 }
             }
         }
