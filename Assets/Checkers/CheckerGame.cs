@@ -12,11 +12,13 @@ public class CheckerGame : MonoBehaviour
     internal GameObject marker;
     private GameObject previousMarker;
     private MarkerMovement _markerMovement;
+    private AvailableMoveChecker _availableMoveChecker;
     private bool currentPlayer;
 
     private void Start()
     {
         _markerMovement = GetComponent<MarkerMovement>();
+        _availableMoveChecker = GetComponent<AvailableMoveChecker>();
     }
     
     private void Update()
@@ -25,22 +27,28 @@ public class CheckerGame : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+            int layerMask = ~LayerMask.GetMask("Triggerbox");
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
+                Debug.Log("Inside raycast");
                 if (hit.collider.CompareTag("DarkMarker"))
                 {
+                    Debug.Log("inside darkmarker");
                     currentPlayer = false;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
+                    _availableMoveChecker.CheckAvailability(hit.collider.gameObject.transform.position);
 
                 }
                 
-                if (hit.collider.CompareTag("WhiteMarker"))
+                else if (hit.collider.CompareTag("WhiteMarker"))
                 {
+                    Debug.Log("inside whitemarker");
                     currentPlayer = true;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
+                    _availableMoveChecker.CheckAvailability(hit.collider.gameObject.transform.position);
                     PlayingMarker(marker);
 
                 }
@@ -48,6 +56,7 @@ public class CheckerGame : MonoBehaviour
                 
                 if (hit.collider.CompareTag("BoardSquare"))
                 {
+                    Debug.Log("inside boardsquare");
                     targetPosition = hit.collider.transform.position;
                     if (currentPlayer == false)
                     {
