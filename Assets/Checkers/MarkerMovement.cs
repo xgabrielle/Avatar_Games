@@ -28,9 +28,12 @@ public class MarkerMovement : MonoBehaviour
     
     internal void WhiteMarkerMove()
     {
+        // surroundings
+        // possible jump
+        // one move
         if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
         {
-            if (_checkerGame.targetPosition.z > _checkerGame.markerPos.z)
+            if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 1))
             { 
                 NewMarkerPos(_checkerGame.targetPosition);
             }
