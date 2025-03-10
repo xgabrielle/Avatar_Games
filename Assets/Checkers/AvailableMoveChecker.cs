@@ -16,21 +16,40 @@ public class AvailableMoveChecker : MonoBehaviour
         }
     }
 
-    internal void CheckAvailability(Vector3 marker)
+    internal void ActiveTrigger(Vector3 marker)
     {
         if (triggerbox == null ) return;
         triggerbox.transform.position = marker + new Vector3(0, 0, 1);
         triggerbox.SetActive(true);
 
     }
-
-    /*private void OnTriggerStay(Collider other)
+    
+    void CheckSurroundings()
     {
-        if (other.CompareTag("DarkMarker"))
+        Vector3 position = transform.position;
+        Debug.Log("Pos: " + position);
+
+        Vector3[] directions = new []
         {
-            Debug.Log("Darkmarker detected stay");
+            new Vector3(position.x + 1, position.y, position.z), //R-U
+            new Vector3(position.x - 1, position.y, position.z), // L-U
+            new Vector3(position.x + 1, position.y, position.z - 2), // R-D
+            new Vector3(position.x - 1, position.y, position.z - 2)  // L-D
+        };
+
+        foreach (Vector3 dir in directions)
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
+            Debug.Log("Dir: "+dir);
+            foreach (Collider collider in hitColliders)
+            {
+                if (collider.CompareTag("DarkMarker"))
+                {
+                    Debug.Log("Marker found at: " + dir);
+                }
+            }
         }
-    }*/
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -41,15 +60,7 @@ public class AvailableMoveChecker : MonoBehaviour
         if (other.CompareTag("DarkMarker"))
         {
             Debug.Log("Darkmarker detected enter");
+            CheckSurroundings();
         }
     }
-    
-
-    /*private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("WhiteMarker"))
-        {
-            Debug.Log("whitemarker detected collision");
-        }
-    }*/
 }

@@ -34,21 +34,19 @@ public class CheckerGame : MonoBehaviour
                 Debug.Log("Inside raycast");
                 if (hit.collider.CompareTag("DarkMarker"))
                 {
-                    Debug.Log("inside darkmarker");
                     currentPlayer = false;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
-                    _availableMoveChecker.CheckAvailability(hit.collider.gameObject.transform.position);
+                    _availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
 
                 }
                 
                 else if (hit.collider.CompareTag("WhiteMarker"))
                 {
-                    Debug.Log("inside whitemarker");
                     currentPlayer = true;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
-                    _availableMoveChecker.CheckAvailability(hit.collider.gameObject.transform.position);
+                    _availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
                     PlayingMarker(marker);
 
                 }
@@ -56,7 +54,6 @@ public class CheckerGame : MonoBehaviour
                 
                 if (hit.collider.CompareTag("BoardSquare"))
                 {
-                    Debug.Log("inside boardsquare");
                     targetPosition = hit.collider.transform.position;
                     if (currentPlayer == false)
                     {

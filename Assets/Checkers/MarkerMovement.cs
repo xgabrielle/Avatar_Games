@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class MarkerMovement : MonoBehaviour
@@ -16,12 +17,10 @@ public class MarkerMovement : MonoBehaviour
     {
         if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
         {
-
             if (_checkerGame.targetPosition.z < _checkerGame.markerPos.z)
             { 
                 NewMarkerPos(_checkerGame.targetPosition);
             }
-            
         } else
             Debug.Log("Not a possible move");
         
@@ -29,7 +28,6 @@ public class MarkerMovement : MonoBehaviour
     
     internal void WhiteMarkerMove()
     {
-        
         if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
         {
             if (_checkerGame.targetPosition.z > _checkerGame.markerPos.z)
@@ -53,9 +51,10 @@ public class MarkerMovement : MonoBehaviour
         float newPosX = Mathf.Abs(targetPos.x - startPos.x);
         float newPosZ = Mathf.Abs(targetPos.z - startPos.z);
 
-        if (Mathf.Approximately(newPosX, 1) && Mathf.Approximately(newPosZ, 1))
+        return Mathf.Approximately(newPosX, newPosZ);
+        /*if (Mathf.Approximately(newPosX, 1) && Mathf.Approximately(newPosZ, 1))
             return Mathf.Approximately(newPosX, newPosZ);
-        return false;
+        return false;*/
 
     }
 }
