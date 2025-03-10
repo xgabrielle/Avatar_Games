@@ -43,7 +43,6 @@ public class MarkerMovement : MonoBehaviour
     internal void NewMarkerPos(Vector3 newMarkerPos)
     {
         _checkerGame.markerPos = newMarkerPos;
-        //_availableMoveChecker.triggerbox.transform.position = newMarkerPos + new Vector3(0,0.6f,1);
         _checkerGame.marker.transform.position = _checkerGame.markerPos + new Vector3(0,0.6f,0);
     }
 
@@ -62,8 +61,6 @@ public class MarkerMovement : MonoBehaviour
     internal bool GetSurroundings(Vector3 marker)
     {
         Vector3 position = marker;
-        Debug.Log("Pos: " + position);
-
         Vector3[] directions = new []
         {
             new Vector3(position.x + 1, position.y, position.z+1), //R-U
@@ -75,12 +72,10 @@ public class MarkerMovement : MonoBehaviour
         foreach (Vector3 dir in directions)
         {
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
-            Debug.Log("Dir: "+dir);
             foreach (Collider colliders in hitColliders)
             {
                 if (colliders.CompareTag("DarkMarker"))
                 {
-                    Debug.Log("Marker found at: " + dir);
                     return true;
                 }
             }
@@ -89,30 +84,26 @@ public class MarkerMovement : MonoBehaviour
         return false;
     }
     
-    void OnDrawGizmos()
+    /*void OnDrawGizmos()
     {
-        Gizmos.color = Color.green; // Change color for better visibility
-        Gizmos.DrawWireSphere(offset, 0.1f); // Visualize the sphere check
-    }
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(offset, 0.1f); 
+    }*/
 
 
    internal void Jump()
    {
        GameObject jumpedMarker = null;
-       Vector3 middlePos = (_checkerGame.markerPos + _checkerGame.targetPosition) / 2;
-       offset = middlePos + Vector3.up *0.5f;
+       Vector3 middlePos = ((_checkerGame.markerPos + _checkerGame.targetPosition) / 2) + Vector3.up*0.5f;
+       //offset = middlePos + Vector3.up *0.5f;
        Debug.Log("MidPos: "+middlePos);
-       Collider[] middleColliders = Physics.OverlapSphere(offset, 0.1f);
+       Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
 
        foreach (Collider collider in middleColliders)
        {
-           Debug.Log("jumpMarker: "+jumpedMarker);
-           Debug.Log("Collider: "+collider);
-           Debug.Log("Co-GO: "+ collider.gameObject);
            if (collider.CompareTag("DarkMarker"))
            {
                jumpedMarker = collider.gameObject;
-              
                break;
            }
        }

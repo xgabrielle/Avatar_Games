@@ -12,13 +12,11 @@ public class CheckerGame : MonoBehaviour
     internal GameObject marker;
     private GameObject previousMarker;
     private MarkerMovement _markerMovement;
-    private AvailableMoveChecker _availableMoveChecker;
     private bool currentPlayer;
 
     private void Start()
     {
         _markerMovement = GetComponent<MarkerMovement>();
-        _availableMoveChecker = GetComponent<AvailableMoveChecker>();
     }
     
     private void Update()
@@ -36,7 +34,6 @@ public class CheckerGame : MonoBehaviour
                     currentPlayer = false;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
-                   // _availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
 
                 }
                 
@@ -44,12 +41,8 @@ public class CheckerGame : MonoBehaviour
                 {
                     currentPlayer = true;
                     markerPos = hit.collider.transform.position;
-                    Debug.Log("MarkerPos: "+markerPos);
                     marker = hit.collider.gameObject;
-                    //_availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
                     PlayingMarker(marker);
-                    
-
                 }
                 
                 
@@ -101,10 +94,4 @@ public class CheckerGame : MonoBehaviour
     {
         
     }
-
-    void PossibleMoves()
-    {
-    }
-
-    bool OutOfBounds(float x, float z) => (x < 0 && x > 7 && z < 0 && z > 7);
 }
