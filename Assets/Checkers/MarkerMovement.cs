@@ -44,7 +44,7 @@ public class MarkerMovement : MonoBehaviour
     internal void NewMarkerPos(Vector3 newMarkerPos)
     {
         _checkerGame.markerPos = newMarkerPos;
-        _availableMoveChecker.triggerbox.transform.position = newMarkerPos + new Vector3(0,0.6f,0);
+        _availableMoveChecker.triggerbox.transform.position = newMarkerPos + new Vector3(0,0.6f,1);
         _checkerGame.marker.transform.position = _checkerGame.markerPos + new Vector3(0,0.6f,0);
     }
 
