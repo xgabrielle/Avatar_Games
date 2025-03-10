@@ -5,12 +5,9 @@ using UnityEngine;
 public class MarkerMovement : MonoBehaviour
 {
     private CheckerGame _checkerGame;
-    private AvailableMoveChecker _availableMoveChecker;
-    private Vector3 offset;
     private void Start()
     {
         _checkerGame = GetComponent<CheckerGame>();
-        _availableMoveChecker = GetComponent<AvailableMoveChecker>();
     }
 
     internal void DarkMarkerMove()
@@ -52,10 +49,6 @@ public class MarkerMovement : MonoBehaviour
         float newPosZ = Mathf.Abs(targetPos.z - startPos.z);
 
         return Mathf.Approximately(newPosX, newPosZ);
-        /*if (Mathf.Approximately(newPosX, 1) && Mathf.Approximately(newPosZ, 1))
-            return Mathf.Approximately(newPosX, newPosZ);
-        return false;*/
-
     }
     
     internal bool GetSurroundings(Vector3 marker)
@@ -95,8 +88,6 @@ public class MarkerMovement : MonoBehaviour
    {
        GameObject jumpedMarker = null;
        Vector3 middlePos = ((_checkerGame.markerPos + _checkerGame.targetPosition) / 2) + Vector3.up*0.5f;
-       //offset = middlePos + Vector3.up *0.5f;
-       Debug.Log("MidPos: "+middlePos);
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
 
        foreach (Collider collider in middleColliders)
@@ -104,20 +95,22 @@ public class MarkerMovement : MonoBehaviour
            if (collider.CompareTag("DarkMarker"))
            {
                jumpedMarker = collider.gameObject;
+               
+               if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
+               {
+                   if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 2))
+                   { 
+                       NewMarkerPos(_checkerGame.targetPosition);
+                       Destroy(jumpedMarker);
+                
+                   }
+            
+               } else
+                   Debug.Log("Not a possible move");
                break;
            }
        }
        
-        if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
-        {
-            if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 2))
-            { 
-                NewMarkerPos(_checkerGame.targetPosition);
-                Destroy(jumpedMarker);
-                
-            }
-            
-        } else
-            Debug.Log("Not a possible move");
+        
     }
 }
