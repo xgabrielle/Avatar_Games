@@ -6,7 +6,7 @@ public class MarkerMovement : MonoBehaviour
 {
     private CheckerGame _checkerGame;
     private AvailableMoveChecker _availableMoveChecker;
-
+    private Vector3 offset;
     private void Start()
     {
         _checkerGame = GetComponent<CheckerGame>();
@@ -43,7 +43,7 @@ public class MarkerMovement : MonoBehaviour
     internal void NewMarkerPos(Vector3 newMarkerPos)
     {
         _checkerGame.markerPos = newMarkerPos;
-        _availableMoveChecker.triggerbox.transform.position = newMarkerPos + new Vector3(0,0.6f,1);
+        //_availableMoveChecker.triggerbox.transform.position = newMarkerPos + new Vector3(0,0.6f,1);
         _checkerGame.marker.transform.position = _checkerGame.markerPos + new Vector3(0,0.6f,0);
     }
 
@@ -68,8 +68,8 @@ public class MarkerMovement : MonoBehaviour
         {
             new Vector3(position.x + 1, position.y, position.z+1), //R-U
             new Vector3(position.x - 1, position.y, position.z+1), // L-U
-            new Vector3(position.x + 1, position.y, position.z - 1), // R-D
-            new Vector3(position.x - 1, position.y, position.z - 1)  // L-D
+            /*new Vector3(position.x + 1, position.y, position.z - 1), // R-D
+            new Vector3(position.x - 1, position.y, position.z - 1)  // L-D*/
         };
 
         foreach (Vector3 dir in directions)
@@ -88,14 +88,42 @@ public class MarkerMovement : MonoBehaviour
 
         return false;
     }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green; // Change color for better visibility
+        Gizmos.DrawWireSphere(offset, 0.1f); // Visualize the sphere check
+    }
+
 
    internal void Jump()
-    {
+   {
+       GameObject jumpedMarker = null;
+       Vector3 middlePos = (_checkerGame.markerPos + _checkerGame.targetPosition) / 2;
+       offset = middlePos + Vector3.up *0.5f;
+       Debug.Log("MidPos: "+middlePos);
+       Collider[] middleColliders = Physics.OverlapSphere(offset, 0.1f);
+
+       foreach (Collider collider in middleColliders)
+       {
+           Debug.Log("jumpMarker: "+jumpedMarker);
+           Debug.Log("Collider: "+collider);
+           Debug.Log("Co-GO: "+ collider.gameObject);
+           if (collider.CompareTag("DarkMarker"))
+           {
+               jumpedMarker = collider.gameObject;
+              
+               break;
+           }
+       }
+       
         if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
         {
             if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 2))
             { 
                 NewMarkerPos(_checkerGame.targetPosition);
+                Destroy(jumpedMarker);
+                
             }
             
         } else

@@ -8,7 +8,7 @@ public class AvailableMoveChecker : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        triggerbox.SetActive(false);
+        //triggerbox.SetActive(false);
       
     }
 
@@ -22,7 +22,7 @@ public class AvailableMoveChecker : MonoBehaviour
     }
     
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("WhiteMarker"))
         {
@@ -33,5 +33,5 @@ public class AvailableMoveChecker : MonoBehaviour
             Debug.Log("Darkmarker detected enter");
            
         }
-    }
+    }*/
 }

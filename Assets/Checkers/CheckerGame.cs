@@ -31,13 +31,12 @@ public class CheckerGame : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
-                Debug.Log("Inside raycast");
                 if (hit.collider.CompareTag("DarkMarker"))
                 {
                     currentPlayer = false;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
-                    _availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
+                   // _availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
 
                 }
                 
@@ -47,7 +46,7 @@ public class CheckerGame : MonoBehaviour
                     markerPos = hit.collider.transform.position;
                     Debug.Log("MarkerPos: "+markerPos);
                     marker = hit.collider.gameObject;
-                    _availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
+                    //_availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
                     PlayingMarker(marker);
                     
 
