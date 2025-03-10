@@ -45,9 +45,11 @@ public class CheckerGame : MonoBehaviour
                 {
                     currentPlayer = true;
                     markerPos = hit.collider.transform.position;
+                    Debug.Log("MarkerPos: "+markerPos);
                     marker = hit.collider.gameObject;
                     _availableMoveChecker.ActiveTrigger(hit.collider.gameObject.transform.position);
                     PlayingMarker(marker);
+                    
 
                 }
                 
@@ -60,7 +62,11 @@ public class CheckerGame : MonoBehaviour
                         _markerMovement.DarkMarkerMove();
                     }
                     else
-                    { 
+                    {
+                        if (_markerMovement.GetSurroundings(markerPos))
+                        {
+                            _markerMovement.Jump();
+                        }
                         _markerMovement.WhiteMarkerMove();
                     }
                     

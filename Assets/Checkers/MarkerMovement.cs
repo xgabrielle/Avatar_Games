@@ -19,7 +19,8 @@ public class MarkerMovement : MonoBehaviour
         {
             if (_checkerGame.targetPosition.z < _checkerGame.markerPos.z)
             { 
-                NewMarkerPos(_checkerGame.targetPosition);
+                _checkerGame.markerPos = _checkerGame.targetPosition;
+                _checkerGame.marker.transform.position = _checkerGame.markerPos + new Vector3(0,0.6f,0);
             }
         } else
             Debug.Log("Not a possible move");
@@ -28,9 +29,6 @@ public class MarkerMovement : MonoBehaviour
     
     internal void WhiteMarkerMove()
     {
-        // surroundings
-        // possible jump
-        // one move
         if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
         {
             if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 1))
@@ -59,5 +57,48 @@ public class MarkerMovement : MonoBehaviour
             return Mathf.Approximately(newPosX, newPosZ);
         return false;*/
 
+    }
+    
+    internal bool GetSurroundings(Vector3 marker)
+    {
+        Vector3 position = marker;
+        Debug.Log("Pos: " + position);
+
+        Vector3[] directions = new []
+        {
+            new Vector3(position.x + 1, position.y, position.z+1), //R-U
+            new Vector3(position.x - 1, position.y, position.z+1), // L-U
+            new Vector3(position.x + 1, position.y, position.z - 1), // R-D
+            new Vector3(position.x - 1, position.y, position.z - 1)  // L-D
+        };
+
+        foreach (Vector3 dir in directions)
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
+            Debug.Log("Dir: "+dir);
+            foreach (Collider colliders in hitColliders)
+            {
+                if (colliders.CompareTag("DarkMarker"))
+                {
+                    Debug.Log("Marker found at: " + dir);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+   internal void Jump()
+    {
+        if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
+        {
+            if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 2))
+            { 
+                NewMarkerPos(_checkerGame.targetPosition);
+            }
+            
+        } else
+            Debug.Log("Not a possible move");
     }
 }
