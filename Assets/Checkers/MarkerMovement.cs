@@ -14,10 +14,9 @@ public class MarkerMovement : MonoBehaviour
     {
         if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
         {
-            if (_checkerGame.targetPosition.z < _checkerGame.markerPos.z)
+            if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z - 1))
             { 
-                _checkerGame.markerPos = _checkerGame.targetPosition;
-                _checkerGame.marker.transform.position = _checkerGame.markerPos + new Vector3(0,0.6f,0);
+                NewMarkerPos(_checkerGame.targetPosition);
             }
         } else
             Debug.Log("Not a possible move");
