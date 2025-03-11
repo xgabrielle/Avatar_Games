@@ -12,7 +12,6 @@ public class CheckerGame : MonoBehaviour
     internal GameObject marker;
     private GameObject previousMarker;
     private MarkerMovement _markerMovement;
-    private bool currentPlayer;
 
     private void Start()
     {
@@ -30,7 +29,6 @@ public class CheckerGame : MonoBehaviour
             {
                 if (hit.collider.CompareTag("DarkMarker"))
                 {
-                    currentPlayer = false;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
                     _markerMovement.GetSurroundings(markerPos);
@@ -39,40 +37,22 @@ public class CheckerGame : MonoBehaviour
                 
                 else if (hit.collider.CompareTag("WhiteMarker"))
                 {
-                    currentPlayer = true;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
                     PlayingMarker(marker);
                     _markerMovement.GetSurroundings(markerPos);
                 }
                 
-                
                 if (hit.collider.CompareTag("BoardSquare"))
                 {
                     targetPosition = hit.collider.transform.position;
-                    if (currentPlayer == false)
-                    {
-                        if (_markerMovement.GetSurroundings(markerPos))
-                        {
-                            _markerMovement.Jump();
-                        }
-                        _markerMovement.DarkMarkerMove();
-                    }
-                    else
-                    {
-                        if (_markerMovement.GetSurroundings(markerPos))
-                        {
-                            _markerMovement.Jump();
-                        }
-                        _markerMovement.WhiteMarkerMove();
-                    }
+                    if (_markerMovement.GetSurroundings(markerPos)) 
+                        _markerMovement.Jump();
+                    else _markerMovement.GetMarkerMove();
                     
                 }
-                
             }
-            
         }
-        
     }
     
 
@@ -95,11 +75,6 @@ public class CheckerGame : MonoBehaviour
         string myTag = marker.tag;
         string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
         return enemyTag;
-    }
-
-    void PlayerMove()
-    {
-
     }
 
     void AIMove()

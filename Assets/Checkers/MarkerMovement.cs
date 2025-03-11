@@ -10,39 +10,40 @@ public class MarkerMovement : MonoBehaviour
         _checkerGame = GetComponent<CheckerGame>();
     }
 
-    internal void DarkMarkerMove()
+    internal void GetMarkerMove()
     {
-        if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
+        if (_checkerGame.GetEnemy() == "WhiteMarker")
         {
-            if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z - 1))
-            { 
-                NewMarkerPos(_checkerGame.targetPosition);
-            }
-        } else
-            Debug.Log("Not a possible move");
-        
-    }
-    
-    internal void WhiteMarkerMove()
-    {
-        if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
-        {
-            if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 1))
-            { 
-                NewMarkerPos(_checkerGame.targetPosition);
-            }
+            if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
+            {
+                if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z - 1))
+                { 
+                    NewMarkerPos(_checkerGame.targetPosition);
+                }
             
-        } else
-            Debug.Log("Not a possible move");
+            } else
+                Debug.Log("Not a possible move");
+        }
+        else
+        {
+            if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
+            {
+                if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 1))
+                { 
+                    NewMarkerPos(_checkerGame.targetPosition);
+                }
+            } else
+                Debug.Log("Not a possible move");
+        }
     }
     
-    internal void NewMarkerPos(Vector3 newMarkerPos)
+    private void NewMarkerPos(Vector3 newMarkerPos)
     {
         _checkerGame.markerPos = newMarkerPos;
         _checkerGame.marker.transform.position = _checkerGame.markerPos + new Vector3(0,0.6f,0);
     }
 
-    internal static bool DiagonalMove(Vector3 startPos, Vector3 targetPos)
+    private static bool DiagonalMove(Vector3 startPos, Vector3 targetPos)
     {
         float newPosX = Mathf.Abs(targetPos.x - startPos.x);
         float newPosZ = Mathf.Abs(targetPos.z - startPos.z);
@@ -72,7 +73,6 @@ public class MarkerMovement : MonoBehaviour
                 }
             }
         }
-
         return false;
     }
     
@@ -97,7 +97,6 @@ public class MarkerMovement : MonoBehaviour
                        { 
                            NewMarkerPos(_checkerGame.targetPosition);
                            Destroy(jumpedMarker);
-                
                        }
                    }
                    else
@@ -106,11 +105,9 @@ public class MarkerMovement : MonoBehaviour
                        { 
                            NewMarkerPos(_checkerGame.targetPosition);
                            Destroy(jumpedMarker);
-                
                        }
                    }
                    
-            
                } else
                    Debug.Log("Not a possible move");
                break;
