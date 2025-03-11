@@ -52,11 +52,8 @@ public class MarkerMovement : MonoBehaviour
     
     internal bool GetSurroundings(Vector3 marker)
     {
-        string myTag = _checkerGame.marker.tag;
-        string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
-        Debug.Log("my tag: "+myTag);
         Vector3 position = marker;
-        Vector3[] directions = new []
+        Vector3[] directions = new[]
         {
             new Vector3(position.x + 1, position.y, position.z+1), //R-U
             new Vector3(position.x - 1, position.y, position.z+1), // L-U
@@ -69,10 +66,8 @@ public class MarkerMovement : MonoBehaviour
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
             foreach (Collider colliders in hitColliders)
             {
-                if (colliders.CompareTag(enemyTag))
+                if (colliders.CompareTag(_checkerGame.GetEnemy()))
                 { 
-                    Debug.Log("dir of enemy: "+dir);
-                    Debug.Log("enemy tag: "+enemyTag);
                     return true;
                 }
             }
@@ -81,32 +76,22 @@ public class MarkerMovement : MonoBehaviour
         return false;
     }
     
-    /*void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(offset, 0.1f); 
-    }*/
-
 
    internal void Jump()
    {
-       string myTag = _checkerGame.marker.tag;
-       string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
-       GameObject jumpedMarker = null;
        Vector3 middlePos = ((_checkerGame.markerPos + _checkerGame.targetPosition) / 2) + Vector3.up*0.5f;
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
        
 
-       foreach (Collider collider in middleColliders)
+       foreach (Collider midCol in middleColliders)
        {
-           if (collider.CompareTag(enemyTag))
-           {
-               jumpedMarker = collider.gameObject;
-               
+           if (midCol.CompareTag(_checkerGame.GetEnemy()))
+           { 
+               GameObject jumpedMarker = midCol.gameObject;
                
                if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
                {
-                   if (enemyTag == "WhiteMarker")
+                   if (_checkerGame.GetEnemy() == "WhiteMarker")
                    {
                        if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z - 2))
                        { 

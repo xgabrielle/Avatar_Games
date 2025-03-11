@@ -6,7 +6,7 @@ public class CheckerGame : MonoBehaviour
 {
     internal Vector3 targetPosition;
     internal Vector3 markerPos;
-    [SerializeField] private Material yellow;
+    
     [SerializeField] private Material blue;
     [SerializeField] private Material originalColor;
     internal GameObject marker;
@@ -88,6 +88,13 @@ public class CheckerGame : MonoBehaviour
         previousMarker = marker;
         chooseColor.material = blue;
 
+    }
+
+    internal string GetEnemy()
+    {
+        string myTag = marker.tag;
+        string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
+        return enemyTag;
     }
 
     void PlayerMove()
