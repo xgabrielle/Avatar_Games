@@ -12,6 +12,10 @@ public class MarkerMovement : MonoBehaviour
 
     internal void GetMarkerMove()
     {
+        if (Mathf.Approximately(_checkerGame.targetPosition.z, 7)) 
+            _checkerGame.King(_checkerGame.targetPosition);
+        
+        
         if (_checkerGame.GetEnemy() == "WhiteMarker")
         {
             if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
@@ -24,7 +28,7 @@ public class MarkerMovement : MonoBehaviour
             } else
                 Debug.Log("Not a possible move");
         }
-        else
+        else if (_checkerGame.GetEnemy() == "DarkMarker")
         {
             if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
             {
@@ -56,8 +60,8 @@ public class MarkerMovement : MonoBehaviour
         Vector3 position = marker;
         Vector3[] directions = new[]
         {
-            new Vector3(position.x + 1, position.y, position.z+1), //R-U
-            new Vector3(position.x - 1, position.y, position.z+1), // L-U
+            new Vector3(position.x + 1, position.y, position.z + 1), //R-U
+            new Vector3(position.x - 1, position.y, position.z + 1), // L-U
             new Vector3(position.x + 1, position.y, position.z - 1), // R-D
             new Vector3(position.x - 1, position.y, position.z - 1)  // L-D
         };

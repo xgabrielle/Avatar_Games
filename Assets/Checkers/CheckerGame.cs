@@ -6,11 +6,12 @@ public class CheckerGame : MonoBehaviour
 {
     internal Vector3 targetPosition;
     internal Vector3 markerPos;
-    
+    internal bool isKing;
     [SerializeField] private Material blue;
     [SerializeField] private Material originalColor;
     internal GameObject marker;
     private GameObject previousMarker;
+    [SerializeField] private GameObject crown;
     private MarkerMovement _markerMovement;
 
     private void Start()
@@ -75,6 +76,30 @@ public class CheckerGame : MonoBehaviour
         string myTag = marker.tag;
         string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
         return enemyTag;
+    }
+
+    internal bool King(Vector3 topPos)
+    {
+        if (marker.CompareTag("WhiteMarker"))
+        {
+            if (Mathf.Approximately(topPos.z, 7))
+            {
+                SpawnCrown(marker, crown);
+                return true;
+            }
+        }
+        
+        
+        return false;
+    }
+
+    void SpawnCrown(GameObject marker, GameObject crownPrefab)
+    {
+        Vector3 parentPos = marker.transform.position + Vector3.up *0.2f;
+        Debug.Log("marker: "+marker.transform.position);
+        Debug.Log("parentPos: "+parentPos);
+        GameObject crown = Instantiate(crownPrefab, parentPos, Quaternion.identity);
+        crown.transform.SetParent(marker.transform);
     }
 
     void AIMove()
