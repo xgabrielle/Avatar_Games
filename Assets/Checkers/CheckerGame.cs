@@ -41,12 +41,16 @@ public class CheckerGame : MonoBehaviour
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
                     PlayingMarker(marker);
+                    Debug.Log(markerPos.z);
+                    if (markerPos.z > 6)
+                        King(marker);
                     _markerMovement.GetSurroundings(markerPos);
                 }
                 
                 if (hit.collider.CompareTag("BoardSquare"))
                 {
                     targetPosition = hit.collider.transform.position;
+                    
                     if (_markerMovement.GetSurroundings(markerPos)) 
                         _markerMovement.Jump();
                     else _markerMovement.GetMarkerMove();
@@ -78,19 +82,14 @@ public class CheckerGame : MonoBehaviour
         return enemyTag;
     }
 
-    internal bool King(Vector3 topPos)
+    internal void King(GameObject kingMarker)
     {
-        if (marker.CompareTag("WhiteMarker"))
-        {
-            if (Mathf.Approximately(topPos.z, 7))
-            {
-                SpawnCrown(marker, crown);
-                return true;
-            }
+        if (kingMarker.CompareTag("WhiteMarker") && kingMarker.transform.position.z > 6 )
+        { 
+            SpawnCrown(marker, crown);
+            isKing = true; 
+       
         }
-        
-        
-        return false;
     }
 
     void SpawnCrown(GameObject marker, GameObject crownPrefab)

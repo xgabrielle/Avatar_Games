@@ -12,11 +12,7 @@ public class MarkerMovement : MonoBehaviour
 
     internal void GetMarkerMove()
     {
-        if (Mathf.Approximately(_checkerGame.targetPosition.z, 7)) 
-            _checkerGame.King(_checkerGame.targetPosition);
-        
-        
-        if (_checkerGame.GetEnemy() == "WhiteMarker")
+        if (_checkerGame.GetEnemy() == "WhiteMarker" || _checkerGame.isKing)
         {
             if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
             {
