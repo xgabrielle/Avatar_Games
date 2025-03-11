@@ -57,7 +57,6 @@ public class MarkerMovement : MonoBehaviour
         string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
         Debug.Log("my tag: "+myTag);
         Vector3 position = marker;
-        Debug.Log("enemy tag: "+enemyTag);
         Vector3[] directions = new []
         {
             new Vector3(position.x + 1, position.y, position.z+1), //R-U
@@ -71,10 +70,10 @@ public class MarkerMovement : MonoBehaviour
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
             foreach (Collider colliders in hitColliders)
             {
-                Debug.Log("dir: "+dir);
                 if (colliders.CompareTag(enemyTag))
                 { 
-                    Debug.Log("close tag: "+enemyTag);
+                    Debug.Log("dir of enemy: "+dir);
+                    Debug.Log("enemy tag: "+enemyTag);
                     return true;
                 }
             }
@@ -92,7 +91,7 @@ public class MarkerMovement : MonoBehaviour
 
    internal void Jump()
    {
-       string myTag = gameObject.tag;
+       string myTag = _checkerGame.marker.tag;
        string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
        GameObject jumpedMarker = null;
        Vector3 middlePos = ((_checkerGame.markerPos + _checkerGame.targetPosition) / 2) + Vector3.up*0.5f;
@@ -104,16 +103,29 @@ public class MarkerMovement : MonoBehaviour
            if (collider.CompareTag(enemyTag))
            {
                jumpedMarker = collider.gameObject;
-               //Debug.Log("jumpmarker: "+jumpedMarker);
+               
                
                if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
                {
-                   if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 2))
-                   { 
-                       NewMarkerPos(_checkerGame.targetPosition);
-                       Destroy(jumpedMarker);
+                   if (enemyTag == "WhiteMarker")
+                   {
+                       if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z - 2))
+                       { 
+                           NewMarkerPos(_checkerGame.targetPosition);
+                           Destroy(jumpedMarker);
                 
+                       }
                    }
+                   else
+                   {
+                       if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 2))
+                       { 
+                           NewMarkerPos(_checkerGame.targetPosition);
+                           Destroy(jumpedMarker);
+                
+                       }
+                   }
+                   
             
                } else
                    Debug.Log("Not a possible move");
