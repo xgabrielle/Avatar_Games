@@ -25,15 +25,16 @@ public class CheckerGame : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            int layerMask = ~LayerMask.GetMask("Triggerbox");
+            //int layerMask = ~LayerMask.GetMask("Triggerbox");
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            if (Physics.Raycast(ray, out hit))
             {
                 if (hit.collider.CompareTag("DarkMarker"))
                 {
                     currentPlayer = false;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
+                    _markerMovement.GetSurroundings(markerPos);
 
                 }
                 
@@ -43,6 +44,7 @@ public class CheckerGame : MonoBehaviour
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
                     PlayingMarker(marker);
+                    _markerMovement.GetSurroundings(markerPos);
                 }
                 
                 
@@ -51,6 +53,10 @@ public class CheckerGame : MonoBehaviour
                     targetPosition = hit.collider.transform.position;
                     if (currentPlayer == false)
                     {
+                        if (_markerMovement.GetSurroundings(markerPos))
+                        {
+                            _markerMovement.Jump();
+                        }
                         _markerMovement.DarkMarkerMove();
                     }
                     else
