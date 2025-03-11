@@ -25,7 +25,6 @@ public class CheckerGame : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            //int layerMask = ~LayerMask.GetMask("Triggerbox");
 
             if (Physics.Raycast(ray, out hit))
             {
