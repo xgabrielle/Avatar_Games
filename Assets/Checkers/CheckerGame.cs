@@ -10,7 +10,7 @@ public class CheckerGame : MonoBehaviour
     [SerializeField] private Material blue;
     [SerializeField] private Material originalColor;
     internal GameObject marker;
-    private GameObject previousMarker;
+    internal GameObject previousMarker;
     [SerializeField] private GameObject crown;
     private MarkerMovement _markerMovement;
 
@@ -41,7 +41,7 @@ public class CheckerGame : MonoBehaviour
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
                     PlayingMarker(marker);
-                    Debug.Log(markerPos.z);
+                    
                     if (markerPos.z > 6)
                         King(marker);
                     _markerMovement.GetSurroundings(markerPos);
@@ -50,9 +50,11 @@ public class CheckerGame : MonoBehaviour
                 if (hit.collider.CompareTag("BoardSquare"))
                 {
                     targetPosition = hit.collider.transform.position;
-                    
-                    if (_markerMovement.GetSurroundings(markerPos)) 
+
+                    if (_markerMovement.GetSurroundings(markerPos))
+                    {
                         _markerMovement.Jump();
+                    }
                     else _markerMovement.GetMarkerMove();
                     
                 }
@@ -75,6 +77,19 @@ public class CheckerGame : MonoBehaviour
 
     }
 
+
+    internal bool FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
+    {
+        Vector3 landingPos = (markerPos - enemyPos) + enemyPos;
+        Collider[] col = Physics.OverlapSphere(landingPos, 0.1f);
+
+        if (col.Length > 1)
+        {
+            return false;
+        }
+        return true;
+    }
+    
     internal string GetEnemy()
     {
         string myTag = marker.tag;
