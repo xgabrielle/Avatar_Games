@@ -13,6 +13,7 @@ public class CheckerGame : MonoBehaviour
     internal GameObject previousMarker;
     [SerializeField] private GameObject crown;
     private MarkerMovement _markerMovement;
+    
 
     private void Start()
     {
@@ -28,32 +29,31 @@ public class CheckerGame : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.CompareTag("DarkMarker"))
+                if (hit.collider.CompareTag("DarkMarker") || hit.collider.CompareTag("WhiteMarker"))
                 {
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
-                    _markerMovement.GetSurroundings(markerPos);
-
-                }
-                
-                else if (hit.collider.CompareTag("WhiteMarker"))
-                {
-                    markerPos = hit.collider.transform.position;
-                    marker = hit.collider.gameObject;
-                    PlayingMarker(marker);
-                    
-                    if (markerPos.z > 6)
-                        King(marker);
+                    if (hit.collider.CompareTag("WhiteMarker"))
+                    {
+                        PlayingMarker(marker);
+                        
+                        if (markerPos.z > 6)
+                            King(marker);
+                    }
                     _markerMovement.GetSurroundings(markerPos);
                 }
                 
-                if (hit.collider.CompareTag("BoardSquare"))
+                
+                else if (hit.collider.CompareTag("BoardSquare"))
                 {
                     targetPosition = hit.collider.transform.position;
 
                     if (_markerMovement.GetSurroundings(markerPos))
                     {
-                        _markerMovement.Jump();
+                        if (FreeJumpSpace(markerPos, _markerMovement.colEnemyPos)) 
+                            _markerMovement.Jump();
+                        
+                        else _markerMovement.GetMarkerMove();
                     }
                     else _markerMovement.GetMarkerMove();
                     
@@ -76,13 +76,11 @@ public class CheckerGame : MonoBehaviour
         chooseColor.material = blue;
 
     }
-
-
+    
     internal bool FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
     {
-        Vector3 landingPos = (markerPos - enemyPos) + enemyPos;
-        Collider[] col = Physics.OverlapSphere(landingPos, 0.1f);
-
+        Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
+        Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
         if (col.Length > 1)
         {
             return false;

@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MarkerMovement : MonoBehaviour
 {
     private CheckerGame _checkerGame;
+    internal Vector3 colEnemyPos;
+    
     private void Start()
     {
         _checkerGame = GetComponent<CheckerGame>();
@@ -54,6 +58,7 @@ public class MarkerMovement : MonoBehaviour
     internal bool GetSurroundings(Vector3 marker)
     {
         Vector3 position = marker;
+        List<Collider> closeEnemies = new();
         Vector3[] directions = new[]
         {
             new Vector3(position.x + 1, position.y, position.z + 1), //R-U
@@ -61,21 +66,24 @@ public class MarkerMovement : MonoBehaviour
             new Vector3(position.x + 1, position.y, position.z - 1), // R-D
             new Vector3(position.x - 1, position.y, position.z - 1)  // L-D
         };
+        
 
         foreach (Vector3 dir in directions)
         {
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
             foreach (Collider colliders in hitColliders)
             {
+                colEnemyPos = colliders.transform.position;
                 if (colliders.CompareTag(_checkerGame.GetEnemy()))
-                { 
+                {
                     return true;
                 }
             }
+            
+            
         }
         return false;
     }
-    
 
    internal void Jump()
    {
