@@ -58,7 +58,6 @@ public class MarkerMovement : MonoBehaviour
     internal bool GetSurroundings(Vector3 marker)
     {
         Vector3 position = marker;
-        List<Collider> closeEnemies = new();
         Vector3[] directions = new[]
         {
             new Vector3(position.x + 1, position.y, position.z + 1), //R-U
