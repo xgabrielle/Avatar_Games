@@ -97,7 +97,6 @@ public class CheckerGame : MonoBehaviour
     {
         Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
         Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
-        Debug.Log("move to: "+landingPos);
         if (col.Length > 1 || landingPos.x > 7 || landingPos.x < 0 || landingPos.z > 7 || landingPos.z < 0)
         {
             return false;
@@ -112,10 +111,4 @@ public class CheckerGame : MonoBehaviour
         return enemyTag;
     }
 
-    
-
-    void AIMove()
-    {
-        
-    }
 }
