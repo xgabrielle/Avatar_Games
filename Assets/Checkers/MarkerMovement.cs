@@ -55,20 +55,24 @@ public class MarkerMovement : MonoBehaviour
 
         return Mathf.Approximately(newPosX, newPosZ);
     }
-    
-    internal bool GetSurroundings(Vector3 marker)
+
+    internal static Vector3[] PossibleMoves(Vector3 currentPlayerPos)
     {
-        Vector3 position = marker;
+        Vector3 position = currentPlayerPos;
         Vector3[] directions = new[]
         {
+            // up
             new Vector3(position.x + 1, position.y, position.z + 1), //R-U
             new Vector3(position.x - 1, position.y, position.z + 1), // L-U
+            // down
             new Vector3(position.x + 1, position.y, position.z - 1), // R-D
             new Vector3(position.x - 1, position.y, position.z - 1)  // L-D
         };
-        
-
-        foreach (Vector3 dir in directions)
+        return directions;
+    }
+    internal bool GetSurroundings(Vector3 marker)
+    {
+        foreach (Vector3 dir in PossibleMoves(marker))
         {
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
             foreach (Collider colliders in hitColliders)
@@ -79,8 +83,6 @@ public class MarkerMovement : MonoBehaviour
                     return true;
                 }
             }
-            
-            
         }
         return false;
     }
@@ -124,6 +126,17 @@ public class MarkerMovement : MonoBehaviour
        
         
     }
+   
+   internal bool FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
+   {
+       Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
+       Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
+       if (col.Length > 1 || landingPos.x > 7 || landingPos.x < 0 || landingPos.z > 7 || landingPos.z < 0)
+       {
+           return false;
+       }
+       return true;
+   }
    
    
    

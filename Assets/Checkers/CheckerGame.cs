@@ -17,12 +17,12 @@ public class CheckerGame : MonoBehaviour
     private bool isPiecePicked;
     private King _king;
     
-    
 
     private void Start()
     {
         _markerMovement = GetComponent<MarkerMovement>();
         _king = FindObjectOfType<King>();
+
     }
     
     private void Update()
@@ -47,7 +47,7 @@ public class CheckerGame : MonoBehaviour
         }
     }
 
-    void HandleClickOnMarker(RaycastHit hit)
+    internal void HandleClickOnMarker(RaycastHit hit)
     {
         isPiecePicked = true;
         markerPos = hit.collider.transform.position;
@@ -56,13 +56,13 @@ public class CheckerGame : MonoBehaviour
         _markerMovement.GetSurroundings(markerPos);
     }
 
-    void HandleClickOnBoard(RaycastHit hit)
+    internal void HandleClickOnBoard(RaycastHit hit)
     {
         targetPosition = hit.collider.transform.position;
 
         if (_markerMovement.GetSurroundings(markerPos))
         {
-            if (FreeJumpSpace(markerPos, _markerMovement.colEnemyPos)) 
+            if (_markerMovement.FreeJumpSpace(markerPos, _markerMovement.colEnemyPos)) 
                 _markerMovement.Jump();
                         
             else _markerMovement.GetMarkerMove();
@@ -77,6 +77,7 @@ public class CheckerGame : MonoBehaviour
         isPiecePicked = false;
     }
 
+  
     void PlayingMarker(GameObject marker)
     {
         Renderer chooseColor = this.marker.GetComponent<Renderer>();
@@ -91,17 +92,6 @@ public class CheckerGame : MonoBehaviour
         previousMarker = marker;
         chooseColor.material = blue;
 
-    }
-    
-    internal bool FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
-    {
-        Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
-        Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
-        if (col.Length > 1 || landingPos.x > 7 || landingPos.x < 0 || landingPos.z > 7 || landingPos.z < 0)
-        {
-            return false;
-        }
-        return true;
     }
     
     internal string GetEnemyTag()
