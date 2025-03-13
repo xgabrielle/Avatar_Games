@@ -36,39 +36,46 @@ public class CheckerGame : MonoBehaviour
             {
                 if (hit.collider.CompareTag("DarkMarker") || hit.collider.CompareTag("WhiteMarker"))
                 {
-                    isPiecePicked = true;
-                    markerPos = hit.collider.transform.position;
-                    marker = hit.collider.gameObject;
-                    PlayingMarker(marker);
-                    _markerMovement.GetSurroundings(markerPos);
+                    HandleClickOnMarker(hit);
                 }
-                
                 
                 else if (hit.collider.CompareTag("BoardSquare") && isPiecePicked)
                 {
-                    targetPosition = hit.collider.transform.position;
-
-                    if (_markerMovement.GetSurroundings(markerPos))
-                    {
-                        if (FreeJumpSpace(markerPos, _markerMovement.colEnemyPos)) 
-                            _markerMovement.Jump();
-                        
-                        else _markerMovement.GetMarkerMove();
-                    }
-                    else _markerMovement.GetMarkerMove();
-
-                    if (targetPosition.z > 6 || targetPosition.z < 1)
-                    {
-                        _king.SpawnCrown(marker,crown);
-                    }
-
-                    isPiecePicked = false;
-
+                    HandleClickOnBoard(hit);
                 }
             }
         }
     }
-    
+
+    void HandleClickOnMarker(RaycastHit hit)
+    {
+        isPiecePicked = true;
+        markerPos = hit.collider.transform.position;
+        marker = hit.collider.gameObject;
+        PlayingMarker(marker);
+        _markerMovement.GetSurroundings(markerPos);
+    }
+
+    void HandleClickOnBoard(RaycastHit hit)
+    {
+        targetPosition = hit.collider.transform.position;
+
+        if (_markerMovement.GetSurroundings(markerPos))
+        {
+            if (FreeJumpSpace(markerPos, _markerMovement.colEnemyPos)) 
+                _markerMovement.Jump();
+                        
+            else _markerMovement.GetMarkerMove();
+        }
+        else _markerMovement.GetMarkerMove();
+
+        if (targetPosition.z > 6 || targetPosition.z < 1)
+        {
+            _king.SpawnCrown(marker,crown);
+        }
+
+        isPiecePicked = false;
+    }
 
     void PlayingMarker(GameObject marker)
     {
