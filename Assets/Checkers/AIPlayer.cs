@@ -40,11 +40,12 @@ public class AIPlayer : MonoBehaviour
                 Collider[] col = Physics.OverlapSphere(move, 0.1f);
                 if (col.Length == 0 && move.x >= 0 && move.x < 8 && move.z >= 0 && move.z < 8)
                 {
-                    Debug.Log("pawnPos: " +pawn.transform.position);
-                    Debug.Log("pawnTargetPos: "+ move);
+                    /*Debug.Log("pawnPos: " +pawn.transform.position);
+                    Debug.Log("pawnTargetPos: "+ move);*/
                     _checkerGame.markerPos = pawn.transform.position;
                     _checkerGame.targetPosition = move;
-                    _markerMovement.GetMarkerMove(pawn);
+                    _checkerGame.marker = pawn;
+                    _markerMovement.GetMarkerMove(_checkerGame.marker);
                     return;
                 }
             }

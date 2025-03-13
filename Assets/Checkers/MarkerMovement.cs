@@ -35,7 +35,7 @@ public class MarkerMovement : MonoBehaviour
             {
                 if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 1))
                 { 
-                    Debug.Log("PlayerTargetPos: "+ _checkerGame.targetPosition);
+                    //Debug.Log("PlayerTargetPos: "+ _checkerGame.targetPosition);
                     NewMarkerPos(_checkerGame.targetPosition);
                 }
             }
@@ -48,6 +48,7 @@ public class MarkerMovement : MonoBehaviour
     {
         _checkerGame.markerPos = newMarkerPos;
         _checkerGame.marker.transform.position = _checkerGame.markerPos;
+        //currentGameObject.transform.pos = newMarkPos
     }
 
     private static bool DiagonalMove(Vector3 startPos, Vector3 targetPos)
@@ -92,7 +93,9 @@ public class MarkerMovement : MonoBehaviour
 
    internal void Jump(GameObject pawn)
    {
-       Vector3 middlePos = ((_checkerGame.markerPos + _checkerGame.targetPosition) / 2) + Vector3.up*0.5f;
+       Vector3 middlePos = ((_checkerGame.markerPos + _checkerGame.targetPosition) / 2)/* + Vector3.up*0.5f*/;
+       Debug.Log("middlePos: "+(_checkerGame.markerPos + _checkerGame.targetPosition));
+       Debug.Log("middlePos variable: "+middlePos);
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
        
 

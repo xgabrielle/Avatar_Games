@@ -31,18 +31,17 @@ public class CheckerGame : MonoBehaviour
     
     private void Update()
     {
-        /*if (Input.GetMouseButtonDown(0)) 
-            HandlePlayerTurn();*/
-        
         if (!isAiTurn)
         {
             if (Input.GetMouseButtonDown(0)) 
                 HandlePlayerTurn();
+            Debug.Log("Ai turn");
         }
         else
         {
             isAiTurn = false;
             _Ai.StartCoroutine(_Ai.GetAiMove());
+            Debug.Log("Player Turn");
         }
     }
 
@@ -72,7 +71,7 @@ public class CheckerGame : MonoBehaviour
         markerPos = hit.collider.transform.position;
         marker = hit.collider.gameObject;
         PlayingMarker(marker);
-        //_markerMovement.GetSurroundings(markerPos);
+        _markerMovement.GetSurroundings(markerPos, marker);
     }
 
     internal void HandleClickOnBoard(RaycastHit hit)
