@@ -15,25 +15,27 @@ public class MarkerMovement : MonoBehaviour
         _king = FindObjectOfType<King>();
     }
 
-    internal void GetMarkerMove()
+    internal void GetMarkerMove(GameObject pawn)
     {
         if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
         {
             if (_king.isKing)
                 NewMarkerPos(_checkerGame.targetPosition);
             
-            else if (_checkerGame.GetEnemyTag() == "WhiteMarker")
+            else if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
             {
+                
                 if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z - 1)) 
                 { 
                     NewMarkerPos(_checkerGame.targetPosition);
                 }
              
             }
-            else if (_checkerGame.GetEnemyTag() == "DarkMarker")
+            else if (_checkerGame.GetEnemyTag(pawn) == "DarkMarker")
             {
                 if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z + 1))
                 { 
+                    Debug.Log("PlayerTargetPos: "+ _checkerGame.targetPosition);
                     NewMarkerPos(_checkerGame.targetPosition);
                 }
             }
@@ -45,7 +47,7 @@ public class MarkerMovement : MonoBehaviour
     private void NewMarkerPos(Vector3 newMarkerPos)
     {
         _checkerGame.markerPos = newMarkerPos;
-        _checkerGame.marker.transform.position = _checkerGame.markerPos + new Vector3(0,0.6f,0);
+        _checkerGame.marker.transform.position = _checkerGame.markerPos;
     }
 
     private static bool DiagonalMove(Vector3 startPos, Vector3 targetPos)
@@ -70,7 +72,7 @@ public class MarkerMovement : MonoBehaviour
         };
         return directions;
     }
-    internal bool GetSurroundings(Vector3 marker)
+    internal bool GetSurroundings(Vector3 marker, GameObject pawn)
     {
         foreach (Vector3 dir in PossibleMoves(marker))
         {
@@ -78,7 +80,8 @@ public class MarkerMovement : MonoBehaviour
             foreach (Collider colliders in hitColliders)
             {
                 colEnemyPos = colliders.transform.position;
-                if (colliders.CompareTag(_checkerGame.GetEnemyTag()))
+                Debug.Log(colliders.tag);
+                if (colliders.CompareTag(_checkerGame.GetEnemyTag(pawn)))
                 {
                     return true;
                 }
@@ -87,7 +90,7 @@ public class MarkerMovement : MonoBehaviour
         return false;
     }
 
-   internal void Jump()
+   internal void Jump(GameObject pawn)
    {
        Vector3 middlePos = ((_checkerGame.markerPos + _checkerGame.targetPosition) / 2) + Vector3.up*0.5f;
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
@@ -95,13 +98,13 @@ public class MarkerMovement : MonoBehaviour
 
        foreach (Collider midCol in middleColliders)
        {
-           if (midCol.CompareTag(_checkerGame.GetEnemyTag()))
+           if (midCol.CompareTag(_checkerGame.GetEnemyTag(pawn)))
            { 
                GameObject jumpedMarker = midCol.gameObject;
                
                if (DiagonalMove(_checkerGame.markerPos, _checkerGame.targetPosition))
                {
-                   if (_checkerGame.GetEnemyTag() == "WhiteMarker")
+                   if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
                    {
                        if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.markerPos.z - 2))
                        { 
