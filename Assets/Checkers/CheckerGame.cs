@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -6,18 +7,22 @@ public class CheckerGame : MonoBehaviour
 {
     internal Vector3 targetPosition;
     internal Vector3 markerPos;
-    internal bool isKing;
     [SerializeField] private Material blue;
     [SerializeField] private Material originalColor;
+    [SerializeField] private Material dark;
     internal GameObject marker;
     internal GameObject previousMarker;
     [SerializeField] private GameObject crown;
     private MarkerMovement _markerMovement;
+    private bool isPiecePicked;
+    private King _king;
+    
     
 
     private void Start()
     {
         _markerMovement = GetComponent<MarkerMovement>();
+        _king = FindObjectOfType<King>();
     }
     
     private void Update()
@@ -31,20 +36,15 @@ public class CheckerGame : MonoBehaviour
             {
                 if (hit.collider.CompareTag("DarkMarker") || hit.collider.CompareTag("WhiteMarker"))
                 {
+                    isPiecePicked = true;
                     markerPos = hit.collider.transform.position;
                     marker = hit.collider.gameObject;
-                    if (hit.collider.CompareTag("WhiteMarker"))
-                    {
-                        PlayingMarker(marker);
-                        
-                        if (markerPos.z > 6)
-                            King(marker);
-                    }
+                    PlayingMarker(marker);
                     _markerMovement.GetSurroundings(markerPos);
                 }
                 
                 
-                else if (hit.collider.CompareTag("BoardSquare"))
+                else if (hit.collider.CompareTag("BoardSquare") && isPiecePicked)
                 {
                     targetPosition = hit.collider.transform.position;
 
@@ -56,7 +56,14 @@ public class CheckerGame : MonoBehaviour
                         else _markerMovement.GetMarkerMove();
                     }
                     else _markerMovement.GetMarkerMove();
-                    
+
+                    if (targetPosition.z > 6 || targetPosition.z < 1)
+                    {
+                        _king.SpawnCrown(marker,crown);
+                    }
+
+                    isPiecePicked = false;
+
                 }
             }
         }
@@ -69,7 +76,9 @@ public class CheckerGame : MonoBehaviour
 
         if (previousMarker != null && previousMarker != marker)
         {
-            previousMarker.GetComponent<Renderer>().material = originalColor;
+            if (previousMarker.CompareTag("WhiteMarker"))
+                previousMarker.GetComponent<Renderer>().material = originalColor;
+            else previousMarker.GetComponent<Renderer>().material = dark;
         }
 
         previousMarker = marker;
@@ -82,38 +91,21 @@ public class CheckerGame : MonoBehaviour
         Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
         Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
         Debug.Log("move to: "+landingPos);
-        if (col.Length > 1 || landingPos.x > 7 || landingPos.x < 0)
+        if (col.Length > 1 || landingPos.x > 7 || landingPos.x < 0 || landingPos.z > 7 || landingPos.z < 0)
         {
             return false;
         }
         return true;
     }
     
-    internal string GetEnemy()
+    internal string GetEnemyTag()
     {
         string myTag = marker.tag;
         string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
         return enemyTag;
     }
 
-    internal void King(GameObject kingMarker)
-    {
-        if (kingMarker.CompareTag("WhiteMarker") && kingMarker.transform.position.z > 6 )
-        { 
-            SpawnCrown(marker, crown);
-            isKing = true; 
-       
-        }
-    }
-
-    void SpawnCrown(GameObject marker, GameObject crownPrefab)
-    {
-        Vector3 parentPos = marker.transform.position + Vector3.up *0.2f;
-        Debug.Log("marker: "+marker.transform.position);
-        Debug.Log("parentPos: "+parentPos);
-        GameObject crown = Instantiate(crownPrefab, parentPos, Quaternion.identity);
-        crown.transform.SetParent(marker.transform);
-    }
+    
 
     void AIMove()
     {
