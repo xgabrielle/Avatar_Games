@@ -5,19 +5,21 @@ using UnityEngine;
 
 public class CheckerGame : MonoBehaviour
 {
-    internal Vector3 targetPosition;
-    internal Vector3 markerPos;
     [SerializeField] private Material blue;
     [SerializeField] private Material originalColor;
     [SerializeField] private Material dark;
-    internal GameObject marker;
-    internal GameObject previousMarker;
     [SerializeField] private GameObject crown;
+    
+    internal Vector3 targetPosition;
+    internal Vector3 currentMarkerPos;
+    internal GameObject currentMarker;
+    internal GameObject previousMarker;
+    internal bool isAiTurn;
+    private bool isGameOver;
+    
     private MarkerMovement _markerMovement;
-    //private bool isPiecePicked;
     private King _king;
     private AIPlayer _Ai;
-    internal bool isAiTurn;
     
 
     private void Start()
@@ -26,22 +28,27 @@ public class CheckerGame : MonoBehaviour
         _king = FindObjectOfType<King>();
         _Ai = GetComponent<AIPlayer>();
         isAiTurn = false;
+        isGameOver = false;
 
     }
     
     private void Update()
     {
-        if (!isAiTurn)
+        if (!isGameOver)
         {
-            if (Input.GetMouseButtonDown(0)) 
-                HandlePlayerTurn();
-            Debug.Log("Ai turn");
-        }
-        else
-        {
-            isAiTurn = false;
-            _Ai.StartCoroutine(_Ai.GetAiMove());
-            Debug.Log("Player Turn");
+            if (!isAiTurn)
+            {
+                if (Input.GetMouseButtonDown(0)) 
+                    HandlePlayerTurn();
+                Debug.Log("Ai turn");
+            }
+            else
+            {
+                _Ai.StartCoroutine(_Ai.GetAiMove());
+                Debug.Log("Player Turn");
+                isAiTurn = false;
+            }
+            
         }
     }
 
@@ -55,6 +62,7 @@ public class CheckerGame : MonoBehaviour
             if (hit.collider.CompareTag("DarkMarker") || hit.collider.CompareTag("WhiteMarker"))
             {
                 HandleClickOnMarker(hit);
+                
             }
                 
             else if (hit.collider.CompareTag("BoardSquare") /*&& isPiecePicked*/)
@@ -67,36 +75,38 @@ public class CheckerGame : MonoBehaviour
 
     internal void HandleClickOnMarker(RaycastHit hit)
     {
-        //isPiecePicked = true;
-        markerPos = hit.collider.transform.position;
-        marker = hit.collider.gameObject;
-        PlayingMarker(marker);
-        _markerMovement.GetSurroundings(markerPos, marker);
+        // player assign
+        currentMarkerPos = hit.collider.transform.position;
+        currentMarker = hit.collider.gameObject;
+        
+        _markerMovement.GetSurroundings(currentMarkerPos, currentMarker);
+        //PlayingMarker(marker);
     }
 
     internal void HandleClickOnBoard(RaycastHit hit)
     {
+        // player assign
         targetPosition = hit.collider.transform.position + new Vector3(0,0.6f,0);
 
-        if (_markerMovement.GetSurroundings(markerPos, hit.collider.gameObject))
+        if (_markerMovement.GetSurroundings(currentMarkerPos, currentMarker))
         {
-            if (_markerMovement.FreeJumpSpace(markerPos, _markerMovement.colEnemyPos)) 
-                _markerMovement.Jump(hit.collider.gameObject);
+            if (_markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos)) 
+                _markerMovement.Jump(currentMarker);
                         
-            else _markerMovement.GetMarkerMove(hit.collider.gameObject);
+            else _markerMovement.GetMarkerMove(currentMarker);
         }
-        else _markerMovement.GetMarkerMove(hit.collider.gameObject);
+        else _markerMovement.GetMarkerMove(currentMarker);
 
         if (targetPosition.z > 6 || targetPosition.z < 1)
         {
-            _king.SpawnCrown(marker,crown);
+            _king.SpawnCrown(currentMarker,crown);
         }
 
         //isPiecePicked = false;
     }
 
   
-    void PlayingMarker(GameObject marker)
+    /*void PlayingMarker(GameObject marker)
     {
         Renderer chooseColor = this.marker.GetComponent<Renderer>();
 
@@ -110,14 +120,10 @@ public class CheckerGame : MonoBehaviour
         previousMarker = marker;
         chooseColor.material = blue;
 
-    }
+    }*/
     
     internal string GetEnemyTag(GameObject pawn)
     {
-        if (marker.tag==null)
-        {
-            Debug.Log("Marker is null or tag?" +marker.tag + "tag: "+ tag + "marker: "+ marker);
-        }
         string myTag = pawn.tag;
         string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
         return enemyTag;
