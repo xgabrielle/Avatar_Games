@@ -35,7 +35,7 @@ public class MarkerMovement : MonoBehaviour
             {
                 if (Mathf.Approximately(targetPos.z, startPos.z + 1))
                 { 
-                    NewMarkerPos(_checkerGame.targetPosition);
+                    NewMarkerPos(targetPos);
                 }
             }
             
@@ -45,8 +45,8 @@ public class MarkerMovement : MonoBehaviour
     
     private void NewMarkerPos(Vector3 newMarkerPos)
     {
-        _checkerGame.currentMarkerPos = newMarkerPos;
-        _checkerGame.currentMarker.transform.position = _checkerGame.currentMarkerPos;
+        //_checkerGame.currentMarkerPos = newMarkerPos;
+        _checkerGame.currentMarker.transform.position = newMarkerPos;
         
     }
 
@@ -96,10 +96,10 @@ public class MarkerMovement : MonoBehaviour
         return false;
     }
 
-   internal void Jump(GameObject pawn, Vector3 targetPos)
+   internal void Jump(GameObject pawn, Vector3 startPos, Vector3 targetPos)
    {
-       Vector3 middlePos = ((_checkerGame.currentMarkerPos + targetPos) / 2);
-       Debug.Log("middlePos: "+(_checkerGame.currentMarkerPos + targetPos));
+       Vector3 middlePos = ((startPos + targetPos) / 2);
+       Debug.Log("middlePos: "+(startPos + targetPos));
        Debug.Log("middlePos variable: "+middlePos);
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
        
@@ -110,11 +110,11 @@ public class MarkerMovement : MonoBehaviour
            { 
                GameObject jumpedMarker = midCol.gameObject;
                
-               if (DiagonalMove(_checkerGame.currentMarkerPos, targetPos))
+               if (DiagonalMove(startPos, targetPos))
                {
                    if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
                    {
-                       if (Mathf.Approximately(targetPos.z, _checkerGame.currentMarkerPos.z - 2))
+                       if (Mathf.Approximately(targetPos.z, startPos.z - 2))
                        { 
                            NewMarkerPos(targetPos);
                            Destroy(jumpedMarker);
@@ -122,7 +122,7 @@ public class MarkerMovement : MonoBehaviour
                    }
                    else
                    {
-                       if (Mathf.Approximately(targetPos.z, _checkerGame.currentMarkerPos.z + 2))
+                       if (Mathf.Approximately(targetPos.z, startPos.z + 2))
                        { 
                            NewMarkerPos(targetPos);
                            Destroy(jumpedMarker);

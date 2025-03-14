@@ -35,7 +35,7 @@ public class AIPlayer : MonoBehaviour
             if (_markerMovement.GetSurroundings(_checkerGame.currentMarkerPos,_checkerGame.currentMarker))
             {
                 if (_markerMovement.FreeJumpSpace(_checkerGame.currentMarkerPos, _markerMovement.colEnemyPos).Item1) 
-                    _markerMovement.Jump(_checkerGame.currentMarker, _markerMovement.FreeJumpSpace(_checkerGame.currentMarkerPos, _markerMovement.colEnemyPos).Item2);
+                    _markerMovement.Jump(_checkerGame.currentMarker,_checkerGame.currentMarkerPos , _markerMovement.FreeJumpSpace(_checkerGame.currentMarkerPos, _markerMovement.colEnemyPos).Item2);
 
                 else _markerMovement.GetMarkerMove(_checkerGame.currentMarker, _checkerGame.currentMarkerPos, _checkerGame.targetPosition);
             }
