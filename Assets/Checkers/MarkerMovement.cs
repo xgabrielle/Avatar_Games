@@ -20,36 +20,31 @@ public class MarkerMovement : MonoBehaviour
         if (DiagonalMove(startPos, targetPos))
         {
             if (_king.isKing)
-                NewMarkerPos(targetPos);
-            
+                pawn.transform.position = targetPos;
+
             else if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
             {
-                
-                if (Mathf.Approximately(targetPos.z, startPos.z - 1)) 
-                { 
-                    NewMarkerPos(targetPos);
+
+                if (Mathf.Approximately(targetPos.z, startPos.z - 1))
+                {
+                    pawn.transform.position = targetPos;
+                    //NewMarkerPos(targetPos);
                 }
-             
+
             }
             else if (_checkerGame.GetEnemyTag(pawn) == "DarkMarker")
             {
                 if (Mathf.Approximately(targetPos.z, startPos.z + 1))
-                { 
-                    NewMarkerPos(targetPos);
+                {
+                    pawn.transform.position = targetPos;
+                    //NewMarkerPos(targetPos);
                 }
             }
-            
+
         }
         else Debug.Log("Not a possible move");
     }
     
-    private void NewMarkerPos(Vector3 newMarkerPos)
-    {
-        //_checkerGame.currentMarkerPos = newMarkerPos;
-        _checkerGame.currentMarker.transform.position = newMarkerPos;
-        
-    }
-
     private static bool DiagonalMove(Vector3 startPos, Vector3 targetPos)
     {
         float newPosX = Mathf.Abs(targetPos.x - startPos.x);
@@ -116,7 +111,8 @@ public class MarkerMovement : MonoBehaviour
                    {
                        if (Mathf.Approximately(targetPos.z, startPos.z - 2))
                        { 
-                           NewMarkerPos(targetPos);
+                           //NewMarkerPos(targetPos);
+                           pawn.transform.position = targetPos;
                            Destroy(jumpedMarker);
                        }
                    }
@@ -124,7 +120,8 @@ public class MarkerMovement : MonoBehaviour
                    {
                        if (Mathf.Approximately(targetPos.z, startPos.z + 2))
                        { 
-                           NewMarkerPos(targetPos);
+                           //NewMarkerPos(targetPos);
+                           pawn.transform.position = targetPos;
                            Destroy(jumpedMarker);
                        }
                    }
