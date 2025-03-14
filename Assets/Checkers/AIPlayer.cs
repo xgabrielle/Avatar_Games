@@ -26,20 +26,23 @@ public class AIPlayer : MonoBehaviour
         GameObject[] darkPawns = GameObject.FindGameObjectsWithTag("DarkMarker");
         foreach (GameObject pawn in darkPawns)
         {
+            Vector3 pawnPos = pawn.transform.position;
             foreach (var move in MarkerMovement.PossibleMoves(pawn.transform.position)) 
             {
-                _checkerGame.targetPosition = move;
-                _checkerGame.currentMarkerPos = pawn.transform.position;
-                _checkerGame.currentMarker = pawn;
+                if (_markerMovement.GetSurroundings(pawnPos,pawn))
+                {
+                    if (_markerMovement.FreeJumpSpace(pawnPos, move).Item1) 
+                        _markerMovement.Jump(pawn, pawnPos, _markerMovement.FreeJumpSpace(pawnPos, _markerMovement.colEnemyPos).Item2);
+                    else if (_markerMovement.GetMarkerMove(pawn, pawnPos, move))
+                    {
+                        pawn.transform.position = move;
+                    }
+                }
+                else if (_markerMovement.GetMarkerMove(pawn, pawnPos, move))
+                {
+                    pawn.transform.position = move;
+                }
             }
-            if (_markerMovement.GetSurroundings(_checkerGame.currentMarkerPos,_checkerGame.currentMarker))
-            {
-                if (_markerMovement.FreeJumpSpace(_checkerGame.currentMarkerPos, _markerMovement.colEnemyPos).Item1) 
-                    _markerMovement.Jump(_checkerGame.currentMarker,_checkerGame.currentMarkerPos , _markerMovement.FreeJumpSpace(_checkerGame.currentMarkerPos, _markerMovement.colEnemyPos).Item2);
-
-                else _markerMovement.GetMarkerMove(_checkerGame.currentMarker, _checkerGame.currentMarkerPos, _checkerGame.targetPosition);
-            }
-            else _markerMovement.GetMarkerMove(_checkerGame.currentMarker, _checkerGame.currentMarkerPos, _checkerGame.targetPosition);
 
             break;
         }

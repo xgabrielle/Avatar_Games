@@ -12,25 +12,31 @@ public class MarkerMovement : MonoBehaviour
         _king = FindObjectOfType<King>();
     }
 
-    internal void GetMarkerMove(GameObject pawn, Vector3 startPos, Vector3 targetPos)
+    internal bool GetMarkerMove(GameObject pawn, Vector3 startPos, Vector3 targetPos)
     {
         if (DiagonalMove(startPos, targetPos))
         {
-            if (_king.isKing)
-                pawn.transform.position = targetPos;
+            /*if (_king.isKing)
+                pawn.transform.position = targetPos;*/
 
-            else if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
+            if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
             {
                 if (Mathf.Approximately(targetPos.z, startPos.z - 1))
-                    pawn.transform.position = targetPos;
+                {
+                    return true;
+                }
             }
             else if (_checkerGame.GetEnemyTag(pawn) == "DarkMarker")
             {
                 if (Mathf.Approximately(targetPos.z, startPos.z + 1))
-                    pawn.transform.position = targetPos;
+                {
+                    return true;
+                }
             }
         }
         else Debug.Log("Not a possible move");
+
+        return false;
     }
     
     private static bool DiagonalMove(Vector3 startPos, Vector3 targetPos)
