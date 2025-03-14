@@ -15,27 +15,26 @@ public class MarkerMovement : MonoBehaviour
         _king = FindObjectOfType<King>();
     }
 
-    internal void GetMarkerMove(GameObject pawn)
+    internal void GetMarkerMove(GameObject pawn, Vector3 startPos, Vector3 targetPos)
     {
-        if (DiagonalMove(_checkerGame.currentMarkerPos, _checkerGame.targetPosition))
+        if (DiagonalMove(startPos, targetPos))
         {
             if (_king.isKing)
-                NewMarkerPos(_checkerGame.targetPosition);
+                NewMarkerPos(targetPos);
             
             else if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
             {
                 
-                if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.currentMarkerPos.z - 1)) 
+                if (Mathf.Approximately(targetPos.z, startPos.z - 1)) 
                 { 
-                    NewMarkerPos(_checkerGame.targetPosition);
+                    NewMarkerPos(targetPos);
                 }
              
             }
             else if (_checkerGame.GetEnemyTag(pawn) == "DarkMarker")
             {
-                if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.currentMarkerPos.z + 1))
+                if (Mathf.Approximately(targetPos.z, startPos.z + 1))
                 { 
-                    //Debug.Log("PlayerTargetPos: "+ _checkerGame.targetPosition);
                     NewMarkerPos(_checkerGame.targetPosition);
                 }
             }

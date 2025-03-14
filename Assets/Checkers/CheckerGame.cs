@@ -93,9 +93,9 @@ public class CheckerGame : MonoBehaviour
             if (_markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos).Item1) 
                 _markerMovement.Jump(currentMarker, _markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos).Item2);
                         
-            else _markerMovement.GetMarkerMove(currentMarker);
+            else _markerMovement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition);
         }
-        else _markerMovement.GetMarkerMove(currentMarker);
+        else _markerMovement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition);
 
         if (targetPosition.z > 6 || targetPosition.z < 1)
         {
