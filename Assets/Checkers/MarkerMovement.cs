@@ -97,10 +97,10 @@ public class MarkerMovement : MonoBehaviour
         return false;
     }
 
-   internal void Jump(GameObject pawn)
+   internal void Jump(GameObject pawn, Vector3 targetPos)
    {
-       Vector3 middlePos = ((_checkerGame.currentMarkerPos + _checkerGame.targetPosition) / 2);
-       Debug.Log("middlePos: "+(_checkerGame.currentMarkerPos + _checkerGame.targetPosition));
+       Vector3 middlePos = ((_checkerGame.currentMarkerPos + targetPos) / 2);
+       Debug.Log("middlePos: "+(_checkerGame.currentMarkerPos + targetPos));
        Debug.Log("middlePos variable: "+middlePos);
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
        
@@ -111,21 +111,21 @@ public class MarkerMovement : MonoBehaviour
            { 
                GameObject jumpedMarker = midCol.gameObject;
                
-               if (DiagonalMove(_checkerGame.currentMarkerPos, _checkerGame.targetPosition))
+               if (DiagonalMove(_checkerGame.currentMarkerPos, targetPos))
                {
                    if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
                    {
-                       if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.currentMarkerPos.z - 2))
+                       if (Mathf.Approximately(targetPos.z, _checkerGame.currentMarkerPos.z - 2))
                        { 
-                           NewMarkerPos(_checkerGame.targetPosition);
+                           NewMarkerPos(targetPos);
                            Destroy(jumpedMarker);
                        }
                    }
                    else
                    {
-                       if (Mathf.Approximately(_checkerGame.targetPosition.z, _checkerGame.currentMarkerPos.z + 2))
+                       if (Mathf.Approximately(targetPos.z, _checkerGame.currentMarkerPos.z + 2))
                        { 
-                           NewMarkerPos(_checkerGame.targetPosition);
+                           NewMarkerPos(targetPos);
                            Destroy(jumpedMarker);
                        }
                    }
@@ -139,15 +139,15 @@ public class MarkerMovement : MonoBehaviour
         
     }
    
-   internal bool FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
+   internal (bool, Vector3) FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
    {
        Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
        Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
        if (col.Length > 1 || landingPos.x > 7 || landingPos.x < 0 || landingPos.z > 7 || landingPos.z < 0)
        {
-           return false;
+           return (false, landingPos);
        }
-       return true;
+       return (true, landingPos);
    }
 
    internal static bool OutofBounds(Vector3 pos) => pos.x > 7 || pos.x < 0 || pos.z > 7 || pos.z < 0;

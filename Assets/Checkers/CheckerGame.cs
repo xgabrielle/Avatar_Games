@@ -90,8 +90,8 @@ public class CheckerGame : MonoBehaviour
 
         if (_markerMovement.GetSurroundings(currentMarkerPos, currentMarker))
         {
-            if (_markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos)) 
-                _markerMovement.Jump(currentMarker);
+            if (_markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos).Item1) 
+                _markerMovement.Jump(currentMarker, _markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos).Item2);
                         
             else _markerMovement.GetMarkerMove(currentMarker);
         }
