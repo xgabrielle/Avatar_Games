@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MarkerMovement : MonoBehaviour
@@ -24,23 +21,14 @@ public class MarkerMovement : MonoBehaviour
 
             else if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
             {
-
                 if (Mathf.Approximately(targetPos.z, startPos.z - 1))
-                {
                     pawn.transform.position = targetPos;
-                    //NewMarkerPos(targetPos);
-                }
-
             }
             else if (_checkerGame.GetEnemyTag(pawn) == "DarkMarker")
             {
                 if (Mathf.Approximately(targetPos.z, startPos.z + 1))
-                {
                     pawn.transform.position = targetPos;
-                    //NewMarkerPos(targetPos);
-                }
             }
-
         }
         else Debug.Log("Not a possible move");
     }
@@ -81,7 +69,6 @@ public class MarkerMovement : MonoBehaviour
             foreach (Collider colliders in hitColliders)
             {
                 colEnemyPos = colliders.transform.position;
-                Debug.Log(colliders.tag);
                 if (colliders.CompareTag(_checkerGame.GetEnemyTag(pawn)))
                 {
                     return true;
@@ -94,11 +81,8 @@ public class MarkerMovement : MonoBehaviour
    internal void Jump(GameObject pawn, Vector3 startPos, Vector3 targetPos)
    {
        Vector3 middlePos = ((startPos + targetPos) / 2);
-       Debug.Log("middlePos: "+(startPos + targetPos));
-       Debug.Log("middlePos variable: "+middlePos);
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
        
-
        foreach (Collider midCol in middleColliders)
        {
            if (midCol.CompareTag(_checkerGame.GetEnemyTag(pawn)))
@@ -111,7 +95,6 @@ public class MarkerMovement : MonoBehaviour
                    {
                        if (Mathf.Approximately(targetPos.z, startPos.z - 2))
                        { 
-                           //NewMarkerPos(targetPos);
                            pawn.transform.position = targetPos;
                            Destroy(jumpedMarker);
                        }
@@ -120,7 +103,6 @@ public class MarkerMovement : MonoBehaviour
                    {
                        if (Mathf.Approximately(targetPos.z, startPos.z + 2))
                        { 
-                           //NewMarkerPos(targetPos);
                            pawn.transform.position = targetPos;
                            Destroy(jumpedMarker);
                        }
@@ -131,8 +113,6 @@ public class MarkerMovement : MonoBehaviour
                break;
            }
        }
-       
-        
     }
    
    internal (bool, Vector3) FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
