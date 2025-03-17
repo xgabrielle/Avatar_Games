@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -32,26 +33,21 @@ public class AIPlayer : MonoBehaviour
             Vector3 pawnPos = pawn.transform.position;
             foreach (var move in MarkerMovement.PossibleMoves(pawnPos)) 
             {
-                if (_markerMovement.GetSurroundings(pawnPos,pawn))
+                if (_markerMovement.FreeJumpSpace(pawnPos, move).Item1)
                 {
-                    if (_markerMovement.FreeJumpSpace(pawnPos, move).Item1)
+                    if (_markerMovement.Jump(pawn, pawnPos, _markerMovement.FreeJumpSpace(pawnPos, move).Item2))
                     {
-                        _markerMovement.Jump(pawn, pawnPos, _markerMovement.FreeJumpSpace(pawnPos, _markerMovement.colEnemyPos).Item2);
                         validMove = true;
-                    }
-                    else if (_markerMovement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
-                    {
-                        pawn.transform.position = move;
-                        validMove = true;
-                        break;
                     }
                 }
-                else if (_markerMovement.GetMarkerMove(pawn, pawnPos, move))
+                if (_markerMovement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
                 {
                     pawn.transform.position = move;
                     validMove = true;
                     break;
                 }
+                
+              
             }
         }
 
