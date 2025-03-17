@@ -37,7 +37,9 @@ public class AIPlayer : MonoBehaviour
                 {
                     if (_markerMovement.Jump(pawn, pawnPos, _markerMovement.FreeJumpSpace(pawnPos, move).Item2))
                     {
+                        pawn.transform.position = _markerMovement.FreeJumpSpace(pawnPos, move).Item2;
                         validMove = true;
+                        break;
                     }
                 }
                 if (_markerMovement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
