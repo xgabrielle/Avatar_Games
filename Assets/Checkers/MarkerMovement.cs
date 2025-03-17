@@ -21,14 +21,14 @@ public class MarkerMovement : MonoBehaviour
 
             if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
             {
-                if (Mathf.Approximately(targetPos.z, startPos.z - 1) && IsSquareOccupied(targetPos))
+                if (Mathf.Approximately(targetPos.z, startPos.z - 1) && !IsSquareOccupied(targetPos))
                 {
                     return true;
                 }
             }
             else if (_checkerGame.GetEnemyTag(pawn) == "DarkMarker")
             {
-                if (Mathf.Approximately(targetPos.z, startPos.z + 1) && IsSquareOccupied(targetPos))
+                if (Mathf.Approximately(targetPos.z, startPos.z + 1) && !IsSquareOccupied(targetPos))
                 {
                     return true;
                 }
@@ -84,7 +84,7 @@ public class MarkerMovement : MonoBehaviour
         return false;
     }
 
-   internal void Jump(GameObject pawn, Vector3 startPos, Vector3 targetPos)
+   internal bool Jump(GameObject pawn, Vector3 startPos, Vector3 targetPos)
    {
        Vector3 middlePos = ((startPos + targetPos) / 2);
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
@@ -103,6 +103,7 @@ public class MarkerMovement : MonoBehaviour
                        { 
                            pawn.transform.position = targetPos;
                            Destroy(jumpedMarker);
+                           return true;
                        }
                    }
                    else
@@ -111,6 +112,7 @@ public class MarkerMovement : MonoBehaviour
                        { 
                            pawn.transform.position = targetPos;
                            Destroy(jumpedMarker);
+                           return true;
                        }
                    }
                    
@@ -119,24 +121,27 @@ public class MarkerMovement : MonoBehaviour
                break;
            }
        }
-    }
+
+       return false;
+
+   }
 
    internal bool IsSquareOccupied(Vector3 targetPos)
    {
        Collider[] playerCollider = Physics.OverlapSphere(targetPos, 0.2f);
        if (playerCollider.Length > 1)
        {
-           return false;
+           return true;
        }
        
-       return true;
+       return false;
    }
    
    internal (bool, Vector3) FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
    {
        Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
        Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
-       if (col.Length > 1 || OutofBounds(enemyPos))
+       if (col.Length > 1 || OutofBounds(landingPos))
        {
            return (false, landingPos);
        }
