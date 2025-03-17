@@ -86,8 +86,13 @@ public class CheckerGame : MonoBehaviour
 
         if (_markerMovement.GetSurroundings(currentMarkerPos, currentMarker))
         {
-            if (_markerMovement.FreeJumpSpace(currentMarkerPos, targetPosition).Item1) 
-                _markerMovement.Jump(currentMarker,currentMarkerPos, _markerMovement.FreeJumpSpace(currentMarkerPos, targetPosition).Item2);
+            if (_markerMovement.Jump(currentMarker, currentMarkerPos,
+                    _markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos).Item2))
+            {
+                currentMarker.transform.position = targetPosition;
+                isAiTurn = true;
+                isMarker = false;
+            }
                         
             else if (_markerMovement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition))
             {
