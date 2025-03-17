@@ -28,6 +28,11 @@ public class AIPlayer : MonoBehaviour
         GameObject[] darkPawns = GameObject.FindGameObjectsWithTag("DarkMarker");
         foreach (GameObject pawn in darkPawns)
         {
+            if (darkPawns.Length < 1)
+            {
+                _checkerGame.isGameOver = true;
+                Debug.Log("Game over, AI lost");
+            }
             if (validMove) break;
             
             Vector3 pawnPos = pawn.transform.position;
@@ -41,17 +46,23 @@ public class AIPlayer : MonoBehaviour
                         validMove = true;
                         break;
                     }
+                    if (_markerMovement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
+                    {
+                        pawn.transform.position = move;
+                        validMove = true;
+                        break;
+                    }
                 }
-                if (_markerMovement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
+                else if (_markerMovement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
                 {
                     pawn.transform.position = move;
                     validMove = true;
                     break;
                 }
                 
-              
             }
         }
+        
 
     }
     

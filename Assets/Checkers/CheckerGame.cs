@@ -15,7 +15,7 @@ public class CheckerGame : MonoBehaviour
     internal GameObject currentMarker;
     internal GameObject previousMarker;
     internal bool isAiTurn;
-    private bool isGameOver;
+    internal bool isGameOver;
     private bool isMarker;
     private MarkerMovement _markerMovement;
     //private King _king;
