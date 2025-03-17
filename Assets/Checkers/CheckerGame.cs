@@ -18,14 +18,14 @@ public class CheckerGame : MonoBehaviour
     private bool isGameOver;
     
     private MarkerMovement _markerMovement;
-    private King _king;
+    //private King _king;
     private AIPlayer _Ai;
     
 
     private void Start()
     {
         _markerMovement = GetComponent<MarkerMovement>();
-        _king = FindObjectOfType<King>();
+        //_king = FindObjectOfType<King>();
         _Ai = GetComponent<AIPlayer>();
         isAiTurn = false;
         isGameOver = false;
@@ -75,17 +75,14 @@ public class CheckerGame : MonoBehaviour
 
     internal void HandleClickOnMarker(RaycastHit hit)
     {
-        // player assign
         currentMarkerPos = hit.collider.transform.position;
         currentMarker = hit.collider.gameObject;
         
         _markerMovement.GetSurroundings(currentMarkerPos, currentMarker);
-        //PlayingMarker(marker);
     }
 
     internal void HandleClickOnBoard(RaycastHit hit)
     {
-        // player assign
         targetPosition = hit.collider.transform.position + new Vector3(0,0.6f,0);
 
         if (_markerMovement.GetSurroundings(currentMarkerPos, currentMarker))
@@ -107,8 +104,7 @@ public class CheckerGame : MonoBehaviour
         {
             _king.SpawnCrown(currentMarker,crown);
         }*/
-
-        //isPiecePicked = false;
+        
     }
 
   

@@ -5,11 +5,11 @@ public class MarkerMovement : MonoBehaviour
 {
     private CheckerGame _checkerGame;
     internal Vector3 colEnemyPos;
-    private King _king;
+    //private King _king;
     private void Start()
     {
         _checkerGame = GetComponent<CheckerGame>();
-        _king = FindObjectOfType<King>();
+        //_king = FindObjectOfType<King>();
     }
 
     internal bool GetMarkerMove(GameObject pawn, Vector3 startPos, Vector3 targetPos)
@@ -21,14 +21,14 @@ public class MarkerMovement : MonoBehaviour
 
             if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
             {
-                if (Mathf.Approximately(targetPos.z, startPos.z - 1))
+                if (Mathf.Approximately(targetPos.z, startPos.z - 1) && IsSquareOccupied(targetPos))
                 {
                     return true;
                 }
             }
             else if (_checkerGame.GetEnemyTag(pawn) == "DarkMarker")
             {
-                if (Mathf.Approximately(targetPos.z, startPos.z + 1))
+                if (Mathf.Approximately(targetPos.z, startPos.z + 1) && IsSquareOccupied(targetPos))
                 {
                     return true;
                 }
@@ -120,12 +120,23 @@ public class MarkerMovement : MonoBehaviour
            }
        }
     }
+
+   internal bool IsSquareOccupied(Vector3 targetPos)
+   {
+       Collider[] playerCollider = Physics.OverlapSphere(targetPos, 0.2f);
+       if (playerCollider.Length > 1)
+       {
+           return false;
+       }
+       
+       return true;
+   }
    
    internal (bool, Vector3) FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
    {
        Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
        Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
-       if (col.Length > 1 || landingPos.x > 7 || landingPos.x < 0 || landingPos.z > 7 || landingPos.z < 0)
+       if (col.Length > 1 || OutofBounds(enemyPos))
        {
            return (false, landingPos);
        }
@@ -135,3 +146,4 @@ public class MarkerMovement : MonoBehaviour
    internal static bool OutofBounds(Vector3 pos) => pos.x > 7 || pos.x < 0 || pos.z > 7 || pos.z < 0;
 
 }
+
