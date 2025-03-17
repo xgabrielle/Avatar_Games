@@ -16,7 +16,7 @@ public class CheckerGame : MonoBehaviour
     internal GameObject previousMarker;
     internal bool isAiTurn;
     private bool isGameOver;
-    
+    private bool isMarker;
     private MarkerMovement _markerMovement;
     //private King _king;
     private AIPlayer _Ai;
@@ -67,8 +67,7 @@ public class CheckerGame : MonoBehaviour
                 
             else if (hit.collider.CompareTag("BoardSquare") /*&& isPiecePicked*/)
             {
-                HandleClickOnBoard(hit);
-                isAiTurn = true;
+                if (isMarker) HandleClickOnBoard(hit);
             }
         }
     }
@@ -77,7 +76,7 @@ public class CheckerGame : MonoBehaviour
     {
         currentMarkerPos = hit.collider.transform.position;
         currentMarker = hit.collider.gameObject;
-        
+        isMarker = true;
         _markerMovement.GetSurroundings(currentMarkerPos, currentMarker);
     }
 
@@ -87,17 +86,21 @@ public class CheckerGame : MonoBehaviour
 
         if (_markerMovement.GetSurroundings(currentMarkerPos, currentMarker))
         {
-            if (_markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos).Item1) 
-                _markerMovement.Jump(currentMarker,currentMarkerPos, _markerMovement.FreeJumpSpace(currentMarkerPos, _markerMovement.colEnemyPos).Item2);
+            if (_markerMovement.FreeJumpSpace(currentMarkerPos, targetPosition).Item1) 
+                _markerMovement.Jump(currentMarker,currentMarkerPos, _markerMovement.FreeJumpSpace(currentMarkerPos, targetPosition).Item2);
                         
             else if (_markerMovement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition))
             {
                 currentMarker.transform.position = targetPosition;
+                isAiTurn = true;
+                isMarker = false;
             }
         }
         else if (_markerMovement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition))
         {
             currentMarker.transform.position = targetPosition;
+            isAiTurn = true;
+            isMarker = false;
         }
 
         /*if (targetPosition.z > 6 || targetPosition.z < 1)
