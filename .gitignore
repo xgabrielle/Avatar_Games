@@ -70,3 +70,16 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore App.config (or other config files with sensitive data)
+App.config
+appsettings.json
+
+# Ignore build directories
+/bin/
+/obj/
+
+# Ignore NuGet package manager files
+.nuget/
+packages/
+
