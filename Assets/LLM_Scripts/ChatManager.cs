@@ -69,12 +69,24 @@ public class ChatManager : MonoBehaviour
 
     public void SetGameContext(string newSystemMessage)
     {
-        
+        systemMessage = newSystemMessage;
     }
 
     public void SetPersonality(Personality newPersonality)
     {
-        
+        currentPersonality = newPersonality;
+        switch (newPersonality)
+        {
+            case Personality.Funny:
+                break;
+            case Personality.Expert:
+                break;
+            case Personality.Sarcastic:
+                break;
+            case Personality.Serious:
+                break;
+            
+        }
     }
 
     public void SendMessageToAI(string userMessage)
