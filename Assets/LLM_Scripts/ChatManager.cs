@@ -21,7 +21,7 @@ public class ChatManager : MonoBehaviour
     private string apiKey;
     private string apiUrl = "https://api.openai.com/v1/chat/completions";
 
-    private string systemMessage = "You're a general AI";
+    private string systemMessage = "You're a fun AI playing checkards";
     private Personality currentPersonality;
 
     private void Awake()
@@ -44,21 +44,20 @@ public class ChatManager : MonoBehaviour
         }
     }
 
-    IEnumerator SendRequest(string userMessage)
+    IEnumerator SendRequest(string userMessage, UIChat uiChat)
     {
         var requestData = new
         {
             model = "gpt-4-turbo",
-            messages = new[]
+            messages = new Message[]
             {
-                new {role = "system", content = systemMessage},
-                new {role = "user", content = userMessage}
+                new Message {role = "system", content = systemMessage},
+                new Message {role = "user", content = userMessage}
             },
             max_tokens = 50 // length of AI response
         };
         
-        string json = JsonConvert.SerializeObject(requestData); 
-        //string json = JsonUtility.ToJson(requestData);
+        string json = JsonConvert.SerializeObject(requestData);
         UnityWebRequest request = new UnityWebRequest(apiUrl, "POST");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -71,6 +70,12 @@ public class ChatManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("Request is Successful!");
+            string responseText = request.downloadHandler.text;
+            
+            ChatResponse chatResponse = JsonConvert.DeserializeObject<ChatResponse>(responseText);
+            
+            uiChat.AppendMessage($"AI: "+ chatResponse.choices[0].message?.content ?? "No response received");
+            
         }
         else
         {
@@ -105,7 +110,22 @@ public class ChatManager : MonoBehaviour
     public void SendMessageToAI(string userMessage)
     {
         uiChat.AppendMessage($"Player: {userMessage}");
-        StartCoroutine(SendRequest(userMessage));
+        StartCoroutine(SendRequest(userMessage, uiChat));
 
     }
 }
+
+public class ChatResponse
+{
+    public Choice[] choices; // array possible AI responses
+}
+public class Choice
+{
+    public Message message; // AI response
+}
+public class Message
+{
+    public string role; // who sent the message
+    public string content; // the message
+}
+
