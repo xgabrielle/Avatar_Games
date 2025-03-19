@@ -84,3 +84,10 @@ appsettings.json
 packages/
 
 .env
+
+# Ignore all plugins by default
+Assets/Plugins/*
+
+# EXCEPTIONS (keep these in Git)
+!Assets/Plugins/DotNetEnv.dll
+!Assets/Plugins/MyOtherImportantPlugin.dll
