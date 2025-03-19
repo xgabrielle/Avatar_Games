@@ -1,16 +1,29 @@
+using TMPro;
 using UnityEngine;
 
 public class UIChat : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private TMP_InputField userInput;
+    [SerializeField] private TMP_Text chatOutput;
+    [SerializeField] private GameObject chatPanel;
+    
     void Start()
     {
-        
+        chatPanel.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SendUserMessage()
     {
-        
+        if (!string.IsNullOrWhiteSpace(userInput.text))
+        { 
+            string userMessage = userInput.text;
+            userInput.text = "";
+            ChatManager.Instance.SendMessageToAI(userMessage);
+        }
+    }
+
+    public void AppendMessage(string userMessage)
+    {
+        chatOutput.text += $"\nPlayer\n {userMessage}";
     }
 }

@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using dotenv.net;
+using Newtonsoft.Json;
+ 
 
 public enum Personality
 {
@@ -14,16 +16,13 @@ public enum Personality
 public class ChatManager : MonoBehaviour
 {
     public static ChatManager Instance { get; set; }
-   
-    private string apiKey = Environment.GetEnvironmentVariable("API_KEY");
-    private string apiUrl = "";
+    [SerializeField] private UIChat uiChat;
 
-    private string systemMessage;
+    private string apiKey;
+    private string apiUrl = "https://api.openai.com/v1/chat/completions";
+
+    private string systemMessage = "You're a general AI";
     private Personality currentPersonality;
-
-    [SerializeField] private TMP_InputField userInput;
-    [SerializeField] private TMP_Text chatOutput;
-    [SerializeField] private GameObject chatPanel;
 
     private void Awake()
     {
@@ -32,6 +31,17 @@ public class ChatManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         } else Destroy(gameObject);
+    }
+
+    private void Start()
+    {
+        DotEnv.Load();
+        apiKey = Environment.GetEnvironmentVariable("API_KEY");
+
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.LogError("API Key not found! Make sure you have a .env file.");
+        }
     }
 
     IEnumerator SendRequest(string userMessage)
@@ -46,15 +56,16 @@ public class ChatManager : MonoBehaviour
             },
             max_tokens = 50 // length of AI response
         };
-
-        string json = JsonUtility.ToJson(requestData);
-        UnityWebRequest request = new UnityWebRequest(apiUrl, "Post");
+        
+        string json = JsonConvert.SerializeObject(requestData); 
+        //string json = JsonUtility.ToJson(requestData);
+        UnityWebRequest request = new UnityWebRequest(apiUrl, "POST");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {apiKey}");
-        
+       
         yield return request.SendWebRequest();
         
         if (request.result == UnityWebRequest.Result.Success)
@@ -64,6 +75,7 @@ public class ChatManager : MonoBehaviour
         else
         {
             Debug.LogError($"Error: {request.error}");
+            Debug.LogError($"Response: {request.downloadHandler.text}"); 
         }
     }
 
@@ -78,6 +90,7 @@ public class ChatManager : MonoBehaviour
         switch (newPersonality)
         {
             case Personality.Funny:
+                systemMessage = "You're a kind AI that makes a few small jokes during the game";
                 break;
             case Personality.Expert:
                 break;
@@ -91,6 +104,8 @@ public class ChatManager : MonoBehaviour
 
     public void SendMessageToAI(string userMessage)
     {
-        
+        uiChat.AppendMessage($"Player: {userMessage}");
+        StartCoroutine(SendRequest(userMessage));
+
     }
 }
