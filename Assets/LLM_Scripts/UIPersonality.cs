@@ -11,28 +11,27 @@ public class UIPersonality : MonoBehaviour
     private void Start()
     {
         UIChat.Instanse.chatPanel.SetActive(false);
-        funnyButton.onClick.AddListener(SetFunnyAI);
-        expertButton.onClick.AddListener(SetExpertAI);
+        funnyButton.onClick.AddListener(() => SetAIPersonality("funny"));
+        expertButton.onClick.AddListener(() => SetAIPersonality("expert"));
     }
 
-    public void SetFunnyAI()
+    void SetAIPersonality(string button)
     {
-        ChatManager.Instance.SetPersonality(Personality.Funny);
+        switch (button)
+        {
+            case "funny":
+                ChatManager.Instance.SetPersonality(Personality.Funny);
+                break;
+            case "expert":
+                ChatManager.Instance.SetPersonality(Personality.Expert);
+                break;
+        }
         UIChat.Instanse.chatPanel.SetActive(true);
         startScreenUI.SetActive(false);
         BoardGenerator.instanse.BuildBoard();
         MarkersGenerator.instanse.StartField();
         
-       
     }
 
-    public void SetExpertAI()
-    {
-        ChatManager.Instance.SetPersonality(Personality.Expert);
-        UIChat.Instanse.chatPanel.SetActive(true);
-        startScreenUI.SetActive(false);
-        BoardGenerator.instanse.BuildBoard();
-        MarkersGenerator.instanse.StartField();
-    }
     
 }
