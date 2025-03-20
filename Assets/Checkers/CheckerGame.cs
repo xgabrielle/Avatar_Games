@@ -5,27 +5,21 @@ using UnityEngine;
 
 public class CheckerGame : MonoBehaviour
 {
-    [SerializeField] private Material blue;
-    [SerializeField] private Material originalColor;
-    [SerializeField] private Material dark;
     [SerializeField] private GameObject crown;
     
-    internal Vector3 targetPosition;
-    internal Vector3 currentMarkerPos;
-    internal GameObject currentMarker;
-    internal GameObject previousMarker;
+    private Vector3 targetPosition;
+    private Vector3 currentMarkerPos;
+    private GameObject currentMarker;
     internal bool isAiTurn;
     internal bool isGameOver;
     private bool isMarker;
     private MarkerMovement _markerMovement;
-    //private King _king;
     private AIPlayer _Ai;
     
 
     private void Start()
     {
         _markerMovement = GetComponent<MarkerMovement>();
-        //_king = FindObjectOfType<King>();
         _Ai = GetComponent<AIPlayer>();
         isAiTurn = false;
         isGameOver = false;
@@ -65,7 +59,7 @@ public class CheckerGame : MonoBehaviour
                 
             }
                 
-            else if (hit.collider.CompareTag("BoardSquare") /*&& isPiecePicked*/)
+            else if (hit.collider.CompareTag("BoardSquare"))
             {
                 if (isMarker) HandleClickOnBoard(hit);
             }
@@ -106,30 +100,10 @@ public class CheckerGame : MonoBehaviour
             isAiTurn = true;
             isMarker = false;
         }
-
-        /*if (targetPosition.z > 6 || targetPosition.z < 1)
-        {
-            _king.SpawnCrown(currentMarker,crown);
-        }*/
+        
         
     }
-
-  
-    /*void PlayingMarker(GameObject marker)
-    {
-        Renderer chooseColor = this.marker.GetComponent<Renderer>();
-
-        if (previousMarker != null && previousMarker != marker)
-        {
-            if (previousMarker.CompareTag("WhiteMarker"))
-                previousMarker.GetComponent<Renderer>().material = originalColor;
-            else previousMarker.GetComponent<Renderer>().material = dark;
-        }
-
-        previousMarker = marker;
-        chooseColor.material = blue;
-
-    }*/
+    
     
     internal string GetEnemyTag(GameObject pawn)
     {
