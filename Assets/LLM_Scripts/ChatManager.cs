@@ -21,20 +21,21 @@ public class ChatManager : MonoBehaviour
     private string apiKey;
     private string apiUrl = "https://api.openai.com/v1/chat/completions";
 
-    private string systemMessage = "You're a fun AI playing checkards";
+    private string systemMessage = "You're a fun AI playing checker";
     private Personality currentPersonality;
 
-    private void Awake()
+    /*private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         } else Destroy(gameObject);
-    }
+    }*/
 
     private void Start()
     {
+        Instance = this;
         DotEnv.Load();
         apiKey = Environment.GetEnvironmentVariable("API_KEY");
 
@@ -71,10 +72,11 @@ public class ChatManager : MonoBehaviour
         {
             Debug.Log("Request is Successful!");
             string responseText = request.downloadHandler.text;
+            Debug.Log("Full API Response: " + request.downloadHandler.text);
             
             ChatResponse chatResponse = JsonConvert.DeserializeObject<ChatResponse>(responseText);
             
-            uiChat.AppendMessage($"AI: "+ chatResponse.choices[0].message?.content ?? "No response received");
+            uiChat.AppendMessage($"AI: "+ chatResponse.choices[0].message?.content);
             
         }
         else

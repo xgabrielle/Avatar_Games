@@ -1,11 +1,14 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class UIChat : MonoBehaviour
 {
     [SerializeField] private TMP_InputField userInput;
     [SerializeField] private TMP_Text chatOutput;
     [SerializeField] private GameObject chatPanel;
+    [SerializeField] private ScrollRect scrollView;
     
     void Start()
     {
@@ -24,6 +27,15 @@ public class UIChat : MonoBehaviour
 
     public void AppendMessage(string userMessage)
     {
-        chatOutput.text += $"\nPlayer\n {userMessage}";
+        Debug.Log("Appending message: " + userMessage);
+        
+        chatOutput.text += $"\n{userMessage}";
+        scrollView.verticalNormalizedPosition = 0f;
     }
+    
+    void LateUpdate()
+    {
+        Canvas.ForceUpdateCanvases();
+    }
+    
 }
