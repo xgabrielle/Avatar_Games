@@ -3,22 +3,18 @@ using UnityEngine;
 
 public class MarkerMovement : MonoBehaviour
 {
+    public static MarkerMovement Movement { get; private set; }
     private CheckerGame _checkerGame;
-    internal Vector3 colEnemyPos;
-    //private King _king;
     private void Start()
     {
         _checkerGame = GetComponent<CheckerGame>();
-        //_king = FindObjectOfType<King>();
+        Movement = this;
     }
 
     internal bool GetMarkerMove(GameObject pawn, Vector3 startPos, Vector3 targetPos)
     {
         if (DiagonalMove(startPos, targetPos))
         {
-            /*if (_king.isKing)
-                pawn.transform.position = targetPos;*/
-
             if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
             {
                 if (Mathf.Approximately(targetPos.z, startPos.z - 1) && !IsSquareOccupied(targetPos))
@@ -74,7 +70,6 @@ public class MarkerMovement : MonoBehaviour
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
             foreach (Collider colliders in hitColliders)
             {
-                colEnemyPos = colliders.transform.position;
                 if (colliders.CompareTag(_checkerGame.GetEnemyTag(pawn)))
                 {
                     return true;
@@ -148,7 +143,7 @@ public class MarkerMovement : MonoBehaviour
        return (true, landingPos);
    }
 
-   internal static bool OutofBounds(Vector3 pos) => pos.x > 7 || pos.x < 0 || pos.z > 7 || pos.z < 0;
+   private static bool OutofBounds(Vector3 pos) => pos.x > 7 || pos.x < 0 || pos.z > 7 || pos.z < 0;
 
 }
 

@@ -7,12 +7,10 @@ using UnityEngine.VFX;
 public class AIPlayer : MonoBehaviour
 {
     private CheckerGame _checkerGame;
-    private MarkerMovement _markerMovement;
 
     private void Start()
     {
         _checkerGame = GetComponent<CheckerGame>();
-        _markerMovement = GetComponent<MarkerMovement>();
     }
 
     internal IEnumerator GetAiMove()
@@ -38,22 +36,22 @@ public class AIPlayer : MonoBehaviour
             Vector3 pawnPos = pawn.transform.position;
             foreach (var move in MarkerMovement.PossibleMoves(pawnPos)) 
             {
-                if (_markerMovement.FreeJumpSpace(pawnPos, move).Item1)
+                if (MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item1)
                 {
-                    if (_markerMovement.Jump(pawn, pawnPos, _markerMovement.FreeJumpSpace(pawnPos, move).Item2))
+                    if (MarkerMovement.Movement.Jump(pawn, pawnPos, MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item2))
                     {
-                        pawn.transform.position = _markerMovement.FreeJumpSpace(pawnPos, move).Item2;
+                        pawn.transform.position = MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item2;
                         validMove = true;
                         break;
                     }
-                    if (_markerMovement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
+                    if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
                     {
                         pawn.transform.position = move;
                         validMove = true;
                         break;
                     }
                 }
-                else if (_markerMovement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
+                else if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
                 {
                     pawn.transform.position = move;
                     validMove = true;

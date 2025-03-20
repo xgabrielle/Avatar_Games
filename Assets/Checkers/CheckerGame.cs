@@ -13,13 +13,11 @@ public class CheckerGame : MonoBehaviour
     internal bool isAiTurn;
     internal bool isGameOver;
     private bool isMarker;
-    private MarkerMovement _markerMovement;
     private AIPlayer _Ai;
     
 
     private void Start()
     {
-        _markerMovement = GetComponent<MarkerMovement>();
         _Ai = GetComponent<AIPlayer>();
         isAiTurn = false;
         isGameOver = false;
@@ -71,30 +69,30 @@ public class CheckerGame : MonoBehaviour
         currentMarkerPos = hit.collider.transform.position;
         currentMarker = hit.collider.gameObject;
         isMarker = true;
-        _markerMovement.GetSurroundings(currentMarkerPos, currentMarker);
+        MarkerMovement.Movement.GetSurroundings(currentMarkerPos, currentMarker);
     }
 
     internal void HandleClickOnBoard(RaycastHit hit)
     {
         targetPosition = hit.collider.transform.position + new Vector3(0,0.6f,0);
 
-        if (_markerMovement.GetSurroundings(currentMarkerPos, currentMarker))
+        if (MarkerMovement.Movement.GetSurroundings(currentMarkerPos, currentMarker))
         {
-            if (_markerMovement.Jump(currentMarker, currentMarkerPos,targetPosition))
+            if (MarkerMovement.Movement.Jump(currentMarker, currentMarkerPos,targetPosition))
             {
                 currentMarker.transform.position = targetPosition;
                 isAiTurn = true;
                 isMarker = false;
             }
                         
-            else if (_markerMovement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition))
+            else if (MarkerMovement.Movement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition))
             {
                 currentMarker.transform.position = targetPosition;
                 isAiTurn = true;
                 isMarker = false;
             }
         }
-        else if (_markerMovement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition))
+        else if (MarkerMovement.Movement.GetMarkerMove(currentMarker, currentMarkerPos, targetPosition))
         {
             currentMarker.transform.position = targetPosition;
             isAiTurn = true;
