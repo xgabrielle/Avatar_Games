@@ -9,8 +9,6 @@ using Newtonsoft.Json;
 public enum Personality
 {
       Funny,
-      Serious,
-      Sarcastic,
       Expert
 }
 public class ChatManager : MonoBehaviour
@@ -21,7 +19,7 @@ public class ChatManager : MonoBehaviour
     private string apiKey;
     private string apiUrl = "https://api.openai.com/v1/chat/completions";
 
-    private string systemMessage = "You're a fun AI playing checker";
+    private string systemMessage;
     private Personality currentPersonality;
 
     /*private void Awake()
@@ -98,12 +96,11 @@ public class ChatManager : MonoBehaviour
         {
             case Personality.Funny:
                 systemMessage = "You're a kind AI that makes a few small jokes during the game";
+                Debug.Log("Funny AI");
                 break;
             case Personality.Expert:
-                break;
-            case Personality.Sarcastic:
-                break;
-            case Personality.Serious:
+                systemMessage = "You are very good a checkers and will not hesitate to give your opinion on your components move.";
+                Debug.Log("Expert AI");
                 break;
             
         }

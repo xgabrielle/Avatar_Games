@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BoardGenerator : MonoBehaviour
 {
+    public static BoardGenerator instanse { get; set; }
     [SerializeField] private GameObject fieldPrefab;
     [SerializeField] private Material blackField;
     [SerializeField] private Material redField;
@@ -12,10 +13,11 @@ public class BoardGenerator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        BuildBoard();
+        instanse = this;
+       ;
     }
 
-    void BuildBoard()
+    internal void BuildBoard()
     {
         for (int row = 0; row < boardSize; row++)
         {

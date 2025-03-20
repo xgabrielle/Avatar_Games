@@ -1,18 +1,28 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 public class UIChat : MonoBehaviour
 {
+    public static UIChat Instanse { get; set; }  
     [SerializeField] private TMP_InputField userInput;
     [SerializeField] private TMP_Text chatOutput;
-    [SerializeField] private GameObject chatPanel;
+    [SerializeField] internal GameObject chatPanel;
     [SerializeField] private ScrollRect scrollView;
     
-    void Start()
+    void Awake()
     {
-        chatPanel.SetActive(true);
+        Instanse = this;
+        //chatPanel.SetActive(true);
+    }
+
+    private void Start()
+    {
+        ChatManager.Instance.SetGameContext("The game has started! Let's play checkers. Try your best moves!");
+
     }
 
     public void SendUserMessage()
