@@ -4,10 +4,9 @@ using UnityEngine;
 public class MarkerMovement : MonoBehaviour
 {
     public static MarkerMovement Movement { get; private set; }
-    private CheckerGame _checkerGame;
+    
     private void Start()
     {
-        _checkerGame = GetComponent<CheckerGame>();
         Movement = this;
     }
 
@@ -15,14 +14,14 @@ public class MarkerMovement : MonoBehaviour
     {
         if (DiagonalMove(startPos, targetPos))
         {
-            if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
+            if (GetEnemyTag(pawn) == "WhiteMarker")
             {
                 if (Mathf.Approximately(targetPos.z, startPos.z - 1) && !IsSquareOccupied(targetPos))
                 {
                     return true;
                 }
             }
-            else if (_checkerGame.GetEnemyTag(pawn) == "DarkMarker")
+            else if (GetEnemyTag(pawn) == "DarkMarker")
             {
                 if (Mathf.Approximately(targetPos.z, startPos.z + 1) && !IsSquareOccupied(targetPos))
                 {
@@ -58,7 +57,7 @@ public class MarkerMovement : MonoBehaviour
         };
         foreach (var dir in directions)
         {
-            if (!OutofBounds(dir))
+            if (!OutOfBounds(dir))
                 vaildDir.Add(dir);
         }
         return vaildDir;
@@ -70,7 +69,7 @@ public class MarkerMovement : MonoBehaviour
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
             foreach (Collider colliders in hitColliders)
             {
-                if (colliders.CompareTag(_checkerGame.GetEnemyTag(pawn)))
+                if (colliders.CompareTag(GetEnemyTag(pawn)))
                 {
                     return true;
                 }
@@ -86,13 +85,13 @@ public class MarkerMovement : MonoBehaviour
        
        foreach (Collider midCol in middleColliders)
        {
-           if (midCol.CompareTag(_checkerGame.GetEnemyTag(pawn)))
+           if (midCol.CompareTag(GetEnemyTag(pawn)))
            { 
                GameObject jumpedMarker = midCol.gameObject;
                
                if (DiagonalMove(startPos, targetPos))
                {
-                   if (_checkerGame.GetEnemyTag(pawn) == "WhiteMarker")
+                   if (GetEnemyTag(pawn) == "WhiteMarker")
                    {
                        if (Mathf.Approximately(targetPos.z, startPos.z - 2))
                        { 
@@ -121,7 +120,7 @@ public class MarkerMovement : MonoBehaviour
 
    }
 
-   internal bool IsSquareOccupied(Vector3 targetPos)
+   bool IsSquareOccupied(Vector3 targetPos)
    {
        Collider[] playerCollider = Physics.OverlapSphere(targetPos, 0.2f);
        if (playerCollider.Length > 1)
@@ -136,14 +135,22 @@ public class MarkerMovement : MonoBehaviour
    {
        Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
        Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
-       if (col.Length > 1 || OutofBounds(landingPos))
+       if (col.Length > 1 || OutOfBounds(landingPos))
        {
            return (false, landingPos);
        }
        return (true, landingPos);
    }
 
-   private static bool OutofBounds(Vector3 pos) => pos.x > 7 || pos.x < 0 || pos.z > 7 || pos.z < 0;
+    
+    
+   string GetEnemyTag(GameObject pawn)
+   {
+       string myTag = pawn.tag;
+       string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
+       return enemyTag;
+   }
+   private static bool OutOfBounds(Vector3 pos) => pos.x > 7 || pos.x < 0 || pos.z > 7 || pos.z < 0;
 
 }
 

@@ -95,11 +95,11 @@ public class ChatManager : MonoBehaviour
         switch (newPersonality)
         {
             case Personality.Funny:
-                systemMessage = "You're a kind AI that makes a few small jokes during the game";
+                systemMessage = "You're a kind AI that makes a few small jokes during the game. You always start the conversation with a joke about checkers.";
                 Debug.Log("Funny AI");
                 break;
             case Personality.Expert:
-                systemMessage = "You are very good a checkers and will not hesitate to give your opinion on your components move.";
+                systemMessage = "You are very good a checkers and will not hesitate to give your opinion on your components move. You start with an intimidating comment.";
                 Debug.Log("Expert AI");
                 break;
             
