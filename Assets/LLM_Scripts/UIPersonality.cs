@@ -28,8 +28,8 @@ public class UIPersonality : MonoBehaviour
         }
         UIChat.Instanse.chatPanel.SetActive(true);
         startScreenUI.SetActive(false);
-        BoardGenerator.instanse.BuildBoard();
-        MarkersGenerator.instanse.StartField();
+        BoardGenerator.instance.BuildBoard();
+        MarkersGenerator.instance.StartField();
         
     }
 

@@ -3,18 +3,17 @@ using UnityEngine;
 
 public class BoardGenerator : MonoBehaviour
 {
-    public static BoardGenerator instanse { get; set; }
+    public static BoardGenerator instance { get; set; }
     [SerializeField] private GameObject fieldPrefab;
     [SerializeField] private Material blackField;
     [SerializeField] private Material redField;
-    [SerializeField] private int boardSize = 8;
+    [SerializeField] private int boardSize;
     internal GameObject squareSpace;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        instanse = this;
-       ;
+        instance = this;
     }
 
     internal void BuildBoard()
@@ -33,5 +32,10 @@ public class BoardGenerator : MonoBehaviour
                     chooseColor.material = redField;
             }
         }
+    }
+
+    void GetBoardState()
+    {
+        
     }
 }

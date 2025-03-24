@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class MarkersGenerator : MonoBehaviour
 {
-    public static MarkersGenerator instanse { get; set; }
+    public static MarkersGenerator instance { get; set; }
     [SerializeField] internal GameObject whitePieces;
     [SerializeField] internal GameObject redPieces;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        instanse = this;
+        instance = this;
     }
 
     internal void StartField()
