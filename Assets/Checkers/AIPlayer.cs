@@ -57,8 +57,9 @@ public class AIPlayer : MonoBehaviour
                     validMove = true;
                     break;
                 }
-                
+                _checkerGame.LastMove(pawnPos, move, pawn);
             }
+            
         }
         
         if (!validMove)
@@ -66,7 +67,6 @@ public class AIPlayer : MonoBehaviour
             _checkerGame.isGameOver = true;
             Debug.Log("Game over, AI lost (No valid moves)");
         }
-        
 
     }
     
