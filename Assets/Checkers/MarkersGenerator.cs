@@ -5,7 +5,7 @@ public class MarkersGenerator : MonoBehaviour
     public static MarkersGenerator instance { get; set; }
     [SerializeField] internal GameObject whitePieces;
     [SerializeField] internal GameObject redPieces;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private GameObject[,] pieces = new GameObject[8,8];
     void Start()
     {
         instance = this;
@@ -19,7 +19,8 @@ public class MarkersGenerator : MonoBehaviour
             {
                 if ((row + column) % 2 == 0)
                 {
-                    Instantiate(whitePieces, new Vector3(row, 0.6f, column), Quaternion.identity);
+                    GameObject piece = Instantiate(whitePieces, new Vector3(row, 0.6f, column), Quaternion.identity);
+                    pieces[row, column] = piece;
                 }
                 
             }
@@ -32,10 +33,16 @@ public class MarkersGenerator : MonoBehaviour
             {
                 if ((row + column) % 2 == 0)
                 { 
-                    Instantiate(redPieces, new Vector3(row, 0.6f, column), Quaternion.identity);
+                    GameObject piece = Instantiate(redPieces, new Vector3(row, 0.6f, column), Quaternion.identity);
+                    pieces[row, column] = piece;
                 }
             }
         }
         
+    }
+
+    internal GameObject[,] MarkerPos()
+    {
+        return pieces;
     }
 }
