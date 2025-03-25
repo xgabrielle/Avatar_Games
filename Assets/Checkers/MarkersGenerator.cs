@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MarkersGenerator : MonoBehaviour
 {
-    public static MarkersGenerator instance { get; set; }
+    public static MarkersGenerator instance { get; private set; }
     [SerializeField] internal GameObject whitePieces;
     [SerializeField] internal GameObject redPieces;
     private GameObject[,] pieces = new GameObject[8,8];

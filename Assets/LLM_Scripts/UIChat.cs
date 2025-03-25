@@ -7,7 +7,7 @@ using Button = UnityEngine.UI.Button;
 
 public class UIChat : MonoBehaviour
 {
-    public static UIChat Instanse { get; set; }  
+    public static UIChat Instanse { get; private set; }  
     [SerializeField] private TMP_InputField userInput;
     [SerializeField] private TMP_Text chatOutput;
     [SerializeField] internal GameObject chatPanel;

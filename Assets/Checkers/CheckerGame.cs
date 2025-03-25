@@ -6,18 +6,16 @@ using UnityEngine;
 
 public class CheckerGame : MonoBehaviour
 {
-    private GameObject[,] board;
     private AIPlayer aiPlayer;
     private Player player;
     internal bool isAiTurn;
     internal bool isGameOver;
     internal string turn;
-
+    
     internal CheckersMove lastMove = new();
 
     private void Start()
     {
-        board =  MarkersGenerator.instance.MarkerPos();
         player = GetComponent<Player>();
         aiPlayer = GetComponent<AIPlayer>();
         
@@ -32,16 +30,16 @@ public class CheckerGame : MonoBehaviour
         {
             if (!isAiTurn)
             {
+                turn = "White";
                 if (Input.GetMouseButtonDown(0)) 
                     player.HandlePlayerTurn();
-                turn = "White";
                 
             }
             else
             {
+                turn = "Dark";
                 aiPlayer.StartCoroutine(aiPlayer.GetAiMove());
                 isAiTurn = false;
-                turn = "Dark";
             }
         }
     }

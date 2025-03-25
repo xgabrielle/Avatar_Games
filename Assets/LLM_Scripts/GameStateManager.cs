@@ -18,7 +18,7 @@ public class CheckersMove
 
 public class GameStateManager : MonoBehaviour
 {
-    public static GameStateManager instance;
+    public static GameStateManager instance { get; private set; }
     CheckersGameState gameState = new ();
     private CheckerGame _checkerGame;
 

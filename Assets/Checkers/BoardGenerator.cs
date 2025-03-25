@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class BoardGenerator : MonoBehaviour
 {
-    public static BoardGenerator instance { get; set; }
+    public static BoardGenerator instance { get; private set; }
     [SerializeField] private GameObject fieldPrefab;
     [SerializeField] private Material blackField;
     [SerializeField] private Material redField;
     [SerializeField] private int boardSize;
-    internal GameObject squareSpace;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private GameObject squareSpace;
+    
     void Start()
     {
         instance = this;
