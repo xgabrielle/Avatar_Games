@@ -7,7 +7,7 @@ using Button = UnityEngine.UI.Button;
 
 public class UIChat : MonoBehaviour
 {
-    public static UIChat Instanse { get; private set; }  
+    //public static UIChat Instanse { get; private set; }  
     [SerializeField] private TMP_InputField userInput;
     [SerializeField] private TMP_Text chatOutput;
     
@@ -15,7 +15,7 @@ public class UIChat : MonoBehaviour
     
     void Awake()
     {
-        Instanse = this;
+        //Instanse = this;
     }
 
     public void SendUserMessage()
