@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using dotenv.net;
 using Newtonsoft.Json;
- 
+using Unity.VisualScripting;
+
 
 public enum Personality
 {
@@ -19,18 +20,9 @@ public class ChatManager : MonoBehaviour
 
     private string apiKey;
     private string apiUrl = "https://api.openai.com/v1/chat/completions";
-
-    private string systemMessage;
+    string systemMessage;
+    
     private Personality currentPersonality;
-
-    /*private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        } else Destroy(gameObject);
-    }*/
 
     private void Start()
     {
@@ -42,20 +34,21 @@ public class ChatManager : MonoBehaviour
         {
             Debug.LogError("API Key not found! Make sure you have a .env file.");
         }
+        
     }
 
     IEnumerator SendRequest(string userMessage, UIChat uiChat)
     {
         
         var gameState = GameStateManager.instance.GetBoardStateAsJSON(); 
-
+    
         string toAI = $"{userMessage}\nGame State:\n{gameState}";
         var requestData = new
         {
             model = "gpt-4-turbo",
             messages = new Message[]
             {
-                new Message {role = "system", content = systemMessage},
+                new Message {role = "system", content = SetGameContext() },
                 new Message {role = "user", content = toAI}
             },
             max_tokens = 100 // length of AI response
@@ -87,13 +80,14 @@ public class ChatManager : MonoBehaviour
         }
     }
 
-    public void SetGameContext(string newSystemMessage)
+    string SetGameContext()
     {
-        systemMessage = newSystemMessage;
+        return systemMessage;
     }
 
     public void SetPersonality(Personality newPersonality)
     {
+        
         currentPersonality = newPersonality;
         switch (newPersonality)
         {
@@ -107,6 +101,8 @@ public class ChatManager : MonoBehaviour
                 break;
             
         }
+
+        StartCoroutine(SendRequest(systemMessage, uiChat));
     }
 
     public void SendMessageToAI(string userMessage)

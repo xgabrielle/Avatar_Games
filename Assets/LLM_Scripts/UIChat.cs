@@ -18,12 +18,6 @@ public class UIChat : MonoBehaviour
         Instanse = this;
     }
 
-    private void Start()
-    {
-        ChatManager.Instance.SetGameContext("The game has started! Let's play checkers. Try your best moves!");
-
-    }
-
     public void SendUserMessage()
     {
         if (!string.IsNullOrWhiteSpace(userInput.text))
@@ -39,7 +33,6 @@ public class UIChat : MonoBehaviour
         Debug.Log("Appending message: " + userMessage);
         
         chatOutput.text += $"\n{userMessage}";
-        scrollView.verticalNormalizedPosition = 0f;
     }
     
     void LateUpdate()
