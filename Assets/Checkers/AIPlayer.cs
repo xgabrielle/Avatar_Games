@@ -57,8 +57,8 @@ public class AIPlayer : MonoBehaviour
                     validMove = true;
                     break;
                 }
-                _checkerGame.LastMove(pawnPos, move, pawn);
             }
+            _checkerGame.LastMove(pawnPos, pawn.transform.position, pawn);
             
         }
         

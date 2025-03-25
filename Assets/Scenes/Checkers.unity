@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 124754491}
   - component: {fileID: 124754492}
   - component: {fileID: 124754493}
+  - component: {fileID: 124754494}
   m_Layer: 0
   m_Name: GameSetup
   m_TagString: Untagged
@@ -199,7 +200,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da0f8790c7321884ca5fcc288778307a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crown: {fileID: 7616842303542202000, guid: 0839ba32c33f4f94ebba41ddc3eba770, type: 3}
 --- !u!114 &124754490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +249,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiChat: {fileID: 2132549644}
+--- !u!114 &124754494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124754485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e082aede27478443a36b487cfb22b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &745185959
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,7 +912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8112710408956488297, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -164
+      value: -158.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

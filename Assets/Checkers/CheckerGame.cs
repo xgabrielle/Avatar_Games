@@ -30,25 +30,19 @@ public class CheckerGame : MonoBehaviour
     {
         if (!isGameOver)
         {
-            // boardUpdate -> send update to OpenAI
             if (!isAiTurn)
             {
                 if (Input.GetMouseButtonDown(0)) 
                     player.HandlePlayerTurn();
-                Debug.Log("Ai turn");
-                turn = "Dark";
+                turn = "White";
                 
             }
             else
             {
                 aiPlayer.StartCoroutine(aiPlayer.GetAiMove());
-                Debug.Log("Player Turn");
                 isAiTurn = false;
-                turn = "White";
+                turn = "Dark";
             }
-            
-            GameStateManager.instance.GetBoardStateAsJSON(board, turn, lastMove);
-            
         }
     }
 
@@ -57,8 +51,8 @@ public class CheckerGame : MonoBehaviour
         lastMove = new ()
         {
             player = player.ToString(),
-            from = new []{(int)start.x, (int)start.z}, // currentPos
-            to = new [] {(int)end.x, (int)end.z}    // targetPos
+            from = new []{(int)start.x, (int)start.z},
+            to = new [] {(int)end.x, (int)end.z} 
         };
         
     } 

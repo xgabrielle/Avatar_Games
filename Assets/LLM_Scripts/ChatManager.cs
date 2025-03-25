@@ -13,6 +13,7 @@ public enum Personality
 }
 public class ChatManager : MonoBehaviour
 {
+    private CheckerGame _checkerGame;
     public static ChatManager Instance { get; set; }
     [SerializeField] private UIChat uiChat;
 
@@ -45,13 +46,17 @@ public class ChatManager : MonoBehaviour
 
     IEnumerator SendRequest(string userMessage, UIChat uiChat)
     {
+        
+        var gameState = GameStateManager.instance.GetBoardStateAsJSON(); 
+
+        string toAI = $"{userMessage}\nGame State:\n{gameState}";
         var requestData = new
         {
             model = "gpt-4-turbo",
             messages = new Message[]
             {
                 new Message {role = "system", content = systemMessage},
-                new Message {role = "user", content = userMessage}
+                new Message {role = "user", content = toAI}
             },
             max_tokens = 50 // length of AI response
         };
@@ -70,8 +75,6 @@ public class ChatManager : MonoBehaviour
         {
             Debug.Log("Request is Successful!");
             string responseText = request.downloadHandler.text;
-            Debug.Log("Full API Response: " + request.downloadHandler.text);
-            
             ChatResponse chatResponse = JsonConvert.DeserializeObject<ChatResponse>(responseText);
             
             uiChat.AppendMessage($"AI: "+ chatResponse.choices[0].message?.content);
