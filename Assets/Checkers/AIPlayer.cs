@@ -15,7 +15,7 @@ public class AIPlayer : MonoBehaviour
 
     internal IEnumerator GetAiMove()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(3.0f);
         EasyRandomMove();
         _checkerGame.isAiTurn = false;
 
