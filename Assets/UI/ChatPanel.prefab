@@ -513,7 +513,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   userInput: {fileID: 54622665737629929}
   chatOutput: {fileID: 4779469028328622979}
-  chatPanel: {fileID: 1640612101127823441}
   scrollView: {fileID: 3312891370520235732}
 --- !u!1 &2338601820244358812
 GameObject:
