@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 124754492}
   - component: {fileID: 124754493}
   - component: {fileID: 124754494}
+  - component: {fileID: 124754495}
   m_Layer: 0
   m_Name: GameSetup
   m_TagString: Untagged
@@ -266,6 +267,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e082aede27478443a36b487cfb22b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &124754495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124754485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8573d289d5155d04099cb6ce89f786c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &353578136 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7277141464857388194, guid: e14fecb9881ddf24ea2fafb908dfa5a3, type: 3}
+  m_PrefabInstance: {fileID: 2910667016778920337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &353578137 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4025218259154001149, guid: e14fecb9881ddf24ea2fafb908dfa5a3, type: 3}
@@ -688,6 +706,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiTypePanel: {fileID: 1899715462}
   opponentPanel: {fileID: 1355258362}
+  vsTypePanel: {fileID: 353578136}
   chatPanel: {fileID: 1068889044}
   buttons:
   - {fileID: 1020291131}
@@ -1014,7 +1033,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8112710408956488297, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -31.43378
+      value: -31.433598
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

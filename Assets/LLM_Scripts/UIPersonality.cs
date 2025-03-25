@@ -9,6 +9,7 @@ public class UIPersonality : MonoBehaviour
 {
     [SerializeField] private GameObject aiTypePanel;
     [SerializeField] private GameObject opponentPanel;
+    [SerializeField] private GameObject vsTypePanel;
     [SerializeField] private GameObject chatPanel;
     [SerializeField] private List<Button> buttons; 
     
@@ -19,7 +20,7 @@ public class UIPersonality : MonoBehaviour
             setButton.onClick.AddListener(() => OnButtonClick(setButton.name));
         }
         chatPanel.SetActive(false);
-        aiTypePanel.SetActive(true);
+        opponentPanel.SetActive(true);
     }
 
     void OnButtonClick(string buttonName)
@@ -59,12 +60,15 @@ public class UIPersonality : MonoBehaviour
         switch (button)
         {
             case "AI":
+                GameManager.Instance.SetGame();
+                aiTypePanel.SetActive(true);
                 break;
             case "VS":
+                GameManager.Instance.SetGame();
+                vsTypePanel.SetActive(true);
                 break;
         }
         opponentPanel.SetActive(false);
-        aiTypePanel.SetActive(true);
     }
 
     
