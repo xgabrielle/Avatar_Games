@@ -58,7 +58,7 @@ public class ChatManager : MonoBehaviour
                 new Message {role = "system", content = systemMessage},
                 new Message {role = "user", content = toAI}
             },
-            max_tokens = 50 // length of AI response
+            max_tokens = 100 // length of AI response
         };
         
         string json = JsonConvert.SerializeObject(requestData);

@@ -16,7 +16,6 @@ public class UIChat : MonoBehaviour
     void Awake()
     {
         Instanse = this;
-        //chatPanel.SetActive(true);
     }
 
     private void Start()
