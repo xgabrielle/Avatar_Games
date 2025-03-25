@@ -732,11 +732,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 611638570976519103, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 611638570976519103, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 95.8164
       objectReference: {fileID: 0}
     - target: {fileID: 611638570976519103, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -760,7 +760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1149700568670792649, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 17.2164
       objectReference: {fileID: 0}
     - target: {fileID: 1640612101127823441, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_Name
@@ -776,7 +776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1684167872413939114, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2623562220319699245, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_Pivot.x
@@ -876,7 +876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3517173465055243163, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 95.8164
       objectReference: {fileID: 0}
     - target: {fileID: 3517173465055243163, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -950,6 +950,10 @@ PrefabInstance:
     - target: {fileID: 4095999967828104734, guid: 039b37a4d460b6540a1078815a7670c3, type: 3}
       propertyPath: m_Name
       value: StartButtonScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 4095999967828104734, guid: 039b37a4d460b6540a1078815a7670c3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5038192745257767391, guid: 039b37a4d460b6540a1078815a7670c3, type: 3}
       propertyPath: m_Pivot.x
