@@ -1,16 +1,31 @@
+using System;
 using UnityEngine;
 
+public enum GameMode
+{
+    AI,
+    LocalPlayer
+}
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static GameManager Instance { get; private set; }
+    private GameMode currentGameMode;
+    private void Start()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    internal void SetGame()
     {
-        
+        if (GameMode.LocalPlayer == currentGameMode)
+        {
+            Debug.Log("Game mode = LocalPlayer");
+        }
+        else if (GameMode.AI == currentGameMode)
+        {
+            Debug.Log("Game mode = AI");
+        }
     }
+    
+    
 }
