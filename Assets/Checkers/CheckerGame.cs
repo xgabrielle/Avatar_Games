@@ -12,7 +12,7 @@ public class CheckerGame : MonoBehaviour
     internal bool isGameOver;
     internal string turn;
     
-    internal CheckersMove lastMove = new();
+    //internal CheckersMove lastMove = new();
 
     private void Start()
     {
@@ -43,16 +43,5 @@ public class CheckerGame : MonoBehaviour
             }
         }
     }
-
-    internal void LastMove(Vector3 start, Vector3 end, GameObject player)
-    {
-        lastMove = new ()
-        {
-            player = player.ToString(),
-            from = new []{(int)start.x, (int)start.z},
-            to = new [] {(int)end.x, (int)end.z} 
-        };
-        
-    } 
-
+    
 }

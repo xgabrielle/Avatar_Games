@@ -20,6 +20,7 @@ public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager instance { get; private set; }
     CheckersGameState gameState = new ();
+    private CheckersMove lastMove = new();
     private CheckerGame _checkerGame;
 
     private void Start()
@@ -49,7 +50,7 @@ public class GameStateManager : MonoBehaviour
         
         gameState = new ()
         {
-            lastMove = _checkerGame.lastMove,
+            lastMove = lastMove,
             turn = _checkerGame.turn,
             board = board
         };
@@ -57,6 +58,17 @@ public class GameStateManager : MonoBehaviour
         string json = JsonConvert.SerializeObject(gameState, Formatting.Indented);
         Debug.Log("JSON: "+json);
         return json;
+    }
+    
+    internal void LastMove(Vector3 start, Vector3 end, GameObject player)
+    {
+        lastMove = new ()
+        {
+            player = player.ToString(),
+            from = new []{(int)start.x, (int)start.z},
+            to = new [] {(int)end.x, (int)end.z} 
+        };
+        
     }
     
 }
