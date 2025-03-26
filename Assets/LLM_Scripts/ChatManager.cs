@@ -91,7 +91,7 @@ public class ChatManager : MonoBehaviour
         switch (newPersonality)
         {
             case Personality.Funny:
-                systemMessage = "You're a kind AI that makes a few small jokes during the game. You always start the conversation with a joke about checkers.";
+                systemMessage = "You're a kind AI that makes a few small jokes during the game and want to get the other player to laugh.";
                 Debug.Log("Funny AI");
                 break;
             case Personality.Expert:
@@ -102,6 +102,11 @@ public class ChatManager : MonoBehaviour
         }
 
         StartCoroutine(SendRequest(systemMessage, uiChat));
+    }
+
+    internal Coroutine GetAIMessage(string aiMessage)
+    {
+        return StartCoroutine(SendRequest(aiMessage, uiChat));
     }
     
     public void SendMessageToAI(string userMessage)

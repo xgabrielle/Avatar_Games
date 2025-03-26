@@ -39,6 +39,7 @@ public class CheckerGame : MonoBehaviour
             {
                 turn = "Dark";
                 aiPlayer.StartCoroutine(aiPlayer.GetAiMove());
+                ChatManager.Instance.GetAIMessage("");
                 isAiTurn = false;
             }
         }
