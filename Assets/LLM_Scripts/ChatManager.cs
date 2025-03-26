@@ -15,7 +15,7 @@ public enum Personality
 public class ChatManager : MonoBehaviour
 {
     private CheckerGame _checkerGame;
-    public static ChatManager Instance { get; set; }
+    public static ChatManager Instance { get; private set; }
     [SerializeField] private UIChat uiChat;
 
     private string apiKey;
@@ -48,7 +48,7 @@ public class ChatManager : MonoBehaviour
             model = "gpt-4-turbo",
             messages = new Message[]
             {
-                new Message {role = "system", content = SetGameContext() },
+                new Message {role = "system", content = SetGameContext() + "respond as short as possible." },
                 new Message {role = "user", content = toAI}
             },
             max_tokens = 100 // length of AI response
@@ -70,7 +70,7 @@ public class ChatManager : MonoBehaviour
             string responseText = request.downloadHandler.text;
             ChatResponse chatResponse = JsonConvert.DeserializeObject<ChatResponse>(responseText);
             
-            uiChat.AppendMessage($"AI: "+ chatResponse.choices[0].message?.content);
+            uiChat.AppendMessage($"\nAI: {chatResponse.choices[0].message?.content}");
             
         }
         else
@@ -82,12 +82,11 @@ public class ChatManager : MonoBehaviour
 
     string SetGameContext()
     {
-        return systemMessage;
+        return systemMessage + GameManager.Instance.SetGame();
     }
 
     public void SetPersonality(Personality newPersonality)
     {
-        
         currentPersonality = newPersonality;
         switch (newPersonality)
         {
@@ -104,10 +103,10 @@ public class ChatManager : MonoBehaviour
 
         StartCoroutine(SendRequest(systemMessage, uiChat));
     }
-
+    
     public void SendMessageToAI(string userMessage)
     {
-        uiChat.AppendMessage($"Player: {userMessage}");
+        uiChat.AppendMessage($"\nPlayer: {userMessage}");
         StartCoroutine(SendRequest(userMessage, uiChat));
 
     }
