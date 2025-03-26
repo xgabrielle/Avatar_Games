@@ -58,7 +58,7 @@ public class AIPlayer : MonoBehaviour
                     break;
                 }
             }
-            _checkerGame.LastMove(pawnPos, pawn.transform.position, pawn);
+            GameStateManager.instance.LastMove(pawnPos, pawn.transform.position, pawn);
             
         }
         

@@ -68,6 +68,6 @@ public class Player : MonoBehaviour
             _checkerGame.isAiTurn = true;
             isMarker = false;
         }
-        _checkerGame.LastMove(currentMarkerPos, targetPosition, currentMarker);
+        GameStateManager.instance.LastMove(currentMarkerPos, targetPosition, currentMarker);
     }
 }
