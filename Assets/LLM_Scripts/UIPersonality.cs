@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIPersonality : MonoBehaviour
@@ -11,6 +8,7 @@ public class UIPersonality : MonoBehaviour
     [SerializeField] private GameObject opponentPanel;
     [SerializeField] private GameObject vsTypePanel;
     [SerializeField] private GameObject chatPanel;
+    
     [SerializeField] private List<Button> buttons; 
     
     private void Start()
