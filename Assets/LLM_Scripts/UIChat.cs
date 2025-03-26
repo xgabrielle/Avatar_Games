@@ -12,6 +12,11 @@ public class UIChat : MonoBehaviour
     
     [SerializeField] private ScrollRect scrollView;
 
+    private void Start()
+    {
+        scrollView.verticalNormalizedPosition = 0.2f;
+    }
+
     public void SendUserMessage()
     {
         if (!string.IsNullOrWhiteSpace(userInput.text))
