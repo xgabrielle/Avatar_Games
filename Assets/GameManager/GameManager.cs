@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         else if (GameMode.AI == currentGameMode)
         {
             Debug.Log("Game mode = AI");
-            chatMode = "The game just made a move for you, you are the dark pawns. React as if you made this move and explain why you did it. You get happy if you win and sad if you lose.";
+            chatMode = "You are the dark markers and go second. Take in the move it just made and pretend like you made the move. You get happy if you win and sad if you lose.";
         }
 
         return chatMode;

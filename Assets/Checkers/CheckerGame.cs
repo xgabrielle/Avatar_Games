@@ -30,16 +30,16 @@ public class CheckerGame : MonoBehaviour
         {
             if (!isAiTurn)
             {
-                turn = "White";
+                turn = "White pawn";
                 if (Input.GetMouseButtonDown(0)) 
                     player.HandlePlayerTurn();
                 
             }
             else
             {
-                turn = "Dark";
+                turn = "Dark pawn";
                 aiPlayer.StartCoroutine(aiPlayer.GetAiMove());
-                ChatManager.Instance.GetAIMessage("");
+                
                 isAiTurn = false;
             }
         }

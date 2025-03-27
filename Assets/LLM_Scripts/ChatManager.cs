@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using dotenv.net;
@@ -39,9 +40,11 @@ public class ChatManager : MonoBehaviour
 
     IEnumerator SendRequest(string userMessage, UIChat uiChat)
     {
-        
-        var gameState = GameStateManager.instance.GetBoardStateAsJSON(); 
-    
+        List<CheckersMove> moveHistory = GameStateManager.instance.GetMoveHistory();
+        string previousPlayer = GameStateManager.instance.GetPlayer();
+        Debug.Log("Player: "+ previousPlayer);
+        var gameState = GameStateManager.instance.GetBoardStateAsJSON(moveHistory, MarkersGenerator.instance.MarkerPos(), previousPlayer);
+        MarkersGenerator.instance.MarkerPos().ToString();
         string toAI = $"{userMessage}\nGame State:\n{gameState}";
         var requestData = new
         {
@@ -101,7 +104,7 @@ public class ChatManager : MonoBehaviour
             
         }
 
-        StartCoroutine(SendRequest(systemMessage, uiChat));
+        //StartCoroutine(SendRequest(systemMessage, uiChat));
     }
 
     internal Coroutine GetAIMessage(string aiMessage)
