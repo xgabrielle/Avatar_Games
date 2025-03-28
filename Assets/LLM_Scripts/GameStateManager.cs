@@ -46,6 +46,7 @@ public class GameStateManager : MonoBehaviour
                     // add king later
                 }
                 else board [7 - z, x] = 0;
+                //Debug.Log("Board: "+ board[x,z]);
             }
             
         }
@@ -53,10 +54,10 @@ public class GameStateManager : MonoBehaviour
         gameState = new ()
         {
             lastMove = updateLastMove,
-            turn = (player == "White" ? "Dark" : "White"),
+            turn = player,
             board = board
         };
-        Debug.Log("turn: " + gameState.turn);
+        //Debug.Log("turn: " + gameState.turn);
         string json = JsonConvert.SerializeObject(gameState, Formatting.Indented);
         Debug.Log("JSON: "+json);
         return json;
@@ -71,6 +72,17 @@ public class GameStateManager : MonoBehaviour
             to = new [] {(int)end.x, (int)end.z} 
         };
         moveHistory.Add(lastMove);
+        
+        gameState.board[7 - (int)start.x, (int)start.z] = 0;
+        gameState.board[7 - (int)end.x, (int)end.z] = player.CompareTag("WhiteMarker") ? 1 : 2;
+        gameState.turn = gameState.turn == "White" ? "Dark" : "White";
+        
+    }
+
+    public int[,] UpdateBoard()
+    {
+        // where should I send board update?
+        return gameState.board;
     }
 
     public List<CheckersMove> GetMoveHistory()

@@ -42,9 +42,9 @@ public class ChatManager : MonoBehaviour
     {
         List<CheckersMove> moveHistory = GameStateManager.instance.GetMoveHistory();
         string previousPlayer = GameStateManager.instance.GetPlayer();
-        Debug.Log("Player: "+ previousPlayer);
         var gameState = GameStateManager.instance.GetBoardStateAsJSON(moveHistory, MarkersGenerator.instance.MarkerPos(), previousPlayer);
-        MarkersGenerator.instance.MarkerPos().ToString();
+        //Debug.Log("Player: "+ previousPlayer);
+        
         string toAI = $"{userMessage}\nGame State:\n{gameState}";
         var requestData = new
         {
@@ -54,7 +54,7 @@ public class ChatManager : MonoBehaviour
                 new Message {role = "system", content = SetGameContext() + "respond as short as possible." },
                 new Message {role = "user", content = toAI}
             },
-            max_tokens = 100 // length of AI response
+            max_tokens = 500 // length of AI response
         };
         
         string json = JsonConvert.SerializeObject(requestData);
@@ -69,7 +69,7 @@ public class ChatManager : MonoBehaviour
         
         if (request.result == UnityWebRequest.Result.Success)
         {
-            Debug.Log("Request is Successful!");
+            //Debug.Log("Request is Successful!");
             string responseText = request.downloadHandler.text;
             ChatResponse chatResponse = JsonConvert.DeserializeObject<ChatResponse>(responseText);
             

@@ -50,7 +50,7 @@ public class UIPersonality : MonoBehaviour
         aiTypePanel.SetActive(false);
         BoardGenerator.instance.BuildBoard();
         MarkersGenerator.instance.StartField();
-        
+        //MarkersGenerator.instance.MarkerPos();
     }
 
     void GetOpponentType(string button)
