@@ -41,11 +41,11 @@ public class GameStateManager : MonoBehaviour
                 GameObject pawn = pawns[x, z];
                 if (pawn != null)
                 {
-                    if (pawn.CompareTag("WhiteMarker")) board[7 - z, x] = 1;
-                    else if (pawn.CompareTag("DarkMarker")) board[7 - z, x] = 2;
+                    if (pawn.CompareTag("WhiteMarker")) board[x, z] = 1;
+                    else if (pawn.CompareTag("DarkMarker")) board[x, z] = 2;
                     // add king later
                 }
-                else board [7 - z, x] = 0;
+                else board [x, z] = 0;
                 //Debug.Log("Board: "+ board[x,z]);
             }
             
@@ -73,10 +73,10 @@ public class GameStateManager : MonoBehaviour
         };
         moveHistory.Add(lastMove);
         
-        gameState.board[7 - (int)start.x, (int)start.z] = 0;
-        gameState.board[7 - (int)end.x, (int)end.z] = player.CompareTag("WhiteMarker") ? 1 : 2;
-        gameState.turn = gameState.turn == "White" ? "Dark" : "White";
+        gameState.board[(int)start.x, (int)start.z] = 0;
+        gameState.board[(int)end.x, (int)end.z] = player.CompareTag("WhiteMarker") ? 1 : 2; 
         
+        gameState.turn = gameState.turn == "White" ? "Dark" : "White";
     }
 
     public int[,] UpdateBoard()
