@@ -40,10 +40,10 @@ public class ChatManager : MonoBehaviour
 
     IEnumerator SendRequest(string userMessage, UIChat uiChat)
     {
-        List<CheckersMove> moveHistory = GameStateManager.instance.GetMoveHistory();
+        //List<CheckersMove> moveHistory = GameStateManager.instance.GetMoveHistory();
+        CheckersMove previousMove = GameStateManager.instance.PreviousMove();
         string previousPlayer = GameStateManager.instance.GetPlayer();
-        var gameState = GameStateManager.instance.GetBoardStateAsJSON(moveHistory, MarkersGenerator.instance.MarkerPos(), previousPlayer);
-        //Debug.Log("Player: "+ previousPlayer);
+        var gameState = GameStateManager.instance.GetBoardStateAsJSON(previousMove, previousPlayer);
         
         string toAI = $"{userMessage}\nGame State:\n{gameState}";
         var requestData = new
@@ -51,8 +51,9 @@ public class ChatManager : MonoBehaviour
             model = "gpt-4-turbo",
             messages = new Message[]
             {
-                new Message {role = "system", content = SetGameContext() + "respond as short as possible." },
-                new Message {role = "user", content = toAI}
+                //new Message {role = "system", content = SetGameContext()},
+                new Message {role = "user", content = userMessage},
+                new Message {role = "user", content = "Current Game State "+gameState}
             },
             max_tokens = 500 // length of AI response
         };
