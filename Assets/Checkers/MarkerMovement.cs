@@ -4,7 +4,7 @@ using UnityEngine;
 public class MarkerMovement : MonoBehaviour
 {
     public static MarkerMovement Movement { get; private set; }
-    
+    private GameObject pawnDestroyed;
     private void Start()
     {
         Movement = this;
@@ -96,6 +96,7 @@ public class MarkerMovement : MonoBehaviour
                        if (Mathf.Approximately(targetPos.z, startPos.z - 2))
                        { 
                            pawn.transform.position = targetPos;
+                           pawnDestroyed = jumpedMarker;
                            Destroy(jumpedMarker);
                            return true;
                        }
@@ -105,6 +106,7 @@ public class MarkerMovement : MonoBehaviour
                        if (Mathf.Approximately(targetPos.z, startPos.z + 2))
                        { 
                            pawn.transform.position = targetPos;
+                           pawnDestroyed = jumpedMarker; 
                            Destroy(jumpedMarker);
                            return true;
                        }
@@ -120,6 +122,10 @@ public class MarkerMovement : MonoBehaviour
 
    }
 
+   public GameObject DestroyedPawn()
+   {
+       return pawnDestroyed;
+   } 
    bool IsSquareOccupied(Vector3 targetPos)
    {
        Collider[] playerCollider = Physics.OverlapSphere(targetPos, 0.2f);

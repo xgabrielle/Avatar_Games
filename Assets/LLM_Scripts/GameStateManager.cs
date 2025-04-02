@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
+
 [System.Serializable]
 public class CheckersGameState
 {
     public int[,] board;
     public string turn;
-    public List<CheckersMove> lastMove;
+    public CheckersMove lastMove;
 }
 [System.Serializable]
 public class CheckersMove
@@ -23,43 +25,43 @@ public class GameStateManager : MonoBehaviour
     CheckersGameState gameState = new ();
     private CheckersMove lastMove = new();
     private List<CheckersMove> moveHistory = new();
-    private CheckerGame _checkerGame;
-
+    
     private void Start()
     {
-        _checkerGame = GetComponent<CheckerGame>();
         instance = this;
     }
 
-    public string GetBoardStateAsJSON (List<CheckersMove> updateLastMove, GameObject[,] pawns, string player)
+    public string GetBoardStateAsJSON (CheckersMove updateLastMove, string player)
     {
-        int[,] board = new int[8,8];
+        int[,] board = gameState.board;
+        if (board == null)
+        {
+            board = new int[8, 8];
+            player = "White";
+        }
+        
         for (int x = 0; x < 8; x++)
         {
             for (int z = 0; z < 8; z++)
             {
-                GameObject pawn = pawns[x, z];
+                GameObject pawn = MarkersGenerator.instance.MarkerPos()[x, z];
                 if (pawn != null)
                 {
                     if (pawn.CompareTag("WhiteMarker")) board[x, z] = 1;
                     else if (pawn.CompareTag("DarkMarker")) board[x, z] = 2;
-                    // add king later
                 }
                 else board [x, z] = 0;
-                //Debug.Log("Board: "+ board[x,z]);
             }
-            
         }
-        // WhitePiece(Clone) (UnityEngine.GameObject)
+        
         gameState = new ()
         {
             lastMove = updateLastMove,
             turn = player,
-            board = board
+            board = board,
         };
-        //Debug.Log("turn: " + gameState.turn);
         string json = JsonConvert.SerializeObject(gameState, Formatting.Indented);
-        Debug.Log("JSON: "+json);
+        //Debug.Log("JSON: "+json);
         return json;
     }
     
@@ -77,22 +79,16 @@ public class GameStateManager : MonoBehaviour
         gameState.board[(int)end.x, (int)end.z] = player.CompareTag("WhiteMarker") ? 1 : 2; 
         
         gameState.turn = gameState.turn == "White" ? "Dark" : "White";
+        GetBoardStateAsJSON(gameState.lastMove, lastMove.player);
     }
-
-    public int[,] UpdateBoard()
-    {
-        // where should I send board update?
-        return gameState.board;
-    }
-
-    public List<CheckersMove> GetMoveHistory()
-    {
-        return moveHistory;
-    }
-
+    
     public string GetPlayer()
     {
         return gameState.turn;
     }
-    
+
+    public CheckersMove PreviousMove()
+    {
+        return lastMove;
+    }
 }

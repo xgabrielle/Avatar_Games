@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
             _checkerGame.isAiTurn = true;
             isMarker = false;
         }
+        MarkersGenerator.instance.UpdatePawns(currentMarker, currentMarkerPos, targetPosition);
         GameStateManager.instance.LastMove(currentMarkerPos, targetPosition, currentMarker);
     }
 }

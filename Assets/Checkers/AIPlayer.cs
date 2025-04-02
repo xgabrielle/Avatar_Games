@@ -71,7 +71,11 @@ public class AIPlayer : MonoBehaviour
             _checkerGame.isGameOver = true;
             Debug.Log("Game over, AI lost (No valid moves)");
         }
-        else GameStateManager.instance.LastMove(validStartPos, validPawn!.transform.position, validPawn);
+        else
+        {
+            MarkersGenerator.instance.UpdatePawns(validPawn, validStartPos, validPawn.transform.position);
+            GameStateManager.instance.LastMove(validStartPos, validPawn!.transform.position, validPawn);
+        }
 
     }
     
