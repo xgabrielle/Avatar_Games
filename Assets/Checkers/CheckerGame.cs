@@ -44,5 +44,9 @@ public class CheckerGame : MonoBehaviour
             }
         }
     }
-    
+
+    public bool IsGameOver()
+    {
+        return isGameOver;
+    }
 }

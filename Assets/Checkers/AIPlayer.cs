@@ -69,6 +69,7 @@ public class AIPlayer : MonoBehaviour
         if (!validMove)
         {
             _checkerGame.isGameOver = true;
+            ChatManager.Instance.SendMessageToAI("");
             Debug.Log("Game over, AI lost (No valid moves)");
         }
         else

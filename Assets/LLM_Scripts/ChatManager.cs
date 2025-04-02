@@ -30,6 +30,7 @@ public class ChatManager : MonoBehaviour
         Instance = this;
         DotEnv.Load();
         apiKey = Environment.GetEnvironmentVariable("API_KEY");
+        _checkerGame = GetComponent<CheckerGame>();
 
         if (string.IsNullOrEmpty(apiKey))
         {
@@ -45,15 +46,23 @@ public class ChatManager : MonoBehaviour
         var gameState = GameStateManager.instance.GetBoardStateAsJSON(previousMove, previousPlayer);
         
         string toAI = $"{userMessage}\nGame State:\n{gameState}";
+
+        List<Message> messages = new List<Message>
+        {
+            new Message {role = "system", content = SetGameContext()},
+            new Message {role = "user", content = userMessage + "Keep the messages short"},
+            new Message {role = "user", content = "Current Game State "+gameState}
+        };
+        
+        if (_checkerGame.IsGameOver())
+        {
+            messages.Add(new Message { role = "user", content = "Game Over, Acknowledge this and who won." });
+        }
+        
         var requestData = new
         {
             model = "gpt-4-turbo",
-            messages = new Message[]
-            {
-                new Message {role = "system", content = SetGameContext()},
-                new Message {role = "user", content = userMessage + "Keep the messages short"},
-                new Message {role = "user", content = "Current Game State "+gameState}
-            },
+            messages = messages.ToArray(),
             max_tokens = 500 // length of AI response
         };
         
