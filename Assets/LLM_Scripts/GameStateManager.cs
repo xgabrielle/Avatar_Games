@@ -29,16 +29,13 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         instance = this;
+        gameState.board = new int[8, 8];
+        gameState.turn = "White";
     }
 
     public string GetBoardStateAsJSON (CheckersMove updateLastMove, string player)
     {
         int[,] board = gameState.board;
-        if (board == null)
-        {
-            board = new int[8, 8];
-            player = "White";
-        }
         
         for (int x = 0; x < 8; x++)
         {
