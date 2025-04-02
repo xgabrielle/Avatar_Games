@@ -29,8 +29,7 @@ public class UIChat : MonoBehaviour
 
     public void AppendMessage(string userMessage)
     {
-        Debug.Log("Appending message: " + userMessage);
-        
+        //Debug.Log("Appending message: " + userMessage);
         chatOutput.text += $"\n{userMessage}";
     }
     

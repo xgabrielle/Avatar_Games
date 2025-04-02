@@ -20,13 +20,13 @@ public class GameManager : MonoBehaviour
         string chatMode = null;
         if (GameMode.LocalPlayer == currentGameMode)
         {
-            Debug.Log("Game mode = LocalPlayer");
+            //Debug.Log("Game mode = LocalPlayer");
             chatMode = "You are commenting on the on going game between the players.";
             // Set host or join
         }
         else if (GameMode.AI == currentGameMode)
         {
-            Debug.Log("Game mode = AI");
+            //Debug.Log("Game mode = AI");
             chatMode = "You are the dark markers and go second. Take in the move it just made and pretend like you made the move. You get happy if you win and sad if you lose.";
         }
 
