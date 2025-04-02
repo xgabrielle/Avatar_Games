@@ -44,7 +44,7 @@ public class MarkerMovement : MonoBehaviour
 
     internal static List<Vector3> PossibleMoves(Vector3 currentPlayerPos)
     {
-        List<Vector3> vaildDir = new();
+        List<Vector3> validDir = new();
         Vector3 position = currentPlayerPos;
         Vector3[] directions = new[]
         {
@@ -58,9 +58,9 @@ public class MarkerMovement : MonoBehaviour
         foreach (var dir in directions)
         {
             if (!OutOfBounds(dir))
-                vaildDir.Add(dir);
+                validDir.Add(dir);
         }
-        return vaildDir;
+        return validDir;
     }
     internal bool GetSurroundings(Vector3 marker, GameObject pawn)
     {
