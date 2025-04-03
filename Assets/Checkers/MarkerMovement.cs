@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MarkerMovement : MonoBehaviour
@@ -46,7 +47,8 @@ public class MarkerMovement : MonoBehaviour
     {
         List<Vector3> validDir = new();
         Vector3 position = currentPlayerPos;
-        Vector3[] directions = new[]
+        
+        Vector3[] directions =  new[]
         {
             // up
             new Vector3(position.x + 1, position.y, position.z + 1), //R-U
@@ -62,9 +64,10 @@ public class MarkerMovement : MonoBehaviour
         }
         return validDir;
     }
-    internal bool GetSurroundings(Vector3 marker, GameObject pawn)
+    internal bool GetSurroundings(Vector3 pawnPos, GameObject pawn)
     {
-        foreach (Vector3 dir in PossibleMoves(marker))
+        // game over for player/players
+        foreach (Vector3 dir in PossibleMoves(pawnPos))
         {
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
             foreach (Collider colliders in hitColliders)
@@ -150,11 +153,16 @@ public class MarkerMovement : MonoBehaviour
 
     
     
-   string GetEnemyTag(GameObject pawn)
+   internal string GetEnemyTag(GameObject pawn)
    {
-       string myTag = pawn.tag;
-       string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
-       return enemyTag;
+       if (pawn != null)
+       {
+           string myTag = pawn.tag;
+           string enemyTag = myTag == "DarkMarker" ? "WhiteMarker" : "DarkMarker";
+           return enemyTag;
+       }
+
+       return null;
    }
    private static bool OutOfBounds(Vector3 pos) => pos.x > 7 || pos.x < 0 || pos.z > 7 || pos.z < 0;
 
