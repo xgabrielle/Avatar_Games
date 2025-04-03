@@ -64,8 +64,9 @@ public class MarkerMovement : MonoBehaviour
         }
         return validDir;
     }
-    internal bool GetSurroundings(Vector3 pawnPos, GameObject pawn)
+    internal bool GetSurroundings(GameObject pawn)
     {
+        var pawnPos = pawn.transform.position;
         // game over for player/players
         foreach (Vector3 dir in PossibleMoves(pawnPos))
         {
