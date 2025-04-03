@@ -11,8 +11,6 @@ public class CheckerGame : MonoBehaviour
     internal bool isAiTurn;
     internal bool isGameOver;
     internal string turn;
-    
-    //internal CheckersMove lastMove = new();
 
     private void Start()
     {
@@ -33,20 +31,59 @@ public class CheckerGame : MonoBehaviour
                 turn = "White pawn";
                 if (Input.GetMouseButtonDown(0)) 
                     player.HandlePlayerTurn();
-                
             }
             else
             {
                 turn = "Dark pawn";
                 aiPlayer.StartCoroutine(aiPlayer.GetAiMove());
-                
                 isAiTurn = false;
             }
         }
+        
     }
 
     public bool IsGameOver()
     {
         return isGameOver;
+    }
+
+    public bool HasGameOver(string player)
+    {
+        if (HasPawnsLeft(player)) return true;
+        if (!HasValidMoves(player)) return true;
+
+        return false;
+    }
+
+    bool HasPawnsLeft(string pawn)
+    {
+        GameObject[] pawns = GameObject.FindGameObjectsWithTag(pawn);
+        return pawns.Length == 0;
+    }
+    
+
+    bool HasValidMoves(string pawn)
+    {
+        GameObject[] pawns = GameObject.FindGameObjectsWithTag(pawn);
+        foreach (var pawnTag in pawns)
+        {
+            if (ValidMovesLeft(pawnTag)) return true;
+        }
+
+        return false;
+    }
+
+    bool ValidMovesLeft(GameObject pawn)
+    {
+        var pawnPos = pawn.transform.position;
+
+        foreach (var possibleMove in MarkerMovement.PossibleMoves(pawnPos))
+        {
+            if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, possibleMove)) return true;
+
+            if (MarkerMovement.Movement.Jump(pawn, pawnPos, possibleMove)) return true;
+        }
+        
+        return false;
     }
 }
