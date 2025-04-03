@@ -39,14 +39,14 @@ public class Player : MonoBehaviour
         currentMarkerPos = hit.collider.transform.position;
         currentMarker = hit.collider.gameObject;
         isMarker = true;
-        MarkerMovement.Movement.GetSurroundings(currentMarkerPos, currentMarker);
+        MarkerMovement.Movement.GetSurroundings(currentMarker);
     }
 
     void HandleClickOnBoard(RaycastHit hit)
     {
         targetPosition = hit.collider.transform.position + new Vector3(0,0.6f,0);
 
-        if (MarkerMovement.Movement.GetSurroundings(currentMarkerPos, currentMarker))
+        if (MarkerMovement.Movement.GetSurroundings(currentMarker))
         {
             if (MarkerMovement.Movement.Jump(currentMarker, currentMarkerPos,targetPosition))
             {
@@ -70,5 +70,10 @@ public class Player : MonoBehaviour
         }
         MarkersGenerator.instance.UpdatePawns(currentMarker, currentMarkerPos, targetPosition);
         GameStateManager.instance.LastMove(currentMarkerPos, targetPosition, currentMarker);
+        if (_checkerGame.HasGameOver(_checkerGame.isAiTurn ? "WhiteMarker" : "DarkMarker"))
+        {
+            _checkerGame.isGameOver = true;
+            Debug.Log("Game over for White: ");
+        }
     }
 }

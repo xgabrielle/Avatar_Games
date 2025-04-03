@@ -18,7 +18,6 @@ public class AIPlayer : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         EasyRandomMove();
         _checkerGame.isAiTurn = false;
-        //ChatManager.Instance.GetAIMessage("This is your move");
 
     }
     void EasyRandomMove()
@@ -29,11 +28,6 @@ public class AIPlayer : MonoBehaviour
         GameObject[] darkPawns = GameObject.FindGameObjectsWithTag("DarkMarker");
         foreach (GameObject pawn in darkPawns)
         {
-            if (darkPawns.Length < 1)
-            {
-                _checkerGame.isGameOver = true;
-                Debug.Log("Game over, AI lost");
-            }
             if (validMove) break;
             
             Vector3 pawnPos = pawn.transform.position;
@@ -66,18 +60,14 @@ public class AIPlayer : MonoBehaviour
             validStartPos = pawnPos;
         }
         
-        if (!validMove)
+        MarkersGenerator.instance.UpdatePawns(validPawn, validStartPos, validPawn!.transform.position);
+        GameStateManager.instance.LastMove(validStartPos, validPawn!.transform.position, validPawn);
+        if (_checkerGame.HasGameOver(_checkerGame.isAiTurn ? "WhiteMarker" : "DarkMarker"))
         {
             _checkerGame.isGameOver = true;
-            ChatManager.Instance.SendMessageToAI("");
             Debug.Log("Game over, AI lost (No valid moves)");
-        }
-        else
-        {
-            MarkersGenerator.instance.UpdatePawns(validPawn, validStartPos, validPawn.transform.position);
-            GameStateManager.instance.LastMove(validStartPos, validPawn!.transform.position, validPawn);
+            ChatManager.Instance.SendMessageToAI("");
         }
 
     }
-    
 }
