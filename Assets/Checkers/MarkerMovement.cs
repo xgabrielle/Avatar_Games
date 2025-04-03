@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Mathematics.Geometry;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,26 +14,20 @@ public class MarkerMovement : MonoBehaviour
 
     internal bool GetMarkerMove(GameObject pawn, Vector3 startPos, Vector3 targetPos)
     {
-        if (DiagonalMove(startPos, targetPos))
+        if (!DiagonalMove(startPos, targetPos) || IsSquareOccupied(targetPos))
         {
-            if (GetEnemyTag(pawn) == "WhiteMarker")
-            {
-                if (Mathf.Approximately(targetPos.z, startPos.z - 1) && !IsSquareOccupied(targetPos))
-                {
-                    return true;
-                }
-            }
-            else if (GetEnemyTag(pawn) == "DarkMarker")
-            {
-                if (Mathf.Approximately(targetPos.z, startPos.z + 1) && !IsSquareOccupied(targetPos))
-                {
-                    return true;
-                }
-            }
+            Debug.Log("Not a possible move");
+            return false;
         }
-        else Debug.Log("Not a possible move");
 
-        return false;
+        string enemyTag = GetEnemyTag(pawn);
+
+        return enemyTag switch
+        {
+            "WhiteMarker" => Mathf.Approximately(targetPos.z, startPos.z - 1),
+            "DarkMarker" => Mathf.Approximately(targetPos.z,startPos.z + 1),
+            _=> false
+        };
     }
     
     private static bool DiagonalMove(Vector3 startPos, Vector3 targetPos)
