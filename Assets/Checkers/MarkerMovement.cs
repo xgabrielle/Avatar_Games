@@ -12,13 +12,16 @@ public class MarkerMovement : MonoBehaviour
         Movement = this;
     }
 
+    public class MoveResult
+    {
+        private bool isValid { get; set; }
+        private Vector3 landingPos { get; set; }
+        private GameObject capturedPawn { get; set; }
+    }
+    
     internal bool GetMarkerMove(GameObject pawn, Vector3 startPos, Vector3 targetPos)
     {
-        if (!DiagonalMove(startPos, targetPos) || IsSquareOccupied(targetPos))
-        {
-            Debug.Log("Not a possible move");
-            return false;
-        }
+        if (!DiagonalMove(startPos, targetPos) || IsSquareOccupied(targetPos)) return false;
 
         string enemyTag = GetEnemyTag(pawn);
 
@@ -77,48 +80,40 @@ public class MarkerMovement : MonoBehaviour
         return false;
     }
 
+    MoveResult JumpOver(GameObject pawn, Vector3 start, Vector3 end)
+    {
+        var result = new MoveResult();
+
+        return result;
+    }
+
    internal bool Jump(GameObject pawn, Vector3 startPos, Vector3 targetPos)
    {
        Vector3 middlePos = ((startPos + targetPos) / 2);
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
+
+       if (!DiagonalMove(startPos, targetPos)) return false;
        
        foreach (Collider midCol in middleColliders)
        {
-           if (midCol.CompareTag(GetEnemyTag(pawn)))
-           { 
-               GameObject jumpedMarker = midCol.gameObject;
-               
-               if (DiagonalMove(startPos, targetPos))
-               {
-                   if (GetEnemyTag(pawn) == "WhiteMarker")
-                   {
-                       if (Mathf.Approximately(targetPos.z, startPos.z - 2))
-                       { 
-                           pawn.transform.position = targetPos;
-                           pawnDestroyed = jumpedMarker;
-                           Destroy(jumpedMarker);
-                           return true;
-                       }
-                   }
-                   else
-                   {
-                       if (Mathf.Approximately(targetPos.z, startPos.z + 2))
-                       { 
-                           pawn.transform.position = targetPos;
-                           pawnDestroyed = jumpedMarker; 
-                           Destroy(jumpedMarker);
-                           return true;
-                       }
-                   }
-                   
-               } else
-                   Debug.Log("Not a possible move");
-               break;
+           if (!midCol.CompareTag(GetEnemyTag(pawn))) continue;
+
+           GameObject jumpedMarker = midCol.gameObject;
+           var enemyTag = GetEnemyTag(pawn);
+           bool validJump = enemyTag == "WhiteMarker"
+               ? Mathf.Approximately(targetPos.z, startPos.z - 2)
+               : Mathf.Approximately(targetPos.z, startPos.z + 2);
+
+           if (validJump)
+           {
+               pawn.transform.position = targetPos;
+               pawnDestroyed = jumpedMarker;
+               Destroy(jumpedMarker);
+               return true;
            }
+           break;
        }
-
        return false;
-
    }
 
    public GameObject DestroyedPawn()
