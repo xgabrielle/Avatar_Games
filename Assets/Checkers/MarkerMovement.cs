@@ -14,9 +14,16 @@ public class MarkerMovement : MonoBehaviour
 
     public class MoveResult
     {
-        private bool isValid { get; set; }
-        private Vector3 landingPos { get; set; }
-        private GameObject capturedPawn { get; set; }
+        public bool IsValid { get; set; }
+        public Vector3 LandingPos { get; set; }
+        public GameObject CapturedPawn { get; set; }
+
+        public MoveResult(bool isValid = false, Vector3 landingPos =default, GameObject capturedPawn=null)
+        {
+            IsValid = isValid;
+            LandingPos = landingPos;
+            CapturedPawn = capturedPawn;
+        }
     }
     
     internal bool GetMarkerMove(GameObject pawn, Vector3 startPos, Vector3 targetPos)
@@ -80,11 +87,28 @@ public class MarkerMovement : MonoBehaviour
         return false;
     }
 
-    MoveResult JumpOver(GameObject pawn, Vector3 start, Vector3 end)
+    internal MoveResult ValidateMove(GameObject pawn, Vector3 start, Vector3 end)
     {
-        var result = new MoveResult();
+        if (GetMarkerMove(pawn, start, end))
+            return new MoveResult(true, end);
 
-        return result;
+        Vector3 midPos = (start + end) / 2;
+        Collider[] middleColliders = Physics.OverlapSphere(midPos, 0.2f);
+
+        foreach (var midCol in middleColliders)
+        {
+            if (midCol.CompareTag(GetEnemyTag(pawn)))
+            {
+                if (FreeJumpSpace(start, end).Item1)
+                {
+                    var jumpResult = FreeJumpSpace(start, end).Item2;
+                    if (Jump(pawn, start, jumpResult)) return new MoveResult(true, jumpResult, midCol.gameObject);
+                }
+                
+            }
+        }
+
+        return new MoveResult(false);
     }
 
    internal bool Jump(GameObject pawn, Vector3 startPos, Vector3 targetPos)
@@ -131,9 +155,9 @@ public class MarkerMovement : MonoBehaviour
        return false;
    }
    
-   internal (bool, Vector3) FreeJumpSpace(Vector3 markerPos, Vector3 enemyPos)
+   internal (bool, Vector3) FreeJumpSpace(Vector3 markerPos, Vector3 movePos)
    {
-       Vector3 landingPos = (enemyPos - markerPos) + enemyPos;
+       Vector3 landingPos = (movePos - markerPos) + movePos;
        Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
        if (col.Length > 1 || OutOfBounds(landingPos))
        {

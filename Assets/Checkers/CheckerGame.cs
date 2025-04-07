@@ -47,10 +47,10 @@ public class CheckerGame : MonoBehaviour
         return isGameOver;
     }
 
-    public bool HasGameOver(string player)
+    public bool HasGameOver(string playerTag)
     {
-        if (HasPawnsLeft(player)) return true;
-        if (!HasValidMoves(player)) return true;
+        if (HasPawnsLeft(playerTag)) return true;
+        if (!HasValidMoves(playerTag)) return true;
 
         return false;
     }

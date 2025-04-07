@@ -22,52 +22,55 @@ public class AIPlayer : MonoBehaviour
     }
     void EasyRandomMove()
     {
-        bool validMove = false;
-        GameObject validPawn = null;
-        Vector3 validStartPos = default;
+        //bool validMove = false;
+        //GameObject validPawn = null;
+        //Vector3 validStartPos = default;
         GameObject[] darkPawns = GameObject.FindGameObjectsWithTag("DarkMarker");
         foreach (GameObject pawn in darkPawns)
         {
-            if (validMove) break;
-            
             Vector3 pawnPos = pawn.transform.position;
-            foreach (var move in MarkerMovement.PossibleMoves(pawnPos)) 
+            
+            foreach (var move in MarkerMovement.PossibleMoves(pawnPos))
             {
-                if (MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item1)
+                var moveResult = MarkerMovement.Movement.ValidateMove(pawn, pawnPos, move);
+                if (moveResult.IsValid)
                 {
-                    if (MarkerMovement.Movement.Jump(pawn, pawnPos, MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item2))
+                    pawn.transform.position = moveResult.LandingPos;
+                    if (moveResult.CapturedPawn != null)
+                        Destroy(moveResult.CapturedPawn);
+                        
+                    /*if (MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item1)
+                        {
+                            if (MarkerMovement.Movement.Jump(pawn, pawnPos, MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item2))
+                            {
+                                pawn.transform.position = MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item2;
+                                validMove = true;
+                                break;
+                            }
+                            if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
+                            {
+                                pawn.transform.position = move;
+                                validMove = true;
+                                break;
+                            }
+                        }
+                        else if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
+                        {
+                            pawn.transform.position = move;
+                            validMove = true;
+                            break;
+                        }*/
+                    MarkersGenerator.instance.UpdatePawns(pawn, pawnPos, moveResult.LandingPos );
+                    GameStateManager.instance.LastMove(pawn, pawnPos, moveResult.LandingPos);
+                    if (_checkerGame.HasGameOver(_checkerGame.isAiTurn ? "WhiteMarker" : "DarkMarker"))
                     {
-                        pawn.transform.position = MarkerMovement.Movement.FreeJumpSpace(pawnPos, move).Item2;
-                        validMove = true;
-                        break;
+                        _checkerGame.isGameOver = true;
+                        Debug.Log("Game over, AI lost (No valid moves)");
+                        ChatManager.Instance.SendMessageToAI("");
                     }
-                    if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
-                    {
-                        pawn.transform.position = move;
-                        validMove = true;
-                        break;
-                    }
-                }
-                else if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, move)) // check if square is occupied
-                {
-                    pawn.transform.position = move;
-                    validMove = true;
-                    break;
+                    return;
                 }
             }
-
-            validPawn = pawn;
-            validStartPos = pawnPos;
         }
-        
-        MarkersGenerator.instance.UpdatePawns(validPawn, validStartPos, validPawn!.transform.position);
-        GameStateManager.instance.LastMove(validStartPos, validPawn!.transform.position, validPawn);
-        if (_checkerGame.HasGameOver(_checkerGame.isAiTurn ? "WhiteMarker" : "DarkMarker"))
-        {
-            _checkerGame.isGameOver = true;
-            Debug.Log("Game over, AI lost (No valid moves)");
-            ChatManager.Instance.SendMessageToAI("");
-        }
-
     }
 }

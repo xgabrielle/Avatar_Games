@@ -62,7 +62,7 @@ public class GameStateManager : MonoBehaviour
         return json;
     }
     
-    internal void LastMove(Vector3 start, Vector3 end, GameObject player)
+    internal void LastMove(GameObject player, Vector3 start, Vector3 end )
     {
         lastMove = new ()
         {
