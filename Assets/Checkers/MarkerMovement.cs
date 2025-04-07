@@ -72,7 +72,6 @@ public class MarkerMovement : MonoBehaviour
     internal bool GetSurroundings(GameObject pawn)
     {
         var pawnPos = pawn.transform.position;
-        // game over for player/players
         foreach (Vector3 dir in PossibleMoves(pawnPos))
         {
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
@@ -89,26 +88,26 @@ public class MarkerMovement : MonoBehaviour
 
     internal MoveResult ValidateMove(GameObject pawn, Vector3 start, Vector3 end)
     {
-        if (GetMarkerMove(pawn, start, end))
-            return new MoveResult(true, end);
-
-        Vector3 midPos = (start + end) / 2;
-        Collider[] middleColliders = Physics.OverlapSphere(midPos, 0.2f);
-
-        foreach (var midCol in middleColliders)
+        if (GetSurroundings(pawn))
         {
-            if (midCol.CompareTag(GetEnemyTag(pawn)))
-            {
-                if (FreeJumpSpace(start, end).Item1)
-                {
-                    var jumpResult = FreeJumpSpace(start, end).Item2;
-                    if (Jump(pawn, start, jumpResult)) return new MoveResult(true, jumpResult, midCol.gameObject);
-                }
-                
-            }
-        }
+            Vector3 midPos = (start + end) / 2;
+            Collider[] middleColliders = Physics.OverlapSphere(midPos, 0.2f);
 
-        return new MoveResult(false);
+            foreach (var midCol in middleColliders)
+            {
+                if (midCol.CompareTag(GetEnemyTag(pawn)))
+                {
+                    if (FreeJumpSpace(start, end).Item1)
+                    {
+                        var jumpResult = FreeJumpSpace(start, end).Item2;
+                        if (Jump(pawn, start, jumpResult)) return new MoveResult(true, jumpResult, midCol.gameObject);
+                    }
+                }
+            } 
+        }
+        else if (GetMarkerMove(pawn, start, end))
+                return new MoveResult(true, end);
+        return new MoveResult();
     }
 
    internal bool Jump(GameObject pawn, Vector3 startPos, Vector3 targetPos)
