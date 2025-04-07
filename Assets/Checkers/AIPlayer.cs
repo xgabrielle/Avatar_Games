@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class AIPlayer : MonoBehaviour
 {
     private CheckerGame _checkerGame;
+    private GameObject[] _darkPawns;
 
     private void Start()
     {
@@ -22,12 +20,13 @@ public class AIPlayer : MonoBehaviour
     }
     void EasyRandomMove()
     {
-        GameObject[] darkPawns = GameObject.FindGameObjectsWithTag("DarkMarker");
-        foreach (GameObject pawn in darkPawns)
+        _darkPawns = GameObject.FindGameObjectsWithTag("DarkMarker");
+        foreach (GameObject pawn in _darkPawns)
         {
             Vector3 pawnPos = pawn.transform.position;
-            
-            foreach (var move in MarkerMovement.PossibleMoves(pawnPos))
+
+            var possibleMoves = MarkerMovement.PossibleMoves(pawnPos);
+            foreach (var move in possibleMoves)
             {
                 var moveResult = MarkerMovement.Movement.ValidateMove(pawn, pawnPos, move);
                 if (moveResult.IsValid)

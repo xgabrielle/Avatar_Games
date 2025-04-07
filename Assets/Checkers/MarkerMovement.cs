@@ -115,7 +115,7 @@ public class MarkerMovement : MonoBehaviour
        Vector3 middlePos = ((startPos + targetPos) / 2);
        Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
 
-       if (!DiagonalMove(startPos, targetPos)) return false;
+       if (!DiagonalMove(startPos, targetPos) || IsSquareOccupied(targetPos)) return false;
        
        foreach (Collider midCol in middleColliders)
        {
@@ -154,7 +154,7 @@ public class MarkerMovement : MonoBehaviour
        return false;
    }
    
-   internal (bool, Vector3) FreeJumpSpace(Vector3 markerPos, Vector3 movePos)
+   private static (bool, Vector3) FreeJumpSpace(Vector3 markerPos, Vector3 movePos)
    {
        Vector3 landingPos = (movePos - markerPos) + movePos;
        Collider[] col = Physics.OverlapSphere(landingPos, 0.2f);
