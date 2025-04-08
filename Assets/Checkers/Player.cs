@@ -18,8 +18,7 @@ public class Player : MonoBehaviour
     internal void HandlePlayerTurn(GameObject player)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out var hit))
         {
             if (hit.collider.CompareTag(player.tag))
                 HandleClickOnMarker(hit);
@@ -51,18 +50,16 @@ public class Player : MonoBehaviour
         if (moveDone)
         {
             TurnManager.instance.SwitchTurn();
-            _checkerGame.isAiTurn = true;
         }
     }
     void ValidMove()
     {
         currentMarker.transform.position = moveResult.LandingPos; 
-        _checkerGame.isAiTurn = true; 
         isMarker = false;
         
         MarkersGenerator.instance.UpdatePawns(currentMarker, currentMarkerPos, targetPosition);
         GameStateManager.instance.LastMove(currentMarker, currentMarkerPos, targetPosition);
-        if (_checkerGame.HasGameOver(_checkerGame.isAiTurn ? "WhiteMarker" : "DarkMarker"))
+        if (_checkerGame.HasGameOver(_checkerGame.isGameOver ? "WhiteMarker" : "DarkMarker"))
         {
             _checkerGame.isGameOver = true;
             Debug.Log("Game over for White: ");

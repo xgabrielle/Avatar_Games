@@ -9,7 +9,6 @@ public class CheckerGame : MonoBehaviour
 {
     private AIPlayer aiPlayer;
     private Player player;
-    internal bool isAiTurn;
     internal bool isGameOver;
     private bool waitForAI;
     [SerializeField] private GameObject white;
@@ -19,7 +18,6 @@ public class CheckerGame : MonoBehaviour
     {
         player = GetComponent<Player>();
         aiPlayer = GetComponent<AIPlayer>();
-        isAiTurn = false;
         isGameOver = false;
     }
     

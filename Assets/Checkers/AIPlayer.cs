@@ -17,7 +17,6 @@ public class AIPlayer : MonoBehaviour
         EasyRandomMove();
         TurnManager.instance.SwitchTurn();
         _checkerGame.aiCoroutine = null;
-        _checkerGame.isAiTurn = false;
 
     }
     void EasyRandomMove()
@@ -38,7 +37,7 @@ public class AIPlayer : MonoBehaviour
                         Destroy(moveResult.CapturedPawn);
                     MarkersGenerator.instance.UpdatePawns(pawn, pawnPos, moveResult.LandingPos );
                     GameStateManager.instance.LastMove(pawn, pawnPos, moveResult.LandingPos);
-                    if (_checkerGame.HasGameOver(_checkerGame.isAiTurn ? "WhiteMarker" : "DarkMarker"))
+                    if (_checkerGame.HasGameOver(_checkerGame.isGameOver ? "WhiteMarker" : "DarkMarker"))
                     { 
                         _checkerGame.isGameOver = true;
                         Debug.Log("Game over, AI lost (No valid moves)");
