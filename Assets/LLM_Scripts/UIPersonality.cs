@@ -25,8 +25,6 @@ public class UIPersonality : MonoBehaviour
     {
         switch (buttonName)
         {
-            // FIRST CHOOSE A GAME TO PLAY
-            // SECOND WHO YOU'RE PLAYING WITH
             case "AI" or "VS":
                 GetOpponentType(buttonName);
                 break;
@@ -50,7 +48,6 @@ public class UIPersonality : MonoBehaviour
         aiTypePanel.SetActive(false);
         BoardGenerator.instance.BuildBoard();
         MarkersGenerator.instance.StartField();
-        //MarkersGenerator.instance.MarkerPos();
     }
 
     void GetOpponentType(string button)
@@ -58,12 +55,16 @@ public class UIPersonality : MonoBehaviour
         switch (button)
         {
             case "AI":
+                GameManager.Instance.currentGameMode = GameMode.AI;
                 GameManager.Instance.SetGame();
                 aiTypePanel.SetActive(true);
                 break;
             case "VS":
+                GameManager.Instance.currentGameMode = GameMode.LocalPlayer;
                 GameManager.Instance.SetGame();
-                vsTypePanel.SetActive(true);
+                //vsTypePanel.SetActive(true);
+                BoardGenerator.instance.BuildBoard();
+                MarkersGenerator.instance.StartField();
                 break;
         }
         opponentPanel.SetActive(false);
