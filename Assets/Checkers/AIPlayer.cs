@@ -13,8 +13,10 @@ public class AIPlayer : MonoBehaviour
 
     internal IEnumerator GetAiMove()
     {
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(1.0f);
         EasyRandomMove();
+        TurnManager.instance.SwitchTurn();
+        _checkerGame.aiCoroutine = null;
         _checkerGame.isAiTurn = false;
 
     }
@@ -42,6 +44,7 @@ public class AIPlayer : MonoBehaviour
                         Debug.Log("Game over, AI lost (No valid moves)");
                         ChatManager.Instance.SendMessageToAI("");
                     }
+                    TurnManager.instance.SwitchTurn();
                     return;
                 }
             }

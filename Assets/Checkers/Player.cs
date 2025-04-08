@@ -15,18 +15,17 @@ public class Player : MonoBehaviour
         _checkerGame = GetComponent<CheckerGame>();
     }
 
-    internal void HandlePlayerTurn()
+    internal void HandlePlayerTurn(GameObject player)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.CompareTag("DarkMarker") || hit.collider.CompareTag("WhiteMarker"))
+            if (hit.collider.CompareTag(player.tag))
                 HandleClickOnMarker(hit);
-                
-            else if (hit.collider.CompareTag("BoardSquare") && isMarker) 
-                    HandleClickOnBoard(hit);
+            else if (hit.collider.CompareTag("BoardSquare") && isMarker)
+                HandleClickOnBoard(hit);
+            
         }
     }
 
@@ -39,13 +38,21 @@ public class Player : MonoBehaviour
 
     void HandleClickOnBoard(RaycastHit hit)
     {
+        bool moveDone = false;
         targetPosition = hit.collider.transform.position + new Vector3(0,0.6f,0);
         moveResult = MarkerMovement.Movement.ValidateMove(currentMarker, currentMarkerPos, targetPosition);
-        if (moveResult.IsValid)
+        
+        if (moveResult.IsValid || MarkerMovement.Movement.Jump(currentMarker, currentMarkerPos, targetPosition))
+        {
             ValidMove();
-       
-        if (MarkerMovement.Movement.Jump(currentMarker, currentMarkerPos,targetPosition)) 
-            ValidMove();
+            moveDone = true;
+        }
+        
+        if (moveDone)
+        {
+            TurnManager.instance.SwitchTurn();
+            _checkerGame.isAiTurn = true;
+        }
     }
     void ValidMove()
     {

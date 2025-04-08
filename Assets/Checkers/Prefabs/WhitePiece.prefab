@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 943007746239393724}
   - component: {fileID: -842919878175441597}
   - component: {fileID: 6438595767481468900}
+  - component: {fileID: 8141429947442084549}
   m_Layer: 0
   m_Name: WhitePiece
   m_TagString: WhiteMarker
@@ -147,5 +148,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6c3b8e5dcb87b346be8c5e685e2982c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isKing: 0
+--- !u!114 &8141429947442084549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7694669525635706861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c87637fd86e2d4dbe3b36b28843310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

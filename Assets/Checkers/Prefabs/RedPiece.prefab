@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 4415721552023741649}
   - component: {fileID: 7896385243993473240}
   - component: {fileID: -3992885538930086241}
+  - component: {fileID: 5128935392402102266}
+  - component: {fileID: 5033401292120580965}
   m_Layer: 0
   m_Name: RedPiece
   m_TagString: DarkMarker
@@ -147,5 +149,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6c3b8e5dcb87b346be8c5e685e2982c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isKing: 0
+--- !u!114 &5128935392402102266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3428984186603343193}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f8ac2bb11d1434ea14a65e8161c261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5033401292120580965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3428984186603343193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c87637fd86e2d4dbe3b36b28843310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

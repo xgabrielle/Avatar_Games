@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using NUnit.Framework.Internal;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,36 +11,56 @@ public class CheckerGame : MonoBehaviour
     private Player player;
     internal bool isAiTurn;
     internal bool isGameOver;
-    internal string turn;
+    private bool waitForAI;
+    [SerializeField] private GameObject white;
+    internal Coroutine aiCoroutine;
 
     private void Start()
     {
         player = GetComponent<Player>();
         aiPlayer = GetComponent<AIPlayer>();
-        
         isAiTurn = false;
         isGameOver = false;
-
     }
     
     private void Update()
     {
-        if (!isGameOver)
+        if (!GameManager.Instance.startGame || isGameOver) return;
+
+        switch (TurnManager.instance.currentPlayer)
         {
-            if (!isAiTurn)
-            {
-                turn = "White pawn";
-                if (Input.GetMouseButtonDown(0)) 
-                    player.HandlePlayerTurn();
-            }
-            else
-            {
-                turn = "Dark pawn";
-                aiPlayer.StartCoroutine(aiPlayer.GetAiMove());
-                isAiTurn = false;
-            }
+            case PlayerTurn.Player1:
+                Player1();
+                break;
+            case PlayerTurn.Player2:
+                Player2();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+
+    }
+
+    void Player1()
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
         
+        player.HandlePlayerTurn(white);
+        
+    }
+
+    void Player2()
+    {
+        if (GameMode.AI == GameManager.Instance.currentGameMode)
+        {
+            if (aiCoroutine == null)
+                aiCoroutine = aiPlayer.StartCoroutine(aiPlayer.GetAiMove());
+        }
+        else
+        {
+            if (!Input.GetMouseButtonDown(0)) return;
+            player.HandlePlayerTurn(GameManager.Instance.playerTwo);
+        }
     }
 
     public bool IsGameOver()
