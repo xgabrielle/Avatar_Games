@@ -44,7 +44,6 @@ public class AIPlayer : MonoBehaviour
                         Debug.Log("Game over, AI lost (No valid moves)");
                         ChatManager.Instance.SendMessageToAI("");
                     }
-                    TurnManager.instance.SwitchTurn();
                     return;
                 }
             }
