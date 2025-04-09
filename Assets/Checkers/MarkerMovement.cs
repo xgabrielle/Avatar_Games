@@ -115,31 +115,32 @@ public class MarkerMovement : MonoBehaviour
 
    internal bool Jump(GameObject pawn, Vector3 startPos, Vector3 targetPos)
    {
-       Vector3 middlePos = ((startPos + targetPos) / 2);
-       Collider[] middleColliders = Physics.OverlapSphere(middlePos, 0.1f);
-
        if (!DiagonalMove(startPos, targetPos) || IsSquareOccupied(targetPos)) return false;
        
-       foreach (Collider midCol in middleColliders)
-       {
-           if (!midCol.CompareTag(GetEnemyTag(pawn))) continue;
+       var middlePos = (startPos + targetPos) * 0.5f;
+       var enemyTag = GetEnemyTag(pawn);
+      
+       Collider[] middleColliders = new Collider[1];
+       var size = Physics.OverlapSphereNonAlloc(middlePos, 0.1f, middleColliders);
+       
+       if (size == 0) return false;
 
-           GameObject jumpedMarker = midCol.gameObject;
-           var enemyTag = GetEnemyTag(pawn);
-           bool validJump = enemyTag == "WhiteMarker"
-               ? Mathf.Approximately(targetPos.z, startPos.z - 2)
-               : Mathf.Approximately(targetPos.z, startPos.z + 2);
-
-           if (validJump)
-           {
-               pawn.transform.position = targetPos;
-               pawnDestroyed = jumpedMarker;
-               Destroy(jumpedMarker);
-               return true;
-           }
-           break;
-       }
-       return false;
+       var midCol = middleColliders[0];
+       
+       if (!midCol.CompareTag(enemyTag)) return false;
+       var jumpedMarker = midCol.gameObject;
+       
+       bool validJump = enemyTag == "WhiteMarker"
+           ? Mathf.Approximately(targetPos.z, startPos.z - 2)
+           : Mathf.Approximately(targetPos.z, startPos.z + 2);
+       
+       if (!validJump) return false;
+          
+       pawn.transform.position = targetPos;
+       pawnDestroyed = jumpedMarker;
+       Destroy(jumpedMarker);
+       
+       return true;
    }
 
    public GameObject DestroyedPawn()
