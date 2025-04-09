@@ -77,15 +77,15 @@ public class MarkerMovement : MonoBehaviour
         var pawnPos = pawn.transform.position;
         foreach (Vector3 dir in PossibleMoves(pawn))
         {
-            Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
-            foreach (Collider colliders in hitColliders)
-            {
-                if (colliders.CompareTag(GetEnemyTag(pawn)))
-                {
-                    return true;
-                }
-            }
+            Collider[] hitColliders = new Collider[1];
+            var size = Physics.OverlapSphereNonAlloc(dir, 0.1f, hitColliders);
+            
+            if (size == 0) continue;
+
+            if (hitColliders[0].CompareTag(GetEnemyTag(pawn)))
+                return true;
         }
+        
         return false;
     }
 
