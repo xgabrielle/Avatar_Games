@@ -26,7 +26,7 @@ public class AIPlayer : MonoBehaviour
         {
             Vector3 pawnPos = pawn.transform.position;
 
-            var possibleMoves = MarkerMovement.PossibleMoves(pawnPos);
+            var possibleMoves = MarkerMovement.PossibleMoves(pawn);
             foreach (var move in possibleMoves)
             {
                 var moveResult = MarkerMovement.Movement.ValidateMove(pawn, pawnPos, move);

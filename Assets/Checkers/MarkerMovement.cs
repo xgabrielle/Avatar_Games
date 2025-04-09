@@ -48,31 +48,34 @@ public class MarkerMovement : MonoBehaviour
         return Mathf.Approximately(newPosX, newPosZ);
     }
 
-    internal static List<Vector3> PossibleMoves(Vector3 currentPlayerPos)
+    internal static List<Vector3> PossibleMoves(GameObject currentPlayer)
     {
         List<Vector3> validDir = new();
-        Vector3 position = currentPlayerPos;
+        Vector3 dir1 = default, dir2 = default;
+        Vector3 position = currentPlayer.transform.position;
+        validDir.Clear();
         
-        Vector3[] directions =  new[]
+        if (currentPlayer.CompareTag("WhiteMarker"))
         {
             // up
-            new Vector3(position.x + 1, position.y, position.z + 1), //R-U
-            new Vector3(position.x - 1, position.y, position.z + 1), // L-U
-            // down
-            new Vector3(position.x + 1, position.y, position.z - 1), // R-D
-            new Vector3(position.x - 1, position.y, position.z - 1)  // L-D
-        };
-        foreach (var dir in directions)
-        {
-            if (!OutOfBounds(dir))
-                validDir.Add(dir);
+            dir1 = new Vector3(position.x + 1, position.y, position.z + 1); //R-U
+            dir2 = new Vector3(position.x - 1, position.y, position.z + 1); // L-U
         }
+        if (currentPlayer.CompareTag("DarkMarker"))
+        {
+            // down
+            dir1 = new Vector3(position.x + 1, position.y, position.z - 1); // R-D
+            dir2 = new Vector3(position.x - 1, position.y, position.z - 1); // L-D
+        }
+        
+        if (!OutOfBounds(dir1)) validDir.Add(dir1);
+        if (!OutOfBounds(dir2)) validDir.Add(dir2);
         return validDir;
     }
-    internal bool GetSurroundings(GameObject pawn)
+    private bool GetSurroundings(GameObject pawn)
     {
         var pawnPos = pawn.transform.position;
-        foreach (Vector3 dir in PossibleMoves(pawnPos))
+        foreach (Vector3 dir in PossibleMoves(pawn))
         {
             Collider[] hitColliders = Physics.OverlapSphere(dir, 0.1f);
             foreach (Collider colliders in hitColliders)

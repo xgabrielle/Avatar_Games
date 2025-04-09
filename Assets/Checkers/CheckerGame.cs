@@ -96,7 +96,7 @@ public class CheckerGame : MonoBehaviour
     {
         var pawnPos = pawn.transform.position;
 
-        foreach (var possibleMove in MarkerMovement.PossibleMoves(pawnPos))
+        foreach (var possibleMove in MarkerMovement.PossibleMoves(pawn))
         {
             if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, possibleMove)) return true;
 

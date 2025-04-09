@@ -37,18 +37,12 @@ public class Player : MonoBehaviour
 
     void HandleClickOnBoard(RaycastHit hit)
     {
-        bool moveDone = false;
         targetPosition = hit.collider.transform.position + new Vector3(0,0.6f,0);
         moveResult = MarkerMovement.Movement.ValidateMove(currentMarker, currentMarkerPos, targetPosition);
         
         if (moveResult.IsValid || MarkerMovement.Movement.Jump(currentMarker, currentMarkerPos, targetPosition))
         {
             ValidMove();
-            moveDone = true;
-        }
-        
-        if (moveDone)
-        {
             TurnManager.instance.SwitchTurn();
         }
     }
