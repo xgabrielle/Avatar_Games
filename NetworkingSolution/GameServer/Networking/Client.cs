@@ -25,12 +25,13 @@ public class Client
             {
                 AutoFlush = true
             };
+            _writer.WriteLine("Hello from client");
             while (true)
             {
                 string message = _reader.ReadLine();
                 if (message == null) break;
                 Console.WriteLine($"Received: {message}");
-                _server.Broadcast(message, this);
+                _server?.Broadcast(message, this);
             }
         }
         catch (Exception ex)
@@ -40,7 +41,7 @@ public class Client
         finally
         {
             _client.Close();
-            _server.RemoveClient(this);
+            _server?.RemoveClient(this);
         }
     }
     public void Send(string message)

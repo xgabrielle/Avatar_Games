@@ -6,7 +6,7 @@ namespace GameServer.Networking;
 public class Server
 {
     private TcpListener _listener;
-    private List<Client> _clients = new();
+    private readonly List<Client> _clients = new();
     private int port = 3030;
 
     public void OnStart()
@@ -25,7 +25,7 @@ public class Server
         }
     }
 
-    public void Broadcast(string message, Client excludeClient = null)
+    public void Broadcast(string message, Client? excludeClient = null)
     {
         foreach (var client in _clients)
         {
