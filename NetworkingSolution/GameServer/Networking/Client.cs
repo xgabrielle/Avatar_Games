@@ -25,7 +25,7 @@ public class Client
             {
                 AutoFlush = true
             };
-            _writer.WriteLine("Hello from client");
+            _writer.WriteLine("Hello from Console client");
             while (true)
             {
                 string message = _reader.ReadLine();
