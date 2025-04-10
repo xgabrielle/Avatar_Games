@@ -91,3 +91,22 @@ Assets/Plugins/*
 # EXCEPTIONS (keep these in Git)
 !Assets/Plugins/DotNetEnv.dll
 !Assets/Plugins/MyOtherImportantPlugin.dll
+
+
+# === Build artifacts ===
+bin/
+obj/
+
+# === Rider / JetBrains IDE ===
+.idea/
+*.sln.iml
+*.DotSettings
+*.DotSettings.user
+
+
+# === Logs / temp ===
+*.log
+
+# === OS-specific ===
+.DS_Store
+Thumbs.db
