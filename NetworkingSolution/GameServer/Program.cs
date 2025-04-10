@@ -12,7 +12,7 @@ serverThread.Start();
 Thread clientThread = new Thread(() =>
 {
     TcpClient tcpClient = new TcpClient("127.0.0.1", 3030);
-    Client client = new Client(tcpClient, null);
+    Client client = new Client(tcpClient, null, null);
     client.Handle();
 
 });

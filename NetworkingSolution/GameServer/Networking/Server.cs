@@ -19,8 +19,15 @@ public class Server
         {
             TcpClient tcpClient = _listener.AcceptTcpClient();
             Console.WriteLine("Client is connected");
-            Client clientHandler = new Client(tcpClient, this);
+
+            string role = null!; 
+            if (_clients.Count == 0) role = "White Markers";
+            if (_clients.Count == 1) role = "Dark Markers";
+                          
+            Client clientHandler = new Client(tcpClient, this, role);
+            
             if (_clients.Count < 3) _clients.Add(clientHandler);
+            
             new Thread(clientHandler.Handle).Start();
         }
     }

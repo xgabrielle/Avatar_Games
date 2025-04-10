@@ -8,18 +8,22 @@ public class Client
     private Server _server;
     private StreamReader _reader;
     private StreamWriter _writer;
+    private string _role;
 
-    public Client (TcpClient client, Server server)
+    public Client (TcpClient client, Server server, string role) // could remove role
     {
         _client = client;
         _server = server;
+        _role = role;
     }
 
     public void Handle()
     {
         try
         {
+            Console.WriteLine($"Assigned {_role} to client {_client.Client.RemoteEndPoint}");
             using NetworkStream stream = _client.GetStream();
+            
             _reader = new StreamReader(stream);
             _writer = new StreamWriter(stream)
             {
@@ -32,6 +36,7 @@ public class Client
                 if (message == null) break;
                 Console.WriteLine($"Received: {message}");
                 _server?.Broadcast(message, this);
+
             }
         }
         catch (Exception ex)
