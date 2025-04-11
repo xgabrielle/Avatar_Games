@@ -15,5 +15,6 @@ public class TurnManager : MonoBehaviour
   public void SwitchTurn()
   {
     currentPlayer = currentPlayer == PlayerTurn.Player1 ? PlayerTurn.Player2 : PlayerTurn.Player1;
+    Debug.Log("Turn: " + currentPlayer);
   }
 }
