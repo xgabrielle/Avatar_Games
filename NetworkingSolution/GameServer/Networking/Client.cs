@@ -21,7 +21,7 @@ public class Client
     {
         try
         {
-            Console.WriteLine($"Assigned {_role} to client {_client.Client.RemoteEndPoint}");
+            
             using NetworkStream stream = _client.GetStream();
             
             _reader = new StreamReader(stream);
