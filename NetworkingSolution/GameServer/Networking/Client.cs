@@ -28,9 +28,10 @@ public class Client
             };
             _writer.WriteLine("Hello from Console client");
             while (true)
-            {
+            { 
                 string message = _reader.ReadLine();
                 if (message == null) break;
+                ProcessMessage(message);
                 Console.WriteLine($"Received: {message}");
                 _server?.Broadcast(message, this);
             }
@@ -45,6 +46,26 @@ public class Client
             _server?.RemoveClient(this);
         }
     }
+
+    void ProcessMessage(string message)
+    {
+        var (type, data) = NetworkProtocol.ParseMessage(message);
+
+        switch (type)
+        {
+            case "MOVE":
+                
+                break;
+            case "CHAT":
+                
+                break;
+            case "TURN":
+                
+                break;
+            
+        }
+    }
+    
     public void Send(string message)
     {
         try
