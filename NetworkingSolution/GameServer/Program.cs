@@ -1,5 +1,4 @@
-﻿
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using GameServer.Networking;
 
 Thread serverThread = new Thread(()=>
@@ -12,7 +11,7 @@ serverThread.Start();
 Thread clientThread = new Thread(() =>
 {
     TcpClient tcpClient = new TcpClient("127.0.0.1", 3030);
-    Client client = new Client(tcpClient, null, null);
+    Client client = new Client(tcpClient, null);
     client.Handle();
 
 });

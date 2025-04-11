@@ -4,24 +4,21 @@ namespace GameServer.Networking;
 
 public class Client
 {
-    private TcpClient _client;
-    private Server _server;
+    private readonly TcpClient _client;
+    private readonly Server _server;
     private StreamReader _reader;
     private StreamWriter _writer;
-    private string _role;
 
-    public Client (TcpClient client, Server server, string role) // could remove role
+    public Client (TcpClient client, Server server)
     {
         _client = client;
         _server = server;
-        _role = role;
     }
 
     public void Handle()
     {
         try
         {
-            
             using NetworkStream stream = _client.GetStream();
             
             _reader = new StreamReader(stream);
@@ -36,7 +33,6 @@ public class Client
                 if (message == null) break;
                 Console.WriteLine($"Received: {message}");
                 _server?.Broadcast(message, this);
-
             }
         }
         catch (Exception ex)
@@ -59,7 +55,5 @@ public class Client
         {
             Console.WriteLine($"Send error: {ex.Message}");
         }
-        
     }
-    
 }

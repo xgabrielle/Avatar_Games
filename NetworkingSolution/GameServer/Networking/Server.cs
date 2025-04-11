@@ -26,7 +26,7 @@ public class Server
             
             Console.WriteLine($"Assigned {role} to client {tcpClient.Client.RemoteEndPoint}");
             
-            Client clientHandler = new Client(tcpClient, this, role);
+            Client clientHandler = new Client(tcpClient, this);
             
             if (_clients.Count < 2) _clients.Add(clientHandler);
             
