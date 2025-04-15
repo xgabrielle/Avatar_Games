@@ -15,8 +15,8 @@ public class CheckersGameState
 public class CheckersMove
 {
     public string player;
-    public int[] from;
-    public int[] to;
+    public Vector3 from; // changed from int[]
+    public Vector3 to; // changed from int[]
 }
 
 public class GameStateManager : MonoBehaviour
@@ -28,7 +28,8 @@ public class GameStateManager : MonoBehaviour
     
     private void Start()
     {
-        instance = this;
+        if (instance == null) instance = this;
+        else Destroy(instance);
         gameState.board = new int[8, 8];
         gameState.turn = "White";
     }
@@ -67,13 +68,15 @@ public class GameStateManager : MonoBehaviour
         lastMove = new ()
         {
             player = player.CompareTag("WhiteMarker") ? "White" : "Dark",
-            from = new []{(int)start.x, (int)start.z},
-            to = new [] {(int)end.x, (int)end.z} 
+            from = new (start.x, 0, start.z),
+            to = new (end.x, 0, end.z) 
         };
         moveHistory.Add(lastMove);
         
         gameState.board[(int)start.x, (int)start.z] = 0;
         gameState.board[(int)end.x, (int)end.z] = player.CompareTag("WhiteMarker") ? 1 : 2; 
+        Debug.Log($"From: {lastMove.from}, To: {lastMove.to}, By: {lastMove.player}" );
+        
         
         gameState.turn = gameState.turn == "White" ? "Dark" : "White";
         GetBoardStateAsJSON(gameState.lastMove, lastMove.player);

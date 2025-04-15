@@ -1,5 +1,5 @@
 ﻿using System.Net.Sockets;
-
+using NetworkProtocolLib;
 namespace GameServer.Networking;
 
 public class Client
@@ -33,7 +33,7 @@ public class Client
                 if (message == null) break;
                 ProcessMessage(message);
                 Console.WriteLine($"Received: {message}");
-                _server?.Broadcast(message, this);
+                _server?.BroadcastToClient(message, this);
             }
         }
         catch (Exception ex)
@@ -54,16 +54,30 @@ public class Client
         switch (type)
         {
             case "MOVE":
-                
+                HandleMove(data);
                 break;
             case "CHAT":
-                
+                HandleChat(data);
                 break;
             case "TURN":
-                
+                _server.HandlePlayerTurn();
                 break;
             
         }
+    }
+
+    void HandleMove(string moveData)
+    {
+        Console.WriteLine($"Move by client: {moveData}");
+        _server.BroadcastToClient($"Move: {moveData}", this);
+        _server.Broadcast($"Turn: {_server.GetPlayerTurn()}");
+    }
+
+    
+
+    void HandleChat(string message)
+    {
+        
     }
     
     public void Send(string message)

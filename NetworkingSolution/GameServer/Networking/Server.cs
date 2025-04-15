@@ -7,6 +7,7 @@ public class Server
 {
     private TcpListener _listener;
     private readonly List<Client> _clients = new();
+    int currentTurnIndex = 0;
     private int port = 3030;
 
     public void OnStart()
@@ -33,8 +34,8 @@ public class Server
             new Thread(clientHandler.Handle).Start();
         }
     }
-
-    public void Broadcast(string message, Client? excludeClient = null)
+    
+    public void BroadcastToClient(string message, Client? excludeClient)
     {
         foreach (var client in _clients)
         {
@@ -43,6 +44,23 @@ public class Server
         }
     }
 
+    public void Broadcast(string message)
+    {
+        foreach (var client in _clients)
+        {
+            client.Send(message);
+        }
+    }
+    
+    public void HandlePlayerTurn()
+    {
+        currentTurnIndex = (currentTurnIndex + 1) % _clients.Count;
+    }
+    public Client GetPlayerTurn()
+    {
+        return _clients[currentTurnIndex];
+    }
+    
     public void RemoveClient(Client client)
     {
         _clients.Remove(client);
