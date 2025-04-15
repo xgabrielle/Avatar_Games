@@ -8,7 +8,8 @@ public class MarkersGenerator : MonoBehaviour
     private readonly GameObject[,] _pieces = new GameObject[8,8];
     private void Start()
     {
-        instance = this;
+        if (instance ==null) instance = this;
+        else Destroy(instance);
     }
 
     internal void StartField()

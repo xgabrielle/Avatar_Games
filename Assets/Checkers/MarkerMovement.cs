@@ -9,7 +9,8 @@ public class MarkerMovement : MonoBehaviour
     private GameObject pawnDestroyed;
     private void Start()
     {
-        Movement = this;
+        if (Movement == null) Movement = this;
+        else Destroy(Movement);
     }
 
     public class MoveResult

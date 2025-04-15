@@ -27,7 +27,9 @@ public class ChatManager : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(Instance);
+        
         DotEnv.Load();
         apiKey = Environment.GetEnvironmentVariable("API_KEY");
         _checkerGame = GetComponent<CheckerGame>();

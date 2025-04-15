@@ -12,7 +12,8 @@ public class BoardGenerator : MonoBehaviour
     
     void Start()
     {
-        instance = this;
+        if (instance ==null ) instance = this;
+        else Destroy(instance);
     }
 
     internal void BuildBoard()
