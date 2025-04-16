@@ -13,6 +13,6 @@ public class NetworkProtocol
 
     public static string CreateMessage(string type, string data)
     {
-        return $"{type} : {data}";
+        return $"{type}:{data}";
     }
 }
