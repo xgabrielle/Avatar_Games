@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using UnityEngine;
 using NetworkProtocolLib;
 
@@ -13,12 +14,13 @@ public class NetworkClient : MonoBehaviour
     private StreamWriter _writer;
     private CheckersMove _lastMove;
     public static NetworkClient Client { get; set; }
-    void Start()
+
+    async void Start()
     {
         if (Client == null) Client = this;
         else Destroy(Client);
         ConnectToServer();
-        StartCoroutine(Listen());
+        await Listen();
     }
 
     private void ConnectToServer()
@@ -51,12 +53,27 @@ public class NetworkClient : MonoBehaviour
 
     }
 
-    IEnumerator Listen()
+    private async Task Listen()
     {
-        
-            string message = _reader.ReadLine();
+        while (true)
+        {
+            if (_reader == null)
+            {
+                Debug.LogWarning("[Client] Reader is null.");
+                await Task.Delay(100);
+                continue;
+            }
+
+            string message = await _reader.ReadLineAsync();
+            if (string.IsNullOrEmpty(message))
+            {
+                await Task.Delay(100);
+                continue;
+            }
+
             Debug.Log($"[NetworkClient] Received: {message}");
-             (string type, string data) = NetworkProtocol.ParseMessage("");
+
+            var (type, data) = NetworkProtocol.ParseMessage(message);
 
             switch (type)
             {
@@ -67,8 +84,7 @@ public class NetworkClient : MonoBehaviour
                     TurnManager.instance.SwitchTurn();
                     break;
             }
-
-            yield return null;
+        }
     }
     void HandleMove(string moveData)
     {
@@ -92,7 +108,7 @@ public class NetworkClient : MonoBehaviour
     public void SendMove(Vector3 from, Vector3 to)
     {
         string moveData = $"{from.x},{from.z} - {to.x},{to.z}";
-        string message = NetworkProtocol.CreateMessage("MOVE", moveData);
+        string message = NetworkProtocol.CreateMessage("MOVE",moveData);
         
         Debug.Log($"[NetworkClient] Sending move message: {message}");
         

@@ -9,10 +9,10 @@ public class Client
     private StreamReader _reader;
     private StreamWriter _writer;
 
-    public Client (TcpClient client, Server server)
+    public Client (TcpClient client, Server? server)
     {
         _client = client;
-        _server = server;
+        _server = server!;
     }
 
     public void Handle()
@@ -27,6 +27,7 @@ public class Client
                 AutoFlush = true
             };
             _writer.WriteLine("Hello from Console client");
+            _writer.WriteLine(NetworkProtocol.CreateMessage("MOVE", "1,2-3,4"));
             while (true)
             { 
                 string message = _reader.ReadLine();
@@ -50,6 +51,7 @@ public class Client
     void ProcessMessage(string message)
     {
         var (type, data) = NetworkProtocol.ParseMessage(message);
+        Console.WriteLine($"Received: {message}");
 
         switch (type)
         {
@@ -68,12 +70,19 @@ public class Client
 
     void HandleMove(string moveData)
     {
+        Console.WriteLine($"[Server] Handling move: {moveData}");
         Console.WriteLine($"Move by client: {moveData}");
-        _server.BroadcastToClient($"Move: {moveData}", this);
-        _server.Broadcast($"Turn: {_server.GetPlayerTurn()}");
+        
+        string moveMessage = NetworkProtocol.CreateMessage("MOVE", moveData);
+        Console.WriteLine($"[Server] Sending move: {moveMessage}");
+        
+        _server.BroadcastToClient(moveMessage, this);
+
+        //_server.BroadcastToClient($"Move:{moveMessage}", this);
+        Console.WriteLine("[Server] Switching turn");
+        _server.Broadcast($"TURN:");
     }
 
-    
 
     void HandleChat(string message)
     {
@@ -84,7 +93,9 @@ public class Client
     {
         try
         {
+            Console.WriteLine($"[Server] Sending to client: {message}");
             _writer.WriteLine(message);
+            _writer.Flush();
         }
         catch (Exception ex)
         {

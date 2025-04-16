@@ -20,6 +20,10 @@ public class Server
         {
             TcpClient tcpClient = _listener.AcceptTcpClient();
             Console.WriteLine("Client is connected");
+            
+            Client clientHandler = new Client(tcpClient, this);
+            
+            if (_clients.Count < 2) _clients.Add(clientHandler);
 
             string role = null!; 
             if (_clients.Count == 0) role = "White Markers";
@@ -27,9 +31,7 @@ public class Server
             
             Console.WriteLine($"Assigned {role} to client {tcpClient.Client.RemoteEndPoint}");
             
-            Client clientHandler = new Client(tcpClient, this);
             
-            if (_clients.Count < 2) _clients.Add(clientHandler);
             
             new Thread(clientHandler.Handle).Start();
         }
@@ -46,8 +48,10 @@ public class Server
 
     public void Broadcast(string message)
     {
+        Console.WriteLine($"[Server] Broadcasting to all: {message}");
         foreach (var client in _clients)
         {
+            Console.WriteLine($"[Server] Broadcasting to {client}");
             client.Send(message);
         }
     }
@@ -66,4 +70,5 @@ public class Server
         _clients.Remove(client);
         Console.WriteLine("Client disconnected");
     }
+    
 }
