@@ -75,7 +75,7 @@ public class GameStateManager : MonoBehaviour
         
         gameState.board[(int)start.x, (int)start.z] = 0;
         gameState.board[(int)end.x, (int)end.z] = player.CompareTag("WhiteMarker") ? 1 : 2; 
-        Debug.Log($"From: {lastMove.from}, To: {lastMove.to}, By: {lastMove.player}" );
+        //Debug.Log($"From: {lastMove.from}, To: {lastMove.to}, By: {lastMove.player}" );
         
         
         gameState.turn = gameState.turn == "White" ? "Dark" : "White";
