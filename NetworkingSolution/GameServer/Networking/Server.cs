@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using System.Net.Sockets;
 
 namespace GameServer.Networking;
@@ -8,6 +9,7 @@ public class Server
     private TcpListener _listener;
     private readonly List<Client> _clients = new();
     int currentTurnIndex = 0;
+    //private string role { get; set; }
     private int port = 3030;
 
     public void OnStart()
@@ -21,16 +23,15 @@ public class Server
             TcpClient tcpClient = _listener.AcceptTcpClient();
             Console.WriteLine("Client is connected");
             
-            Client clientHandler = new Client(tcpClient, this);
-            
-            if (_clients.Count < 2) _clients.Add(clientHandler);
-
             string role = null!; 
             if (_clients.Count == 0) role = "White Markers";
             if (_clients.Count == 1) role = "Dark Markers";
             
-            Console.WriteLine($"Assigned {role} to client {tcpClient.Client.RemoteEndPoint}");
             
+            Client clientHandler = new Client(tcpClient, this, role);
+            if (_clients.Count < 2) _clients.Add(clientHandler);
+            
+            Console.WriteLine($"Assigned {role} to client {tcpClient.Client.RemoteEndPoint}");
             
             
             new Thread(clientHandler.Handle).Start();

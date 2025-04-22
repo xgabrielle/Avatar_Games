@@ -6,13 +6,15 @@ public class Client
 {
     private readonly TcpClient _client;
     private readonly Server _server;
+    private string _role;
     private StreamReader _reader;
     private StreamWriter _writer;
 
-    public Client (TcpClient client, Server? server)
+    public Client (TcpClient client, Server? server, string role)
     {
         _client = client;
         _server = server!;
+        _role = role;
     }
 
     public void Handle()
@@ -26,8 +28,9 @@ public class Client
             {
                 AutoFlush = true
             };
+            _writer.WriteLine($"Player:{_role}");
             _writer.WriteLine("Hello from Console client");
-            _writer.WriteLine(NetworkProtocol.CreateMessage("MOVE", "1,2-3,4"));
+            //_writer.WriteLine(NetworkProtocol.CreateMessage("MOVE", "1,2-3,4"));
             while (true)
             { 
                 string message = _reader.ReadLine();
@@ -78,7 +81,7 @@ public class Client
         
         _server.BroadcastToClient(moveMessage, this);
 
-        //_server.BroadcastToClient($"Move:{moveMessage}", this);
+        _server.BroadcastToClient($"Move:{moveMessage}", this);
         Console.WriteLine("[Server] Switching turn");
         _server.Broadcast($"TURN:");
     }
