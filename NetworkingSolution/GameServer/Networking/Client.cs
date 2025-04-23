@@ -6,7 +6,7 @@ public class Client
 {
     private readonly TcpClient _client;
     private readonly Server _server;
-    private string _role;
+    private readonly string _role;
     private StreamReader _reader;
     private StreamWriter _writer;
 
@@ -73,17 +73,23 @@ public class Client
 
     void HandleMove(string moveData)
     {
-        Console.WriteLine($"[Server] Handling move: {moveData}");
         Console.WriteLine($"Move by client: {moveData}");
         
         string moveMessage = NetworkProtocol.CreateMessage("MOVE", moveData);
+        
         Console.WriteLine($"[Server] Sending move: {moveMessage}");
         
-        _server.BroadcastToClient(moveMessage, this);
-
         _server.BroadcastToClient($"Move:{moveMessage}", this);
-        Console.WriteLine("[Server] Switching turn");
-        _server.Broadcast($"TURN:");
+        
+        var nextTurnClient = _server.GetPlayerTurn();
+        
+        string role = nextTurnClient._role;
+        
+        Console.WriteLine($"[Server] Switching turn to {role}");
+        
+        string turnMessage = NetworkProtocol.CreateMessage("TURN", role);
+        
+        _server.Broadcast(turnMessage);
     }
 
 
