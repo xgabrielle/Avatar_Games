@@ -80,7 +80,7 @@ public class NetworkClient : MonoBehaviour
                 case "MOVE":
                     HandleMove(data);
                     break;
-                case "TURN":
+                case "TURN ":
                     TurnManager.instance.SwitchTurn();
                     break;
             }

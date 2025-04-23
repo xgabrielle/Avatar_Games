@@ -29,14 +29,12 @@ public class Client
                 AutoFlush = true
             };
             _writer.WriteLine($"Player:{_role}");
-            _writer.WriteLine("Hello from Console client");
-            //_writer.WriteLine(NetworkProtocol.CreateMessage("MOVE", "1,2-3,4"));
+            //_writer.WriteLine("Hello from Console client");
             while (true)
             { 
                 string message = _reader.ReadLine();
                 if (message == null) break;
                 ProcessMessage(message);
-                Console.WriteLine($"Received: {message}");
                 _server?.BroadcastToClient(message, this);
             }
         }
@@ -81,13 +79,13 @@ public class Client
         
         _server.BroadcastToClient($"Move:{moveMessage}", this);
         
-        var nextTurnClient = _server.GetPlayerTurn();
+        ProcessMessage("TURN");
+        var nextTurnPlayer = _server.GetPlayerTurn()._role;
         
-        string role = nextTurnClient._role;
+        Console.WriteLine($"[Server] Switching turn to {nextTurnPlayer}");
         
-        Console.WriteLine($"[Server] Switching turn to {role}");
         
-        string turnMessage = NetworkProtocol.CreateMessage("TURN", role);
+        string turnMessage = NetworkProtocol.CreateMessage("TURN", nextTurnPlayer);
         
         _server.Broadcast(turnMessage);
     }
