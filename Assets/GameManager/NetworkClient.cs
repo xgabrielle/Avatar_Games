@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using NetworkProtocolLib;
 
+public class RoleManager
+{
+    public static string role;
+}
 public class NetworkClient : MonoBehaviour
 {
     private TcpClient _tcpClient;
@@ -36,6 +40,7 @@ public class NetworkClient : MonoBehaviour
             if (roleMessage.StartsWith("Player:"))
             {
                 string role = roleMessage.Split(":")[1];
+                RoleManager.role = role;
                 Debug.Log($"You are role: {role}");
             }
             

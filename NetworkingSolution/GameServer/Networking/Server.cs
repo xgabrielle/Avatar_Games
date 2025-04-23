@@ -31,6 +31,7 @@ public class Server
             Client clientHandler = new Client(tcpClient, this, role);
             if (_clients.Count < 2) _clients.Add(clientHandler);
             
+            clientHandler.Send($"Player: {role}");
             Console.WriteLine($"Assigned {role} to client {tcpClient.Client.RemoteEndPoint}");
             
             
