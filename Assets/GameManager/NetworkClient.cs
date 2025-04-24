@@ -99,7 +99,7 @@ public class NetworkClient : MonoBehaviour
                 case "MOVE":
                     HandleMove(data);
                     break;
-                case "TURN ":
+                case "TURN":
                     TurnManager.instance.SwitchTurn();
                     break;
             }
@@ -107,7 +107,9 @@ public class NetworkClient : MonoBehaviour
     }
     void HandleMove(string moveData)
     {
-        Debug.Log($"[NetworkClient] Received MOVE from: {moveData}");
+        //Debug.Log($"[NetworkClient] Received MOVE from: {moveData}");
+        Debug.Log($"[NetworkClient] I am seeing a move from: {moveData}");
+
         string[] parts = moveData.Split("-");
 
         Vector3Int from = ParseCoordinates(parts[0]);
