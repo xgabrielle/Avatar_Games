@@ -9,7 +9,6 @@ public class Server
     private TcpListener _listener;
     private readonly List<Client> _clients = new();
     int currentTurnIndex = 0;
-    //private string role { get; set; }
     private int port = 3030;
 
     public void OnStart()
@@ -43,6 +42,7 @@ public class Server
     {
         foreach (var client in _clients)
         {
+            Console.WriteLine($"[Server] Broadcast to Client: {message}");
             if (client != excludeClient)
                 client.Send(message);
         }
@@ -50,10 +50,9 @@ public class Server
 
     public void Broadcast(string message)
     {
-        Console.WriteLine($"[Server] Broadcasting to all: {message}");
         foreach (var client in _clients)
         {
-            Console.WriteLine($"[Server] Broadcasting to {client}");
+            Console.WriteLine($"[Server] Broadcasting to all: {message}");
             client.Send(message);
         }
     }
