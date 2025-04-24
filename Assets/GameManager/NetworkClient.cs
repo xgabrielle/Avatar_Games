@@ -47,8 +47,10 @@ public class NetworkClient : MonoBehaviour
             _stream = _tcpClient.GetStream();
             _reader = new StreamReader(_stream);
             _writer = new StreamWriter(_stream);
+            
             string roleMessage = _reader.ReadLine();
             Debug.Log("Connect to Server Unity");
+            
             if (roleMessage!.StartsWith("Player:"))
             {
                 string role = roleMessage.Split(":")[1];
@@ -111,6 +113,7 @@ public class NetworkClient : MonoBehaviour
         Vector3Int from = ParseCoordinates(parts[0]);
         Vector3Int to = ParseCoordinates(parts[1]);
 
+        _lastMove = new CheckersMove();
         _lastMove.from = from;
         _lastMove.to = to;
         TurnManager.instance.SwitchTurn();
