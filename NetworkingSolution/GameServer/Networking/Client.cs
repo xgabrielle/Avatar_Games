@@ -7,29 +7,29 @@ public class Client
     private readonly TcpClient _client;
     private readonly Server _server;
     private readonly string _role;
-    private StreamReader _reader;
-    private StreamWriter _writer;
+    private readonly StreamReader _reader;
+    private readonly StreamWriter _writer;
 
     public Client (TcpClient client, Server? server, string role)
     {
         _client = client;
         _server = server!;
         _role = role;
+
+        var stream = _client.GetStream();
+        _reader = new StreamReader(stream);
+        _writer = new StreamWriter(stream)
+        {
+            AutoFlush = true
+        };
     }
 
     public void Handle()
     {
         try
         {
-            using NetworkStream stream = _client.GetStream();
-            
-            _reader = new StreamReader(stream);
-            _writer = new StreamWriter(stream)
-            {
-                AutoFlush = true
-            };
             _writer.WriteLine($"Player:{_role}");
-            //_writer.WriteLine("Hello from Console client");
+            
             while (true)
             { 
                 string message = _reader.ReadLine();
@@ -71,23 +71,16 @@ public class Client
 
     void HandleMove(string moveData)
     {
-        Console.WriteLine($"Move by client: {moveData}");
-        
         string moveMessage = NetworkProtocol.CreateMessage("MOVE", moveData);
-        
-        Console.WriteLine($"[Server] Sending move: {moveMessage}");
-        
         _server.BroadcastToClient($"Move:{moveMessage}", this);
         
         ProcessMessage("TURN");
+        
         var nextTurnPlayer = _server.GetPlayerTurn()._role;
+        string turnMessage = NetworkProtocol.CreateMessage("TURN", nextTurnPlayer);
+        _server.Broadcast(turnMessage);
         
         Console.WriteLine($"[Server] Switching turn to {nextTurnPlayer}");
-        
-        
-        string turnMessage = NetworkProtocol.CreateMessage("TURN", nextTurnPlayer);
-        
-        _server.Broadcast(turnMessage);
     }
 
 
@@ -100,9 +93,9 @@ public class Client
     {
         try
         {
-            Console.WriteLine($"[Server] Sending to client: {message}");
             _writer.WriteLine(message);
             _writer.Flush();
+            Console.WriteLine($"[Server] Sending to client: {message}");
         }
         catch (Exception ex)
         {
