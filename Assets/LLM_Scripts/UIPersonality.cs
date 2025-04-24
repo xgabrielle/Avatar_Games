@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +29,7 @@ public class UIPersonality : MonoBehaviour
         {
             case "AI" or "VS":
                 GetOpponentType(buttonName);
+                UIPlayerRole.instance.SetRole();
                 break;
             case "Funny" or "Expert":
                 SetAIPersonality(buttonName);
@@ -61,6 +64,7 @@ public class UIPersonality : MonoBehaviour
                 break;
             case "VS":
                 GameManager.Instance.currentGameMode = GameMode.LocalPlayer;
+                NetworkClient.Client.StartMultiplayerConnection();
                 GameManager.Instance.SetGame();
                 //vsTypePanel.SetActive(true);
                 BoardGenerator.instance.BuildBoard();

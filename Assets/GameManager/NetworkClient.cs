@@ -8,7 +8,7 @@ using NetworkProtocolLib;
 
 public class RoleManager
 {
-    public static string role;
+    public static string Role;
 }
 public class NetworkClient : MonoBehaviour
 {
@@ -17,14 +17,26 @@ public class NetworkClient : MonoBehaviour
     private StreamReader _reader;
     private StreamWriter _writer;
     private CheckersMove _lastMove;
-    public static NetworkClient Client { get; set; }
+    public static NetworkClient Client { get; private set; }
 
-    async void Start()
+    void Start()
     {
         if (Client == null) Client = this;
         else Destroy(Client);
-        ConnectToServer();
-        await Listen();
+    }
+
+    public async void StartMultiplayerConnection()
+    {
+        try
+        {
+            ConnectToServer();
+            await Listen();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Connection error: {e.Message}");
+            throw;
+        }
     }
 
     private void ConnectToServer()
@@ -37,10 +49,10 @@ public class NetworkClient : MonoBehaviour
             _writer = new StreamWriter(_stream);
             string roleMessage = _reader.ReadLine();
             Debug.Log("Connect to Server Unity");
-            if (roleMessage.StartsWith("Player:"))
+            if (roleMessage!.StartsWith("Player:"))
             {
                 string role = roleMessage.Split(":")[1];
-                RoleManager.role = role;
+                RoleManager.Role = role;
                 Debug.Log($"You are role: {role}");
             }
             
