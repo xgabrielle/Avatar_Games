@@ -15,12 +15,12 @@ public class Server
     {
         _listener = new TcpListener(IPAddress.Any, port);
         _listener.Start();
-        Console.WriteLine($"Server start on Port {port}");
+        //Console.WriteLine($"Server start on Port {port}");
 
         while (true)
         {
             TcpClient tcpClient = _listener.AcceptTcpClient();
-            Console.WriteLine("Client is connected");
+            //Console.WriteLine("Client is connected");
             
             string role = null!; 
             if (_clients.Count == 0) role = "White Markers";
@@ -30,7 +30,7 @@ public class Server
             Client clientHandler = new Client(tcpClient, this, role);
             if (_clients.Count < 2) _clients.Add(clientHandler);
             
-            clientHandler.Send($"Player: {role}");
+            clientHandler.Send($"Player:{role}");
             Console.WriteLine($"Assigned {role} to client {tcpClient.Client.RemoteEndPoint}");
             
             
@@ -40,11 +40,14 @@ public class Server
     
     public void BroadcastToClient(string message, Client? excludeClient)
     {
+        //Console.WriteLine($"[Server] Broadcasting the message: {message}");
         foreach (var client in _clients)
         {
-            Console.WriteLine($"[Server] Broadcast to Client: {message}");
+            //Console.WriteLine($"[Server] Checking client: {client.GetHashCode()}");
             if (client != excludeClient)
+            {
                 client.Send(message);
+            }
         }
     }
 
@@ -52,7 +55,7 @@ public class Server
     {
         foreach (var client in _clients)
         {
-            Console.WriteLine($"[Server] Broadcasting to all: {message}");
+            //Console.WriteLine($"[Server] Broadcasting to all: {message}");
             client.Send(message);
         }
     }
