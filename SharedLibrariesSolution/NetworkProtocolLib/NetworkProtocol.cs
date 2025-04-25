@@ -5,9 +5,8 @@ public class NetworkProtocol
     public static (string type, string data) ParseMessage(string message)
     {
         var parts = message.Split(':', 2);
-        string type = parts[0].Trim();
-        
-        string data = parts.Length > 1 ? parts[1]:"".Trim();
+        string type = parts[0].Trim().ToUpper();
+        string data = parts.Length > 1 ? parts[1].Trim() : "";
         
         return (type, data);
     }

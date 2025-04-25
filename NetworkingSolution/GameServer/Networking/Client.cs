@@ -52,7 +52,7 @@ public class Client
     void ProcessMessage(string message)
     {
         var (type, data) = NetworkProtocol.ParseMessage(message);
-        Console.WriteLine($"Received: {message}");
+        //Console.WriteLine($"Received: {message}");
 
         switch (type)
         {
@@ -72,15 +72,13 @@ public class Client
     void HandleMove(string moveData)
     {
         string moveMessage = NetworkProtocol.CreateMessage("MOVE", moveData);
-        _server.BroadcastToClient($"Move:{moveMessage}", this);
-        
-        ProcessMessage("TURN");
-        
+        _server.BroadcastToClient(moveMessage, this);
+        Thread.Sleep(50);
+        Console.WriteLine("check what is sent: "+moveMessage);
         var nextTurnPlayer = _server.GetPlayerTurn()._role;
         string turnMessage = NetworkProtocol.CreateMessage("TURN", nextTurnPlayer);
         _server.Broadcast(turnMessage);
         
-        Console.WriteLine($"[Server] Switching turn to {nextTurnPlayer}");
     }
 
 
