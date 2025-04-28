@@ -21,7 +21,8 @@ public class Server
         {
             TcpClient tcpClient = _listener.AcceptTcpClient();
             //Console.WriteLine("Client is connected");
-            
+            Console.WriteLine($"[{DateTime.Now}] [Server] Client connected: {tcpClient.Client.RemoteEndPoint}");
+
             string role = null!; 
             if (_clients.Count == 0) role = "White Markers";
             if (_clients.Count == 1) role = "Dark Markers";

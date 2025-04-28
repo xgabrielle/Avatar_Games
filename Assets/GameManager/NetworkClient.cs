@@ -30,11 +30,13 @@ public class NetworkClient : MonoBehaviour
         try
         {
             ConnectToServer();
-            await Listen();
+            await Task.Run(() => Listen());
         }
         catch (Exception e)
         {
-            Debug.LogError($"Connection error: {e.Message}");
+            //Debug.LogError($"Connection error: {e.Message}");
+            Debug.LogError($"[{DateTime.Now}] [Unity Client] Exception: {e.Message}");
+
             throw;
         }
     }
@@ -43,13 +45,16 @@ public class NetworkClient : MonoBehaviour
     {
         try
         {
+            Debug.Log($"[{DateTime.Now}] [Unity Client] Attempting to connect to server...");
             _tcpClient = new TcpClient("127.0.0.1", 3030);
             _stream = _tcpClient.GetStream();
             _reader = new StreamReader(_stream);
             _writer = new StreamWriter(_stream);
             
             string roleMessage = _reader.ReadLine();
-            Debug.Log("Connect to Server Unity");
+            Debug.Log($"[{DateTime.Now}] [Unity <- Server] Received handshake: {roleMessage}");
+            
+
             
             if (roleMessage!.StartsWith("Player:"))
             {
@@ -66,7 +71,9 @@ public class NetworkClient : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"Connection error: {e.Message}");
+            //Debug.LogError($"Connection error: {e.Message}");
+            Debug.LogError($"[{DateTime.Now}] [Unity Client] Exception: {e.Message}");
+
             throw;
         }
 
@@ -83,16 +90,20 @@ public class NetworkClient : MonoBehaviour
                 continue;
             }
 
-            string message = await _reader.ReadLineAsync();
+            string message = (await _reader.ReadLineAsync())?.Trim();
+            Debug.Log($"[{DateTime.Now}] [Unity <- Server] RAW RECEIVE: '{message}'");
+            //Debug.Log($"[RAW RECEIVE] '{message}'");
+
             if (string.IsNullOrEmpty(message))
             {
                 await Task.Delay(100);
                 continue;
             }
 
-            Debug.Log($"[NetworkClient] Received: {message}");
+            //Debug.Log($"[NetworkClient] Received: {message}");
 
             var (type, data) = NetworkProtocol.ParseMessage(message);
+            Debug.Log($"[{DateTime.Now}] [Unity Client] Parsed: type={type}, data={data}");
 
             switch (type)
             {
@@ -118,7 +129,7 @@ public class NetworkClient : MonoBehaviour
         _lastMove = new CheckersMove();
         _lastMove.from = from;
         _lastMove.to = to;
-        TurnManager.instance.SwitchTurn();
+        //TurnManager.instance.SwitchTurn();
     }
 
     Vector3Int ParseCoordinates(string coordinates)
@@ -131,10 +142,12 @@ public class NetworkClient : MonoBehaviour
     {
         string moveData = $"{from.x},{from.z} - {to.x},{to.z}";
         string message = NetworkProtocol.CreateMessage("MOVE",moveData);
-        
-        Debug.Log($"[NetworkClient] Sending move message: {message}");
+        Debug.Log($"[{DateTime.Now}] [Unity -> Server] Sending move: {message}");
+
+        //Debug.Log($"[NetworkClient] Sending move message: {message}");
         
         _writer.WriteLine(message);
         _writer.Flush();
+        Debug.Log($"[{DateTime.Now}] [Unity -> Server] Sent: Hello from unity client");
     }
 }
