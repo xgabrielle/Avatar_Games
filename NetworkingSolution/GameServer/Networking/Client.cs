@@ -76,12 +76,12 @@ public class Client
     {
         string moveMessage = NetworkProtocol.CreateMessage("MOVE", moveData);
         _server.BroadcastToClient(moveMessage, this);
-        //Thread.Sleep(50);
+        Thread.Sleep(50);
         Console.WriteLine("check what is sent: "+moveMessage);
         // Send to unity client
-        //var nextTurnPlayer = _server.GetPlayerTurn()._role;
-        //string turnMessage = NetworkProtocol.CreateMessage("TURN", nextTurnPlayer);
-        _server.Broadcast(moveMessage);
+        var nextTurnPlayer = _server.GetPlayerTurn()._role;
+        string turnMessage = NetworkProtocol.CreateMessage("TURN", nextTurnPlayer);
+        _server.Broadcast(turnMessage);
         
     }
 

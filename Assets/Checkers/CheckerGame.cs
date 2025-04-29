@@ -27,10 +27,10 @@ public class CheckerGame : MonoBehaviour
 
         switch (TurnManager.instance.currentPlayer)
         {
-            case PlayerTurn.Player1:
+            case PlayerTurn.White:
                 Player1();
                 break;
-            case PlayerTurn.Player2:
+            case PlayerTurn.Dark:
                 Player2();
                 break;
             default:
