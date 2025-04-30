@@ -10,17 +10,17 @@ public class Server
     private readonly List<Client> _clients = new();
     int currentTurnIndex = 0;
     private int port = 3030;
+    private bool gameStarting = true;
 
     public void OnStart()
     {
         _listener = new TcpListener(IPAddress.Any, port);
         _listener.Start();
-        //Console.WriteLine($"Server start on Port {port}");
 
         while (true)
         {
             TcpClient tcpClient = _listener.AcceptTcpClient();
-            //Console.WriteLine("Client is connected");
+            
             Console.WriteLine($"[{DateTime.Now}] [Server] Client connected: {tcpClient.Client.RemoteEndPoint}");
 
             string role = null!; 
@@ -33,18 +33,26 @@ public class Server
             
             clientHandler.Send($"Player:{role}");
             Console.WriteLine($"Assigned {role} to client {tcpClient.Client.RemoteEndPoint}");
-            
-            
+
             new Thread(clientHandler.Handle).Start();
+            
+            if (_clients.Count == 2)
+            {
+                Console.WriteLine($"[{DateTime.Now}] [Server] Game is ready to start with 2 players");
+                
+                string initialTurnMessage = NetworkProtocolLib.NetworkProtocol.CreateMessage("TURN", _clients[currentTurnIndex].GetRole());
+                Broadcast(initialTurnMessage);
+                
+                Thread.Sleep(500); // Give time for initial messages
+                gameStarting = false;
+            }
         }
     }
     
     public void BroadcastToClient(string message, Client? excludeClient)
     {
-        //Console.WriteLine($"[Server] Broadcasting the message: {message}");
         foreach (var client in _clients)
         {
-            //Console.WriteLine($"[Server] Checking client: {client.GetHashCode()}");
             if (client != excludeClient)
             {
                 client.Send(message);
@@ -56,7 +64,6 @@ public class Server
     {
         foreach (var client in _clients)
         {
-            //Console.WriteLine($"[Server] Broadcasting to all: {message}");
             client.Send(message);
         }
     }
@@ -64,6 +71,7 @@ public class Server
     public void HandlePlayerTurn()
     {
         currentTurnIndex = (currentTurnIndex + 1) % _clients.Count;
+        Console.WriteLine($"[{DateTime.Now}] [Server] Turn changed to player: {_clients[currentTurnIndex].GetRole()}");
     }
     public Client GetPlayerTurn()
     {
@@ -75,5 +83,9 @@ public class Server
         _clients.Remove(client);
         Console.WriteLine("Client disconnected");
     }
-    
+
+    public bool IsGameStarting()
+    {
+        return gameStarting;
+    }
 }
