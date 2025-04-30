@@ -9,7 +9,9 @@ public class Client
     private readonly string _role;
     private readonly StreamReader _reader;
     private readonly StreamWriter _writer;
-
+    
+    // Track if a move was made
+    private bool _moveProcessed = false;
     public Client (TcpClient client, Server? server, string role)
     {
         _client = client;
@@ -36,7 +38,8 @@ public class Client
                 if (message == null) break;
                 Console.WriteLine($"[{DateTime.Now}] [Server <- {_role}] Received: {message}");
                 ProcessMessage(message);
-                _server?.BroadcastToClient(message, this);
+                
+                //_server?.BroadcastToClient(message, this);
             }
         }
         catch (Exception ex)
@@ -66,7 +69,16 @@ public class Client
                 HandleChat(data);
                 break;
             case "TURN":
-                _server.HandlePlayerTurn();
+                if (_moveProcessed || _server.IsGameStarting())
+                {
+                    //_server.HandlePlayerTurn();
+                    _moveProcessed = false;
+                    //_server.BroadcastToClient(message,this);
+                }
+                else Console.WriteLine($"[{DateTime.Now}] [Server] Warning: TURN message received without a preceding MOVE. Ignoring.");
+                break;
+            default:
+                _server.BroadcastToClient(message,this);
                 break;
             
         }
@@ -74,11 +86,18 @@ public class Client
 
     void HandleMove(string moveData)
     {
+        _moveProcessed = true;
         string moveMessage = NetworkProtocol.CreateMessage("MOVE", moveData);
+        
+        this.Send(moveMessage);
+        Console.WriteLine($"[{DateTime.Now}] [Server] Sent move confirmation to {_role}: {moveMessage}");
+        
         _server.BroadcastToClient(moveMessage, this);
-        Thread.Sleep(50);
+        
+        Thread.Sleep(100);
         Console.WriteLine("check what is sent: "+moveMessage);
-        // Send to unity client
+        
+        _server.HandlePlayerTurn();
         var nextTurnPlayer = _server.GetPlayerTurn()._role;
         string turnMessage = NetworkProtocol.CreateMessage("TURN", nextTurnPlayer);
         _server.Broadcast(turnMessage);
@@ -105,5 +124,10 @@ public class Client
             //Console.WriteLine($"Send error: {ex.Message}");
             Console.WriteLine($"[{DateTime.Now}] [Send Error] {ex.Message}");
         }
+    }
+
+    public string GetRole()
+    {
+        return _role;
     }
 }
