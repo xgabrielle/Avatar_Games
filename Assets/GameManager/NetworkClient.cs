@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using NetworkProtocolLib;
@@ -113,6 +114,7 @@ public class NetworkClient : MonoBehaviour
     }
     void HandleMove(string moveData)
     {
+        
         Debug.Log($"[NetworkClient] I am seeing a move from: {moveData}");
 
         string[] parts = moveData.Split("-");
@@ -123,9 +125,34 @@ public class NetworkClient : MonoBehaviour
         _lastMove = new CheckersMove();
         _lastMove.from = from;
         _lastMove.to = to;
-        
-        TurnManager.instance.SwitchTurn();
+        MainThreadDispatcher.Run(() =>
+        {
+            MovePawn(from, to);
+            TurnManager.instance.SwitchTurn();
+        });
 
+    }
+    
+    public void MovePawn(Vector3Int from, Vector3Int to)
+    {
+        Vector3 worldFrom = new Vector3(from.x, 0, from.z);
+        Vector3 worldTo = new Vector3(to.x, 0, to.z);
+       
+        Collider[] hits = Physics.OverlapSphere(worldFrom, 0.1f);
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("WhiteMarker") || hit.CompareTag("DarkMarker"))
+            {
+                GameObject pawn = hit.gameObject;
+                Debug.Log($"[MovePawn] Found pawn at {from}, moving to {to}");
+
+                // Move the pawn physically
+                pawn.transform.position = worldTo;
+                return;
+            }
+        }
+
+        Debug.LogWarning($"[MovePawn] No pawn found at {from} to move.");
     }
 
     void HandleTurn()
