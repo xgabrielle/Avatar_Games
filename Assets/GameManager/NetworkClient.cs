@@ -34,7 +34,6 @@ public class NetworkClient : MonoBehaviour
         }
         catch (Exception e)
         {
-            //Debug.LogError($"Connection error: {e.Message}");
             Debug.LogError($"[{DateTime.Now}] [Unity Client] Exception: {e.Message}");
 
             throw;
@@ -71,7 +70,6 @@ public class NetworkClient : MonoBehaviour
         }
         catch (Exception e)
         {
-            //Debug.LogError($"Connection error: {e.Message}");
             Debug.LogError($"[{DateTime.Now}] [Unity Client] Exception: {e.Message}");
 
             throw;
@@ -92,15 +90,12 @@ public class NetworkClient : MonoBehaviour
 
             string message = (await _reader.ReadLineAsync())?.Trim();
             Debug.Log($"[{DateTime.Now}] [Unity <- Server] RAW RECEIVE: '{message}'");
-            //Debug.Log($"[RAW RECEIVE] '{message}'");
 
             if (string.IsNullOrEmpty(message))
             {
                 await Task.Delay(100);
                 continue;
             }
-
-            //Debug.Log($"[NetworkClient] Received: {message}");
 
             var (type, data) = NetworkProtocol.ParseMessage(message);
             Debug.Log($"[{DateTime.Now}] [Unity Client] Parsed: type={type}, data={data}");
@@ -111,14 +106,13 @@ public class NetworkClient : MonoBehaviour
                     HandleMove(data);
                     break;
                 case "TURN":
-                    TurnManager.instance.SwitchTurn();
+                    HandleTurn();
                     break;
             }
         }
     }
     void HandleMove(string moveData)
     {
-        //Debug.Log($"[NetworkClient] Received MOVE from: {moveData}");
         Debug.Log($"[NetworkClient] I am seeing a move from: {moveData}");
 
         string[] parts = moveData.Split("-");
@@ -129,7 +123,14 @@ public class NetworkClient : MonoBehaviour
         _lastMove = new CheckersMove();
         _lastMove.from = from;
         _lastMove.to = to;
-        //TurnManager.instance.SwitchTurn();
+        
+        TurnManager.instance.SwitchTurn();
+
+    }
+
+    void HandleTurn()
+    {
+        Debug.Log($"{TurnManager.instance.currentPlayer} turn to play");
     }
 
     Vector3Int ParseCoordinates(string coordinates)
@@ -143,8 +144,7 @@ public class NetworkClient : MonoBehaviour
         string moveData = $"{from.x},{from.z} - {to.x},{to.z}";
         string message = NetworkProtocol.CreateMessage("MOVE",moveData);
         Debug.Log($"[{DateTime.Now}] [Unity -> Server] Sending move: {message}");
-
-        //Debug.Log($"[NetworkClient] Sending move message: {message}");
+        
         
         _writer.WriteLine(message);
         _writer.Flush();
