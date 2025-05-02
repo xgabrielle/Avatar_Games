@@ -16,7 +16,7 @@ public class MainThreadDispatcher : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null && instance == this) instance = this;
+        if (instance == null) instance = this;
         else Destroy(gameObject);
     }
 
