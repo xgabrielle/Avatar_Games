@@ -133,9 +133,11 @@ public class NetworkClient : MonoBehaviour
                 Debug.Log("No pawn to move");
                 return;
             }
-            MarkersGenerator.instance.UpdatePawns(pawn, from, to);
             Vector3 targetPos = new Vector3(to.x, 0.6f, to.z);
+            Vector3 startPos = new Vector3(from.x, 0.6f, from.z);
             pawn.transform.position = targetPos;
+            
+            MarkersGenerator.instance.UpdatePawns(pawn, startPos, targetPos);
             TurnManager.instance.SwitchTurn();
         });
 

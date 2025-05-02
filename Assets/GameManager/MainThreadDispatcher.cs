@@ -22,6 +22,8 @@ public class MainThreadDispatcher : MonoBehaviour
 
     private void Update()
     {
+        if (_actions.IsEmpty) return;
+
         while (_actions.TryDequeue(out var action))
         {
             action.Invoke();
