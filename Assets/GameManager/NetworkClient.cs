@@ -123,8 +123,8 @@ public class NetworkClient : MonoBehaviour
         Vector3Int to = ParseCoordinates(parts[1]);
 
         _lastMove = new CheckersMove();
-        _lastMove.from = from;
-        _lastMove.to = to;
+        _lastMove.from = new int[] { from.x, from.y, from.z };
+        _lastMove.to = new int[] { to.x, to.y, to.z };
         MainThreadDispatcher.Run(() =>
         {
             GameObject pawn = GetPawn(from);

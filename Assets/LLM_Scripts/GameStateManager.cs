@@ -15,8 +15,8 @@ public class CheckersGameState
 public class CheckersMove
 {
     public string player;
-    public Vector3 from; // changed from int[]
-    public Vector3 to; // changed from int[]
+    public int[] from;
+    public int[] to;
 }
 
 public class GameStateManager : MonoBehaviour
@@ -68,8 +68,8 @@ public class GameStateManager : MonoBehaviour
         lastMove = new ()
         {
             player = player.CompareTag("WhiteMarker") ? "White" : "Dark",
-            from = new (start.x, 0, start.z),
-            to = new (end.x, 0, end.z) 
+            from = new [] {(int)start.x, (int)start.y, (int)start.z},
+            to = new [] {(int)start.x, (int)start.y, (int)start.z} 
         };
         moveHistory.Add(lastMove);
         
