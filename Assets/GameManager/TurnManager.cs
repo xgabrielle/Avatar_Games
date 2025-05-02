@@ -16,15 +16,12 @@ public class TurnManager : MonoBehaviour
   public void SwitchTurn()
   {
     currentPlayer = currentPlayer == PlayerTurn.White ? PlayerTurn.Dark : PlayerTurn.White;
-    Debug.Log($"[{DateTime.Now}] [TurnManager] Turn switched to: {currentPlayer}");
   }
 
   public bool IsMyTurn()
   {
     bool isMyTurn = (currentPlayer == PlayerTurn.White && RoleManager.Role == "White Markers") ||
                    (currentPlayer == PlayerTurn.Dark && RoleManager.Role == "Dark Markers");
-    
-    Debug.Log($"[{DateTime.Now}] [TurnManager] Is my turn: {isMyTurn} (Current: {currentPlayer}, My Role: {RoleManager.Role})");
     return isMyTurn;
   }
 }

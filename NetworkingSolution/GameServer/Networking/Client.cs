@@ -71,9 +71,7 @@ public class Client
             case "TURN":
                 if (_moveProcessed || _server.IsGameStarting())
                 {
-                    //_server.HandlePlayerTurn();
                     _moveProcessed = false;
-                    //_server.BroadcastToClient(message,this);
                 }
                 else Console.WriteLine($"[{DateTime.Now}] [Server] Warning: TURN message received without a preceding MOVE. Ignoring.");
                 break;
