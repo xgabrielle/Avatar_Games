@@ -10,7 +10,7 @@ public class TurnManager : MonoBehaviour
   private void Start()
   {
     if (instance == null) instance = this;
-    else Destroy(instance);
+    else Destroy(gameObject);
   }
 
   public void SwitchTurn()
