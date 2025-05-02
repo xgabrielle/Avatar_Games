@@ -127,32 +127,35 @@ public class NetworkClient : MonoBehaviour
         _lastMove.to = to;
         MainThreadDispatcher.Run(() =>
         {
-            MovePawn(from, to);
+            GameObject pawn = GetPawn(from);
+            if (pawn == null)
+            {
+                Debug.Log("No pawn to move");
+                return;
+            }
+            MarkersGenerator.instance.UpdatePawns(pawn, from, to);
+            Vector3 targetPos = new Vector3(to.x, 0.6f, to.z);
+            pawn.transform.position = targetPos;
             TurnManager.instance.SwitchTurn();
         });
 
     }
-    
-    public void MovePawn(Vector3Int from, Vector3Int to)
+
+    GameObject GetPawn(Vector3Int from)
     {
-        Vector3 worldFrom = new Vector3(from.x, 0, from.z);
-        Vector3 worldTo = new Vector3(to.x, 0, to.z);
-       
-        Collider[] hits = Physics.OverlapSphere(worldFrom, 0.1f);
+        Vector3 worldFrom = new Vector3(from.x, 0.6f, from.z);
+        Collider[] hits = Physics.OverlapSphere(worldFrom, 0.2f);
         foreach (var hit in hits)
         {
             if (hit.CompareTag("WhiteMarker") || hit.CompareTag("DarkMarker"))
             {
                 GameObject pawn = hit.gameObject;
-                Debug.Log($"[MovePawn] Found pawn at {from}, moving to {to}");
-
-                // Move the pawn physically
-                pawn.transform.position = worldTo;
-                return;
+                return pawn;
             }
+
         }
 
-        Debug.LogWarning($"[MovePawn] No pawn found at {from} to move.");
+        return null;
     }
 
     void HandleTurn()
