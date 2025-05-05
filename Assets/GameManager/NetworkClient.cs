@@ -1,18 +1,17 @@
 using System;
-using System.Collections;
 using System.IO;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using NetworkProtocolLib;
-
+using dotenv.net;
 public class RoleManager
 {
     public static string Role;
 }
 public class NetworkClient : MonoBehaviour
 {
+    private string _ipAddress; 
     private TcpClient _tcpClient;
     private NetworkStream _stream;
     private StreamReader _reader;
@@ -22,6 +21,7 @@ public class NetworkClient : MonoBehaviour
 
     void Start()
     {
+        DotEnv.Load();
         if (Client == null) Client = this;
         else Destroy(Client);
     }
@@ -46,7 +46,7 @@ public class NetworkClient : MonoBehaviour
         try
         {
             Debug.Log($"[{DateTime.Now}] [Unity Client] Attempting to connect to server...");
-            _tcpClient = new TcpClient("127.0.0.1", 3030);
+            _tcpClient = new TcpClient(_ipAddress, 3030);
             _stream = _tcpClient.GetStream();
             _reader = new StreamReader(_stream);
             _writer = new StreamWriter(_stream);
@@ -62,7 +62,6 @@ public class NetworkClient : MonoBehaviour
                 RoleManager.Role = role;
                 Debug.Log($"You are role: {role}");
             }
-            
             _writer.WriteLine("Hello from unity client");
             _writer.Flush();
             
@@ -140,7 +139,6 @@ public class NetworkClient : MonoBehaviour
             MarkersGenerator.instance.UpdatePawns(pawn, startPos, targetPos);
             TurnManager.instance.SwitchTurn();
         });
-
     }
 
     GameObject GetPawn(Vector3Int from)
@@ -154,9 +152,7 @@ public class NetworkClient : MonoBehaviour
                 GameObject pawn = hit.gameObject;
                 return pawn;
             }
-
         }
-
         return null;
     }
 
