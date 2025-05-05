@@ -19,6 +19,8 @@ public class NetworkClient : MonoBehaviour
     private CheckersMove _lastMove;
     public static NetworkClient Client { get; private set; }
 
+    public static Action WaitingForPlayer;
+    public static Action OnPlayerConnect;
     void Start()
     {
         DotEnv.Load();
@@ -26,11 +28,11 @@ public class NetworkClient : MonoBehaviour
         else Destroy(Client);
     }
 
-    public async void StartMultiplayerConnection()
+    public async void StartMultiplayerConnection(string ip)
     {
         try
         {
-            ConnectToServer();
+            ConnectToServer(ip);
             await Task.Run(() => Listen());
         }
         catch (Exception e)
@@ -41,12 +43,12 @@ public class NetworkClient : MonoBehaviour
         }
     }
 
-    private void ConnectToServer()
+    private void ConnectToServer(string ip)
     {
         try
         {
             Debug.Log($"[{DateTime.Now}] [Unity Client] Attempting to connect to server...");
-            _tcpClient = new TcpClient(_ipAddress, 3030);
+            _tcpClient = new TcpClient(ip, 3030);
             _stream = _tcpClient.GetStream();
             _reader = new StreamReader(_stream);
             _writer = new StreamWriter(_stream);
@@ -61,6 +63,13 @@ public class NetworkClient : MonoBehaviour
                 string role = roleMessage.Split(":")[1];
                 RoleManager.Role = role;
                 Debug.Log($"You are role: {role}");
+                
+                if (role == "White Markers")
+                    WaitingForPlayer.Invoke();
+                else if (role == "Dark Markers") 
+                    OnPlayerConnect.Invoke();
+                Debug.Log($"Sent role {role} to {_tcpClient.Client.RemoteEndPoint}");
+
             }
             _writer.WriteLine("Hello from unity client");
             _writer.Flush();
@@ -178,4 +187,14 @@ public class NetworkClient : MonoBehaviour
         _writer.Flush();
         Debug.Log($"[{DateTime.Now}] [Unity -> Server] Sent: Hello from unity client");
     }
+    public void StartMultiplayer(string ip)
+    {
+        StartMultiplayerConnection(ip);
+    }
+    
+    public void OnDisconnectClicked()
+    {
+        
+    }
+
 }

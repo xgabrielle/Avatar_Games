@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -10,7 +11,8 @@ public class UIPersonality : MonoBehaviour
     [SerializeField] private GameObject opponentPanel;
     [SerializeField] private GameObject vsTypePanel;
     [SerializeField] private GameObject chatPanel;
-    
+    [SerializeField] private GameObject connectToGame;
+    [SerializeField] private GameObject waitForPlayer;
     [SerializeField] private List<Button> buttons; 
     
     private void Start()
@@ -64,15 +66,37 @@ public class UIPersonality : MonoBehaviour
                 break;
             case "VS":
                 GameManager.Instance.currentGameMode = GameMode.LocalPlayer;
-                NetworkClient.Client.StartMultiplayerConnection();
-                GameManager.Instance.SetGame();
-                //vsTypePanel.SetActive(true);
-                BoardGenerator.instance.BuildBoard();
-                MarkersGenerator.instance.StartField();
+                connectToGame.SetActive(true);
                 break;
         }
         opponentPanel.SetActive(false);
     }
 
-    
+    private void OnWaitForOpponent()
+    {
+        connectToGame.SetActive(false);
+        waitForPlayer.SetActive(true);
+        Debug.Log("connect screen is deactivated, wait is active");
+    }
+
+    void StartVSGame()
+    {
+        connectToGame.SetActive(false);
+        waitForPlayer.SetActive(false);
+        Debug.Log("wait is deactivated");
+        GameManager.Instance.SetGame();
+        BoardGenerator.instance.BuildBoard();
+        MarkersGenerator.instance.StartField();
+    }
+    private void OnEnable()
+    {
+        NetworkClient.WaitingForPlayer += OnWaitForOpponent;
+        NetworkClient.OnPlayerConnect += StartVSGame;
+    }
+
+    private void OnDisable()
+    {
+        NetworkClient.WaitingForPlayer -= OnWaitForOpponent;
+        NetworkClient.OnPlayerConnect -= StartVSGame;
+    }
 }
