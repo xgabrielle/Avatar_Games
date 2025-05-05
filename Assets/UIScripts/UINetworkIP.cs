@@ -3,21 +3,23 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using dotenv.net;
+using Unity.VisualScripting;
 
 public class UINetworkIP : MonoBehaviour
 {
-    private string SERVER_IP;
-    [SerializeField] private TextMeshProUGUI ipAddress;
+    private string _serverIP;
+    [SerializeField] private TMP_InputField ipAddress;
     [SerializeField] private Button connectButton;
     [SerializeField] private Button disconnectButton;
 
     private void Start()
     {
         DotEnv.Load();
-        ipAddress.text = SERVER_IP;
+        _serverIP = Environment.GetEnvironmentVariable("SERVER_IP");
+        ipAddress.text = _serverIP;
         connectButton.onClick.AddListener(OnClickConnect);
         disconnectButton.onClick.AddListener(OnClickDisconnect);
-        if (string.IsNullOrEmpty(SERVER_IP))
+        if (string.IsNullOrEmpty(_serverIP))
         {
             Debug.LogError("SERVER_IP not found! Make sure you have a .env file.");
         }
@@ -37,4 +39,7 @@ public class UINetworkIP : MonoBehaviour
     {
         NetworkClient.Client.OnDisconnectClicked();
     }
+    
+    
+    
 }
