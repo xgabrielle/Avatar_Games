@@ -39,6 +39,7 @@ public class Server
             if (_clients.Count == 2)
             {
                 Console.WriteLine($"[{DateTime.Now}] [Server] Game is ready to start with 2 players");
+                Broadcast("START");
                 
                 string initialTurnMessage = NetworkProtocolLib.NetworkProtocol.CreateMessage("TURN", _clients[currentTurnIndex].GetRole());
                 Broadcast(initialTurnMessage);

@@ -13,10 +13,13 @@ public class UIPersonality : MonoBehaviour
     [SerializeField] private GameObject chatPanel;
     [SerializeField] private GameObject connectToGame;
     [SerializeField] private GameObject waitForPlayer;
-    [SerializeField] private List<Button> buttons; 
+    [SerializeField] private List<Button> buttons;
+    public static UIPersonality instance { get; private set; }
     
     private void Start()
     {
+        if (instance == null) instance = this;
+        else Destroy(instance);
         foreach (var setButton in buttons)
         {
             setButton.onClick.AddListener(() => OnButtonClick(setButton.name));
@@ -31,7 +34,6 @@ public class UIPersonality : MonoBehaviour
         {
             case "AI" or "VS":
                 GetOpponentType(buttonName);
-                UIPlayerRole.instance.SetRole();
                 break;
             case "Funny" or "Expert":
                 SetAIPersonality(buttonName);
@@ -61,14 +63,15 @@ public class UIPersonality : MonoBehaviour
         {
             case "AI":
                 GameManager.Instance.currentGameMode = GameMode.AI;
-                GameManager.Instance.SetGame();
                 aiTypePanel.SetActive(true);
+                UIPlayerRole.instance.SetRole();
                 break;
             case "VS":
                 GameManager.Instance.currentGameMode = GameMode.LocalPlayer;
                 connectToGame.SetActive(true);
                 break;
         }
+        GameManager.Instance.SetGame();
         opponentPanel.SetActive(false);
     }
 
@@ -79,7 +82,7 @@ public class UIPersonality : MonoBehaviour
         Debug.Log("connect screen is deactivated, wait is active");
     }
 
-    void StartVSGame()
+    internal void StartVSGame()
     {
         connectToGame.SetActive(false);
         waitForPlayer.SetActive(false);

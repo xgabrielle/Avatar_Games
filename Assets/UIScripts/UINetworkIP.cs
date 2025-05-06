@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,10 +13,32 @@ public class UINetworkIP : MonoBehaviour
     [SerializeField] private Button connectButton;
     [SerializeField] private Button disconnectButton;
 
+    private void Awake()
+    {
+        #if UNITY_EDITOR
+        // Works in Editor
+        DotEnv.Load(); 
+        _serverIP = Environment.GetEnvironmentVariable("SERVER_IP");
+        #else
+        // Works in Build
+        string envPath = Path.Combine(Application.streamingAssetsPath, ".env");
+        foreach (string line in File.ReadAllLines(envPath))
+        {
+            if (line.StartsWith("SERVER_IP"))
+            {
+                _serverIP = line.Split('=')[1].Trim();
+                Debug.Log("SERVER CHECK: " +_serverIP);
+                break;
+            }
+        }
+        #endif
+
+        Debug.Log("SERVER IP: " + _serverIP);
+    }
     private void Start()
     {
-        DotEnv.Load();
-        _serverIP = Environment.GetEnvironmentVariable("SERVER_IP");
+        /*DotEnv.Load();
+        _serverIP = Environment.GetEnvironmentVariable("SERVER_IP");*/
         ipAddress.text = _serverIP;
         connectButton.onClick.AddListener(OnClickConnect);
         disconnectButton.onClick.AddListener(OnClickDisconnect);
@@ -33,6 +56,7 @@ public class UINetworkIP : MonoBehaviour
             Debug.Log("IP Field is empty");
         }
         NetworkClient.Client.StartMultiplayer(ip);
+        UIPlayerRole.instance.SetRole();
     }
 
     private void OnClickDisconnect()

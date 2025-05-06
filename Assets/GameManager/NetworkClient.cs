@@ -21,6 +21,7 @@ public class NetworkClient : MonoBehaviour
 
     public static Action WaitingForPlayer;
     public static Action OnPlayerConnect;
+    
     void Start()
     {
         DotEnv.Load();
@@ -47,6 +48,7 @@ public class NetworkClient : MonoBehaviour
     {
         try
         {
+            Debug.Log($"IP: {ip}");
             Debug.Log($"[{DateTime.Now}] [Unity Client] Attempting to connect to server...");
             _tcpClient = new TcpClient(ip, 3030);
             _stream = _tcpClient.GetStream();
@@ -111,6 +113,14 @@ public class NetworkClient : MonoBehaviour
 
             switch (type)
             {
+                case "START":
+                    Debug.Log("Received START message");
+                    MainThreadDispatcher.Run(() =>
+                    {
+                        UIPersonality.instance.StartVSGame();
+                        Debug.Log("First player wait sign removed");
+                    });
+                    break;
                 case "MOVE":
                     HandleMove(data);
                     break;
