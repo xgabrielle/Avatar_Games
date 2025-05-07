@@ -58,9 +58,12 @@ public class Player : MonoBehaviour
     {
         currentMarker.transform.position = moveResult.LandingPos; 
         isMarker = false;
-        
-        MarkersGenerator.instance.UpdatePawns(currentMarker, currentMarkerPos, targetPosition);
+        if (GameMode.AI == GameManager.Instance.currentGameMode)
+        {
+            MarkersGenerator.instance.UpdatePawns(currentMarker, currentMarkerPos, targetPosition);
+        }
         GameStateManager.instance.LastMove(currentMarker, currentMarkerPos, targetPosition);
+
         if (_checkerGame.HasGameOver(_checkerGame.isGameOver ? "WhiteMarker" : "DarkMarker"))
         {
             _checkerGame.isGameOver = true;
