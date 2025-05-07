@@ -54,22 +54,16 @@ public class NetworkClient : MonoBehaviour
             _writer = new StreamWriter(_stream);
             
             string roleMessage = _reader.ReadLine();
-            Debug.Log($"[{DateTime.Now}] [Unity <- Server] Received handshake: {roleMessage}");
             
             if (roleMessage!.StartsWith("Player:"))
             {
                 string role = roleMessage.Split(":")[1];
                 RoleManager.Role = role;
-                Debug.Log($"You are role: {role}");
                 
                 if (role == "White Markers")
                     WaitingForPlayer.Invoke();
-                Debug.Log($"Sent role {role} to {_tcpClient.Client.RemoteEndPoint}");
             }
             _writer.Flush();
-            
-            
-            Debug.Log($"Server response: {roleMessage}");
         }
         catch (Exception e)
         {
@@ -94,7 +88,6 @@ public class NetworkClient : MonoBehaviour
                 }
 
                 string message = (await _reader.ReadLineAsync())?.Trim();
-                Debug.Log($"[{DateTime.Now}] [Unity <- Server] RAW RECEIVE: '{message}'");
 
                 if (string.IsNullOrEmpty(message))
                 {
@@ -103,7 +96,6 @@ public class NetworkClient : MonoBehaviour
                 }
 
                 var (type, data) = NetworkProtocol.ParseMessage(message);
-                Debug.Log($"[{DateTime.Now}] [Unity Client] Parsed: type={type}, data={data}");
 
                 switch (type)
                 {
@@ -171,7 +163,6 @@ public class NetworkClient : MonoBehaviour
     {
         string moveData = $"{from.x},{from.z} - {to.x},{to.z}";
         string message = NetworkProtocol.CreateMessage("MOVE",moveData);
-        Debug.Log($"[{DateTime.Now}] [Unity -> Server] Sending move: {message}");
         
         _writer.WriteLine(message);
         _writer.Flush();
