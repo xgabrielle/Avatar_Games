@@ -82,42 +82,46 @@ public class NetworkClient : MonoBehaviour
 
     private async Task Listen()
     {
-        while (true)
+        try
         {
-            if (_reader == null)
+            while (true)
             {
-                Debug.LogWarning("[Client] Reader is null.");
-                await Task.Delay(100);
-                continue;
+                if (_reader == null)
+                {
+                    Debug.LogWarning("[Client] Reader is null.");
+                    await Task.Delay(100);
+                    continue;
+                }
+
+                string message = (await _reader.ReadLineAsync())?.Trim();
+                Debug.Log($"[{DateTime.Now}] [Unity <- Server] RAW RECEIVE: '{message}'");
+
+                if (string.IsNullOrEmpty(message))
+                {
+                    await Task.Delay(100);
+                    continue;
+                }
+
+                var (type, data) = NetworkProtocol.ParseMessage(message);
+                Debug.Log($"[{DateTime.Now}] [Unity Client] Parsed: type={type}, data={data}");
+
+                switch (type)
+                {
+                    case "START":
+                        MainThreadDispatcher.Run(() => { UIPersonality.instance.StartVSGame(); });
+                        break;
+                    case "MOVE":
+                        HandleMove(data);
+                        break;
+                    case "TURN":
+                        MainThreadDispatcher.Run(() => HandleTurn());
+                        break;
+                }
             }
-
-            string message = (await _reader.ReadLineAsync())?.Trim();
-            Debug.Log($"[{DateTime.Now}] [Unity <- Server] RAW RECEIVE: '{message}'");
-
-            if (string.IsNullOrEmpty(message))
-            {
-                await Task.Delay(100);
-                continue;
-            }
-
-            var (type, data) = NetworkProtocol.ParseMessage(message);
-            Debug.Log($"[{DateTime.Now}] [Unity Client] Parsed: type={type}, data={data}");
-
-            switch (type)
-            {
-                case "START":
-                    MainThreadDispatcher.Run(() =>
-                    {
-                        UIPersonality.instance.StartVSGame();
-                    });
-                    break;
-                case "MOVE":
-                    HandleMove(data);
-                    break;
-                case "TURN":
-                    MainThreadDispatcher.Run(() => HandleTurn());
-                    break;
-            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[Listen Loop] Exception: {ex.Message}");
         }
     }
     void HandleMove(string moveData)
