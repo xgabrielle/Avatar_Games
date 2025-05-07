@@ -43,8 +43,6 @@ public class Server
                 
                 string initialTurnMessage = NetworkProtocolLib.NetworkProtocol.CreateMessage("TURN", _clients[currentTurnIndex].GetRole());
                 Broadcast(initialTurnMessage);
-                
-                //Thread.Sleep(50); // Give time for initial messages
                 gameStarting = false;
             }
         }

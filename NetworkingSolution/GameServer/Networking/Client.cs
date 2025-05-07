@@ -30,23 +30,17 @@ public class Client
     {
         try
         {
-            //_writer.WriteLine($"Player:{_role}");
-            
             while (true)
             { 
                 string message = _reader.ReadLine();
                 if (message == null) break;
                 Console.WriteLine($"[{DateTime.Now}] [Server <- {_role}] Received: {message}");
                 ProcessMessage(message);
-                
-                //_server?.BroadcastToClient(message, this);
             }
         }
         catch (Exception ex)
         {
-            //Console.WriteLine($"Client error: {ex.Message}");
             Console.WriteLine($"[{DateTime.Now}] [Server] Exception: {ex.Message}");
-
         }
         finally
         {
@@ -58,7 +52,6 @@ public class Client
     void ProcessMessage(string message)
     {
         var (type, data) = NetworkProtocol.ParseMessage(message);
-        //Console.WriteLine($"Received: {message}");
 
         switch (type.Trim())
         {
@@ -92,7 +85,6 @@ public class Client
         _server.BroadcastToClient(moveMessage, this);
         
         Thread.Sleep(100);
-        Console.WriteLine("check what is sent: "+moveMessage);
         
         _server.HandlePlayerTurn();
         var nextTurnPlayer = _server.GetPlayerTurn()._role;
@@ -113,12 +105,10 @@ public class Client
         {
             _writer.WriteLine(message);
             _writer.Flush();
-            //Console.WriteLine($"[Server] Sending to client: {message}");
             Console.WriteLine($"[{DateTime.Now}] [Server -> {_role}] Sent: {message}");
         }
         catch (Exception ex)
         {
-            //Console.WriteLine($"Send error: {ex.Message}");
             Console.WriteLine($"[{DateTime.Now}] [Send Error] {ex.Message}");
         }
     }

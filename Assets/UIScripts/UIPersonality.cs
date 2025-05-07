@@ -79,14 +79,12 @@ public class UIPersonality : MonoBehaviour
     {
         connectToGame.SetActive(false);
         waitForPlayer.SetActive(true);
-        Debug.Log("connect screen is deactivated, wait is active");
     }
 
     internal void StartVSGame()
     {
         connectToGame.SetActive(false);
         waitForPlayer.SetActive(false);
-        Debug.Log("wait is deactivated");
         GameManager.Instance.SetGame();
         BoardGenerator.instance.BuildBoard();
         MarkersGenerator.instance.StartField();
