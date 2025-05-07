@@ -29,7 +29,7 @@ public class NetworkClient : MonoBehaviour
         else Destroy(Client);
     }
 
-    public async void StartMultiplayerConnection(string ip)
+    private async void StartMultiplayerConnection(string ip)
     {
         try
         {
@@ -55,8 +55,6 @@ public class NetworkClient : MonoBehaviour
             
             string roleMessage = _reader.ReadLine();
             Debug.Log($"[{DateTime.Now}] [Unity <- Server] Received handshake: {roleMessage}");
-            
-
             
             if (roleMessage!.StartsWith("Player:"))
             {
@@ -117,7 +115,7 @@ public class NetworkClient : MonoBehaviour
                     HandleMove(data);
                     break;
                 case "TURN":
-                    HandleTurn();
+                    MainThreadDispatcher.Run(() => HandleTurn());
                     break;
             }
         }
@@ -170,7 +168,6 @@ public class NetworkClient : MonoBehaviour
         string moveData = $"{from.x},{from.z} - {to.x},{to.z}";
         string message = NetworkProtocol.CreateMessage("MOVE",moveData);
         Debug.Log($"[{DateTime.Now}] [Unity -> Server] Sending move: {message}");
-        
         
         _writer.WriteLine(message);
         _writer.Flush();
