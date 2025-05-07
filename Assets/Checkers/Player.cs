@@ -44,9 +44,9 @@ public class Player : MonoBehaviour
         
         if (moveResult.IsValid || MarkerMovement.Movement.Jump(currentMarker, currentMarkerPos, targetPosition))
         {
+            ValidMove();
             if (GameMode.LocalPlayer == GameManager.Instance.currentGameMode)
                 NetworkClient.Client.SendMove(currentMarkerPos, targetPosition);
-            ValidMove();
         }
         if (GameMode.AI == GameManager.Instance.currentGameMode)
         {
