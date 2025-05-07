@@ -150,6 +150,7 @@ public class NetworkClient : MonoBehaviour
 
     void HandleTurn()
     {
+        TurnManager.instance.UIPlayerTurn();
         Debug.Log($"HandleMove: {TurnManager.instance.currentPlayer} turn to play");
     }
 

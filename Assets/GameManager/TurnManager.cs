@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public enum PlayerTurn { White, Dark }
@@ -6,6 +7,7 @@ public class TurnManager : MonoBehaviour
 {
   public static TurnManager instance { get; set; }
   public PlayerTurn currentPlayer = PlayerTurn.White;
+  [SerializeField] private TextMeshProUGUI playerTurn;
 
   private void Start()
   {
@@ -23,5 +25,11 @@ public class TurnManager : MonoBehaviour
     bool isMyTurn = (currentPlayer == PlayerTurn.White && RoleManager.Role == "White Markers") ||
                    (currentPlayer == PlayerTurn.Dark && RoleManager.Role == "Dark Markers");
     return isMyTurn;
+  }
+
+  internal void UIPlayerTurn()
+  {
+    string currentTurn = currentPlayer.ToString();
+    playerTurn.text = $"{currentTurn} turn to move";
   }
 }

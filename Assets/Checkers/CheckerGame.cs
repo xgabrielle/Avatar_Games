@@ -36,7 +36,7 @@ public class CheckerGame : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
+        TurnManager.instance.UIPlayerTurn();
     }
 
     void Player1()
