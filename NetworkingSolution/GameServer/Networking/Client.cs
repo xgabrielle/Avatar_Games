@@ -68,13 +68,6 @@ public class Client
             case "CHAT":
                 HandleChat(data);
                 break;
-            case "TURN":
-                if (_moveProcessed || _server.IsGameStarting())
-                {
-                    _moveProcessed = false;
-                }
-                else Console.WriteLine($"[{DateTime.Now}] [Server] Warning: TURN message received without a preceding MOVE. Ignoring.");
-                break;
             default:
                 _server.BroadcastToClient(message,this);
                 break;
@@ -84,10 +77,16 @@ public class Client
 
     void HandleMove(string moveData)
     {
+        if (_server.GetPlayerTurn() != this)
+        {
+            Send(NetworkProtocol.CreateMessage("ERROR", "Not your turn!"));
+            Console.WriteLine($"[{DateTime.Now}] [Server] Move rejected from {_role}: Not their turn.");
+            return;
+        }
         _moveProcessed = true;
         string moveMessage = NetworkProtocol.CreateMessage("MOVE", moveData);
         
-        this.Send(moveMessage);
+        Send(moveMessage);
         Console.WriteLine($"[{DateTime.Now}] [Server] Sent move confirmation to {_role}: {moveMessage}");
         
         _server.BroadcastToClient(moveMessage, this);
