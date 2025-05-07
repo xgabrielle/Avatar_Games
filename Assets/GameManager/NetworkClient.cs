@@ -48,8 +48,6 @@ public class NetworkClient : MonoBehaviour
     {
         try
         {
-            Debug.Log($"IP: {ip}");
-            Debug.Log($"[{DateTime.Now}] [Unity Client] Attempting to connect to server...");
             _tcpClient = new TcpClient(ip, 3030);
             _stream = _tcpClient.GetStream();
             _reader = new StreamReader(_stream);
@@ -68,12 +66,8 @@ public class NetworkClient : MonoBehaviour
                 
                 if (role == "White Markers")
                     WaitingForPlayer.Invoke();
-                else if (role == "Dark Markers") 
-                    OnPlayerConnect.Invoke();
                 Debug.Log($"Sent role {role} to {_tcpClient.Client.RemoteEndPoint}");
-
             }
-            _writer.WriteLine("Hello from unity client");
             _writer.Flush();
             
             
@@ -114,11 +108,9 @@ public class NetworkClient : MonoBehaviour
             switch (type)
             {
                 case "START":
-                    Debug.Log("Received START message");
                     MainThreadDispatcher.Run(() =>
                     {
                         UIPersonality.instance.StartVSGame();
-                        Debug.Log("First player wait sign removed");
                     });
                     break;
                 case "MOVE":
@@ -132,9 +124,6 @@ public class NetworkClient : MonoBehaviour
     }
     void HandleMove(string moveData)
     {
-        
-        Debug.Log($"[NetworkClient] I am seeing a move from: {moveData}");
-
         string[] parts = moveData.Split("-");
 
         Vector3Int from = ParseCoordinates(parts[0]);
@@ -162,22 +151,12 @@ public class NetworkClient : MonoBehaviour
 
     GameObject GetPawn(Vector3Int from)
     {
-        Vector3 worldFrom = new Vector3(from.x, 0.6f, from.z);
-        Collider[] hits = Physics.OverlapSphere(worldFrom, 0.2f);
-        foreach (var hit in hits)
-        {
-            if (hit.CompareTag("WhiteMarker") || hit.CompareTag("DarkMarker"))
-            {
-                GameObject pawn = hit.gameObject;
-                return pawn;
-            }
-        }
-        return null;
+        return MarkersGenerator.instance.MarkerPos()[from.x, from.z];
     }
 
     void HandleTurn()
     {
-        Debug.Log($"{TurnManager.instance.currentPlayer} turn to play");
+        Debug.Log($"HandleMove: {TurnManager.instance.currentPlayer} turn to play");
     }
 
     Vector3Int ParseCoordinates(string coordinates)
@@ -195,7 +174,6 @@ public class NetworkClient : MonoBehaviour
         
         _writer.WriteLine(message);
         _writer.Flush();
-        Debug.Log($"[{DateTime.Now}] [Unity -> Server] Sent: Hello from unity client");
     }
     public void StartMultiplayer(string ip)
     {
