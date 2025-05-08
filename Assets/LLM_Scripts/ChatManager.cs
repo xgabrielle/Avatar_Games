@@ -25,27 +25,11 @@ public class ChatManager : MonoBehaviour
     string systemMessage;
     
     private Personality currentPersonality;
-    
+
     private void Awake()
     {
-        #if UNITY_EDITOR
-        // Works in Editor
-        DotEnv.Load(); 
-        apiKey = Environment.GetEnvironmentVariable("API_KEY");
-    #else
-        // Works in Build
-        string envPath = Path.Combine(Application.streamingAssetsPath, ".env");
-        foreach (string line in File.ReadAllLines(envPath))
-        {
-            if (line.StartsWith("API_KEY"))
-            {
-                apiKey = line.Split('=')[1].Trim();
-                break;
-            }
-        }
-    #endif
-
-        Debug.Log("API Key: " + apiKey);
+        apiKey = EnvironmentLoader.Get("API_KEY");
+        Debug.Log("Loaded API KEY: " + apiKey); 
     }
 
     private void Start()
@@ -55,14 +39,8 @@ public class ChatManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject); 
         
-        /*DotEnv.Load();
-        apiKey = Environment.GetEnvironmentVariable("API_KEY");*/
         _checkerGame = GetComponent<CheckerGame>();
 
-        /*if (string.IsNullOrEmpty(apiKey))
-        {
-            Debug.LogError("API Key not found! Make sure you have a .env file.");
-        }*/
         
     }
 
@@ -81,10 +59,10 @@ public class ChatManager : MonoBehaviour
             new Message {role = "user", content = "Current Game State "+gameState}
         };
         
-        if (_checkerGame.IsGameOver())
+        /*if (_checkerGame.IsGameOver())
         {
             messages.Add(new Message { role = "user", content = "Game Over, Acknowledge this and who won." });
-        }
+        }*/
         
         var requestData = new
         {
