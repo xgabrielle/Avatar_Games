@@ -11,7 +11,9 @@ public class UIPlayerRole : MonoBehaviour
 
     private void Start()
     {
-        instance = this;
+        if (instance == null) instance = this;
+        else Destroy(instance);
+        
     }
 
     internal void SetRole()
