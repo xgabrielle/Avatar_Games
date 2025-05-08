@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIPersonality : MonoBehaviour
 {
     [SerializeField] private GameObject aiTypePanel;
     [SerializeField] private GameObject opponentPanel;
-    [SerializeField] private GameObject vsTypePanel;
     [SerializeField] private GameObject chatPanel;
     [SerializeField] private GameObject connectToGame;
     [SerializeField] private GameObject waitForPlayer;
@@ -51,10 +51,13 @@ public class UIPersonality : MonoBehaviour
                 ChatManager.Instance.SetPersonality(Personality.Expert);
                 break;
         }
+        PlayerPrefs.SetInt("IsAI", 1); // Remember it's AI mode
+        PlayerPrefs.SetString("ChatPersonality", button);
+
         chatPanel.SetActive(true);
         aiTypePanel.SetActive(false);
-        BoardGenerator.instance.BuildBoard();
-        MarkersGenerator.instance.StartField();
+
+        LoadGameScene();
     }
 
     void GetOpponentType(string button)
@@ -85,9 +88,9 @@ public class UIPersonality : MonoBehaviour
     {
         connectToGame.SetActive(false);
         waitForPlayer.SetActive(false);
-        GameManager.Instance.SetGame();
-        BoardGenerator.instance.BuildBoard();
-        MarkersGenerator.instance.StartField();
+        
+        PlayerPrefs.SetInt("IsAI", 0); // Remember it's local
+        LoadGameScene();
     }
     private void OnEnable()
     {
@@ -99,5 +102,10 @@ public class UIPersonality : MonoBehaviour
     {
         NetworkClient.WaitingForPlayer -= OnWaitForOpponent;
         NetworkClient.OnPlayerConnect -= StartVSGame;
+    }
+    
+    private void LoadGameScene()
+    {
+        SceneManager.LoadScene("Checkers");
     }
 }

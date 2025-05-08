@@ -16,11 +16,20 @@ public class CheckerGame : MonoBehaviour
 
     private void Start()
     {
+        if (!GameManager.Instance.startGame)
+        {
+            Debug.LogWarning("Game not set up from MenuScene. Using fallback setup.");
+            GameManager.Instance.SetGame();
+        }
+        
+        BoardGenerator.instance.BuildBoard();
+        MarkersGenerator.instance.StartField();
         player = GetComponent<Player>();
         aiPlayer = GetComponent<AIPlayer>();
         isGameOver = false;
     }
     
+  
     private void Update()
     {
         if (!GameManager.Instance.startGame || isGameOver) return;

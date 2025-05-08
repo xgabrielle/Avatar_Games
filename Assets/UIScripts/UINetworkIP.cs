@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using dotenv.net;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class UINetworkIP : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class UINetworkIP : MonoBehaviour
     [SerializeField] private TMP_InputField ipAddress;
     [SerializeField] private Button connectButton;
     [SerializeField] private Button disconnectButton;
+    [SerializeField] private Button returnButton;
+    [SerializeField] private Button restartButton;
+    
+    private bool isAI;
 
     private void Awake()
     {
@@ -37,11 +42,13 @@ public class UINetworkIP : MonoBehaviour
     }
     private void Start()
     {
-        /*DotEnv.Load();
-        _serverIP = Environment.GetEnvironmentVariable("SERVER_IP");*/
         ipAddress.text = _serverIP;
         connectButton.onClick.AddListener(OnClickConnect);
         disconnectButton.onClick.AddListener(OnClickDisconnect);
+        returnButton.onClick.AddListener(OnReturn);
+        restartButton.onClick.AddListener(OnRestart);
+        // Check the game mode (AI or LocalPlayer)
+        isAI = PlayerPrefs.GetInt("IsAI", 0) == 1;
         if (string.IsNullOrEmpty(_serverIP))
         {
             Debug.LogError("SERVER_IP not found! Make sure you have a .env file.");
@@ -61,7 +68,24 @@ public class UINetworkIP : MonoBehaviour
 
     private void OnClickDisconnect()
     {
-        NetworkClient.Client.OnDisconnectClicked();
+        if (!isAI)
+        {
+            NetworkClient.Client.OnDisconnectClicked(); // Disconnect from multiplayer
+        }
+        SceneManager.LoadScene("MenuScene"); // Go back to the menu scene
+    }
+    private void OnReturn()
+    {
+        SceneManager.LoadScene("MenuScene"); // Go back to the menu scene
+    }
+
+    private void OnRestart()
+    {
+        if (!isAI)
+        {
+            NetworkClient.Client.OnDisconnectClicked(); // Disconnect from multiplayer if it's a local player
+        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene to restart the game
     }
     
     
