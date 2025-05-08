@@ -13,6 +13,8 @@ public class TurnManager : MonoBehaviour
   {
     if (instance == null) instance = this;
     else Destroy(gameObject);
+
+    DontDestroyOnLoad(gameObject); 
   }
 
   public void SwitchTurn()

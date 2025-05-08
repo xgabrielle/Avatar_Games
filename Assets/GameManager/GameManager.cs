@@ -17,7 +17,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         if (Instance == null) Instance = this;
-        else Destroy(Instance);
+        else Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject); 
         
         ai = playerTwo.GetComponent<AIPlayer>();
         local = playerTwo.GetComponent<Player>();

@@ -51,7 +51,9 @@ public class ChatManager : MonoBehaviour
     private void Start()
     {
         if (Instance == null) Instance = this;
-        else Destroy(Instance);
+        else Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject); 
         
         /*DotEnv.Load();
         apiKey = Environment.GetEnvironmentVariable("API_KEY");*/

@@ -26,7 +26,9 @@ public class NetworkClient : MonoBehaviour
     {
         DotEnv.Load();
         if (Client == null) Client = this;
-        else Destroy(Client);
+        else Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject); 
     }
 
     private async void StartMultiplayerConnection(string ip)

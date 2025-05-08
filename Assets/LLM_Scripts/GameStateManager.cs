@@ -29,7 +29,9 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         if (instance == null) instance = this;
-        else Destroy(instance);
+        else Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject); 
         gameState.board = new int[8, 8];
         gameState.turn = "White";
     }
