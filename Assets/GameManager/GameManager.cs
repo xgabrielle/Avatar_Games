@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     public void SetGameMode(GameMode mode)
     {
         currentGameMode = mode;
-        SetGame(); // This already configures the player scripts based on the mode
+        SetGame();
     }
 
     internal string SetGame()

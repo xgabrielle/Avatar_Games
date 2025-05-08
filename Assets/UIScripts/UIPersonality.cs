@@ -51,9 +51,7 @@ public class UIPersonality : MonoBehaviour
                 ChatManager.Instance.SetPersonality(Personality.Expert);
                 break;
         }
-        PlayerPrefs.SetInt("IsAI", 1); // Remember it's AI mode
-        PlayerPrefs.SetString("ChatPersonality", button);
-
+        
         chatPanel.SetActive(true);
         aiTypePanel.SetActive(false);
 
@@ -74,7 +72,7 @@ public class UIPersonality : MonoBehaviour
                 connectToGame.SetActive(true);
                 break;
         }
-        //GameManager.Instance.SetGame();
+        
         opponentPanel.SetActive(false);
     }
 
@@ -88,8 +86,6 @@ public class UIPersonality : MonoBehaviour
     {
         connectToGame.SetActive(false);
         waitForPlayer.SetActive(false);
-        
-        PlayerPrefs.SetInt("IsAI", 0); // Remember it's local
         LoadGameScene();
     }
     private void OnEnable()
