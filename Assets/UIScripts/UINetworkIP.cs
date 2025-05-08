@@ -16,8 +16,6 @@ public class UINetworkIP : MonoBehaviour
     [SerializeField] private Button returnButton;
     [SerializeField] private Button restartButton;
     
-    private bool isAI;
-
     private void Awake()
     {
         _serverIP = EnvironmentLoader.Get("API_KEY");
@@ -33,8 +31,7 @@ public class UINetworkIP : MonoBehaviour
         disconnectButton.onClick.AddListener(OnClickDisconnect);
         returnButton.onClick.AddListener(OnReturn);
         restartButton.onClick.AddListener(OnRestart);
-        // Check the game mode (AI or LocalPlayer)
-        isAI = PlayerPrefs.GetInt("IsAI", 0) == 1;
+        
         if (string.IsNullOrEmpty(_serverIP))
         {
             Debug.LogError("SERVER_IP not found! Make sure you have a .env file.");
@@ -54,7 +51,7 @@ public class UINetworkIP : MonoBehaviour
 
     private void OnClickDisconnect()
     {
-        if (!isAI)
+        if (GameManager.Instance.IsLocalPlayerMode)
         {
             NetworkClient.Client.OnDisconnectClicked(); // Disconnect from multiplayer
         }
@@ -67,7 +64,7 @@ public class UINetworkIP : MonoBehaviour
 
     private void OnRestart()
     {
-        if (!isAI)
+        if (GameManager.Instance.IsLocalPlayerMode)
         {
             NetworkClient.Client.OnDisconnectClicked(); // Disconnect from multiplayer if it's a local player
         }

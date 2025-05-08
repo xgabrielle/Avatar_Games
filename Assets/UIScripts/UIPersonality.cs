@@ -65,16 +65,16 @@ public class UIPersonality : MonoBehaviour
         switch (button)
         {
             case "AI":
-                GameManager.Instance.currentGameMode = GameMode.AI;
+                GameManager.Instance.SetGameMode(GameMode.AI);
                 aiTypePanel.SetActive(true);
                 UIPlayerRole.instance.SetRole();
                 break;
             case "VS":
-                GameManager.Instance.currentGameMode = GameMode.LocalPlayer;
+                GameManager.Instance.SetGameMode(GameMode.LocalPlayer);
                 connectToGame.SetActive(true);
                 break;
         }
-        GameManager.Instance.SetGame();
+        //GameManager.Instance.SetGame();
         opponentPanel.SetActive(false);
     }
 

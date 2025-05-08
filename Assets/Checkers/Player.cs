@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
 
     internal void HandlePlayerTurn(GameObject player)
     {
-        if (GameMode.LocalPlayer == GameManager.Instance.currentGameMode)
+        if (GameManager.Instance.IsLocalPlayerMode)
             if (!TurnManager.instance.IsMyTurn()) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -45,10 +45,10 @@ public class Player : MonoBehaviour
         if (moveResult.IsValid || MarkerMovement.Movement.Jump(currentMarker, currentMarkerPos, targetPosition))
         {
             ValidMove();
-            if (GameMode.LocalPlayer == GameManager.Instance.currentGameMode)
+            if (GameManager.Instance.IsLocalPlayerMode)
                 NetworkClient.Client.SendMove(currentMarkerPos, targetPosition);
         }
-        if (GameMode.AI == GameManager.Instance.currentGameMode)
+        if (GameManager.Instance.IsAIMode)
         {
             TurnManager.instance.SwitchTurn();
         }
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     {
         currentMarker.transform.position = moveResult.LandingPos; 
         isMarker = false;
-        if (GameMode.AI == GameManager.Instance.currentGameMode)
+        if (GameManager.Instance.IsAIMode)
         {
             MarkersGenerator.instance.UpdatePawns(currentMarker, currentMarkerPos, targetPosition);
         }

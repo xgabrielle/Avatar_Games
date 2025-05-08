@@ -58,7 +58,7 @@ public class CheckerGame : MonoBehaviour
 
     void Player2()
     {
-        if (GameMode.AI == GameManager.Instance.currentGameMode)
+        if (GameManager.Instance.IsAIMode)
         {
             if (aiCoroutine == null)
                 aiCoroutine = aiPlayer.StartCoroutine(aiPlayer.GetAiMove());

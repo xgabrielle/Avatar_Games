@@ -18,7 +18,7 @@ public class UIPlayerRole : MonoBehaviour
 
     internal void SetRole()
     {
-        if (GameMode.LocalPlayer == GameManager.Instance.currentGameMode)
+        if (GameManager.Instance.IsLocalPlayerMode)
         {
             string role = RoleManager.Role;
             roleText.text = $"You are:\n{role}";
