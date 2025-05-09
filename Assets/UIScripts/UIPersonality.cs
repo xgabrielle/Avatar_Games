@@ -5,103 +5,45 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+public enum Personality
+{
+    Funny,
+    Expert
+}
 public class UIPersonality : MonoBehaviour
 {
-    [SerializeField] private GameObject aiTypePanel;
-    [SerializeField] private GameObject opponentPanel;
-    
-    [SerializeField] private GameObject connectToGame;
-    [SerializeField] private GameObject waitForPlayer;
-    [SerializeField] private List<Button> buttons;
-    public static UIPersonality instance { get; private set; }
+    public static UIPersonality instance { get; set; }
+    private Personality currentPersonality;
+    string systemMessage;
 
-    private void Start()
+    private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(instance);
-        foreach (var setButton in buttons)
-        {
-            setButton.onClick.AddListener(() => OnButtonClick(setButton.name));
-        }
+
+        DontDestroyOnLoad(gameObject); 
         
-        opponentPanel.SetActive(true);
     }
 
-    void OnButtonClick(string buttonName)
+    public void SetPersonality(Personality newPersonality)
     {
-        switch (buttonName)
+        currentPersonality = newPersonality;
+        switch (newPersonality)
         {
-            case "AI" or "VS":
-                GetOpponentType(buttonName);
+            case Personality.Funny:
+                systemMessage = "You're a kind AI that makes a few small jokes during the game and want to get the other player to laugh.";
+                //Debug.Log("Funny AI");
                 break;
-            case "Funny" or "Expert":
-                SetAIPersonality(buttonName);
-                break;
-        }
-    }
-    void SetAIPersonality(string button)
-    {
-        switch (button)
-        {
-            case "Funny":
-                ChatManager.Instance.SetPersonality(Personality.Funny);
-                break;
-            case "Expert":
-                ChatManager.Instance.SetPersonality(Personality.Expert);
+            case Personality.Expert:
+                systemMessage = "You are very good a checkers and will not hesitate to give your opinion on your components move. You start with an intimidating comment.";
+                //Debug.Log("Expert AI");
                 break;
         }
-        
-        
-        aiTypePanel.SetActive(false);
-
-        LoadGameScene();
-    }
-
-    void GetOpponentType(string button)
-    {
-        switch (button)
-        {
-            case "AI":
-                GameManager.Instance.SetGameMode(GameMode.AI);
-                aiTypePanel.SetActive(true);
-                UIPlayerRole.instance.SetRole();
-                break;
-            case "VS":
-                GameManager.Instance.SetGameMode(GameMode.LocalPlayer);
-                connectToGame.SetActive(true);
-                break;
-        }
-        
-        opponentPanel.SetActive(false);
-    }
-
-    private void OnWaitForOpponent()
-    {
-        connectToGame.SetActive(false);
-        waitForPlayer.SetActive(true);
-    }
-
-    internal void StartVSGame()
-    {
-        connectToGame.SetActive(false);
-        waitForPlayer.SetActive(false);
-        LoadGameScene();
-    }
-    private void OnEnable()
-    {
-        NetworkClient.WaitingForPlayer += OnWaitForOpponent;
-        NetworkClient.OnPlayerConnect += StartVSGame;
-    }
-
-    private void OnDisable()
-    {
-        NetworkClient.WaitingForPlayer -= OnWaitForOpponent;
-        NetworkClient.OnPlayerConnect -= StartVSGame;
     }
     
-    private void LoadGameScene()
+    internal string SetGameContext()
     {
-        SceneManager.LoadScene("Checkers");
+        return systemMessage + GameManager.Instance.SetGame();
     }
+    
 }
