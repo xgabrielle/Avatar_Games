@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 124754492}
   - component: {fileID: 124754498}
   - component: {fileID: 124754499}
+  - component: {fileID: 124754500}
   m_Layer: 0
   m_Name: CheckersGameSetup
   m_TagString: Untagged
@@ -249,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c426c74166128134f814d4df6e4104ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roleText: {fileID: 2824249410415367267, guid: 6bd779dd7b661a94fa117190f243cf87, type: 3}
+  roleText: {fileID: 1418896921}
 --- !u!114 &124754499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +264,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiChat: {fileID: 716530732}
+--- !u!114 &124754500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124754485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329eb8f48c2aebf449c7d05a4724286e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPlayer: 0
+  playerTurn: {fileID: 1550254410}
 --- !u!1 &230595575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,6 +1079,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7939923738558296870, guid: 6bd779dd7b661a94fa117190f243cf87, type: 3}
   m_PrefabInstance: {fileID: 1418896919}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1418896921 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2824249410415367267, guid: 6bd779dd7b661a94fa117190f243cf87, type: 3}
+  m_PrefabInstance: {fileID: 1418896919}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1550254408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1166,6 +1192,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4928818029956787115, guid: 4822df82168930141b1db4323a3935bb, type: 3}
   m_PrefabInstance: {fileID: 1550254408}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1550254410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 816902271796464315, guid: 4822df82168930141b1db4323a3935bb, type: 3}
+  m_PrefabInstance: {fileID: 1550254408}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1691771533
 GameObject:
   m_ObjectHideFlags: 0
