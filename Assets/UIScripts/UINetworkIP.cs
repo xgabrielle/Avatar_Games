@@ -18,14 +18,13 @@ public class UINetworkIP : MonoBehaviour
     
     private void Awake()
     {
-        _serverIP = EnvironmentLoader.Get("API_KEY");
-        Debug.Log("Loaded API KEY: " + _serverIP); 
+        _serverIP = EnvironmentLoader.Get("SERVER_IP");
+        Debug.Log("Loaded  ServerIP: " + _serverIP); 
     }
 
     private void Start()
     {
-        _serverIP = Environment.GetEnvironmentVariable("SERVER_IP");
-        Debug.Log("Loaded API KEY: " + _serverIP); 
+        Debug.Log("Loaded ServerIP: " + _serverIP); 
         ipAddress.text = _serverIP;
         connectButton.onClick.AddListener(OnClickConnect);
         disconnectButton.onClick.AddListener(OnClickDisconnect);
