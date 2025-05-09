@@ -9,11 +9,7 @@ using Newtonsoft.Json;
 using Unity.VisualScripting;
 
 
-public enum Personality
-{
-      Funny,
-      Expert
-}
+
 public class ChatManager : MonoBehaviour
 {
     private CheckerGame _checkerGame;
@@ -22,9 +18,7 @@ public class ChatManager : MonoBehaviour
 
     private string apiKey;
     private string apiUrl = "https://api.openai.com/v1/chat/completions";
-    string systemMessage;
     
-    private Personality currentPersonality;
 
     private void Awake()
     {
@@ -54,7 +48,7 @@ public class ChatManager : MonoBehaviour
 
         List<Message> messages = new List<Message>
         {
-            new Message {role = "system", content = SetGameContext()},
+            new Message {role = "system", content = UIPersonality.instance.SetGameContext()},
             new Message {role = "user", content = userMessage + "Keep the messages short"},
             new Message {role = "user", content = "Current Game State "+gameState}
         };
@@ -94,27 +88,6 @@ public class ChatManager : MonoBehaviour
         {
             Debug.LogError($"Error: {request.error}");
             Debug.LogError($"Response: {request.downloadHandler.text}"); 
-        }
-    }
-
-    string SetGameContext()
-    {
-        return systemMessage + GameManager.Instance.SetGame();
-    }
-
-    public void SetPersonality(Personality newPersonality)
-    {
-        currentPersonality = newPersonality;
-        switch (newPersonality)
-        {
-            case Personality.Funny:
-                systemMessage = "You're a kind AI that makes a few small jokes during the game and want to get the other player to laugh.";
-                //Debug.Log("Funny AI");
-                break;
-            case Personality.Expert:
-                systemMessage = "You are very good a checkers and will not hesitate to give your opinion on your components move. You start with an intimidating comment.";
-                //Debug.Log("Expert AI");
-                break;
         }
     }
 
