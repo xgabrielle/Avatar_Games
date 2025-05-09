@@ -102,7 +102,7 @@ public class NetworkClient : MonoBehaviour
                 switch (type)
                 {
                     case "START":
-                        MainThreadDispatcher.Run(() => { UIPersonality.instance.StartVSGame(); });
+                        MainThreadDispatcher.Run(() => { UIMenu.instance.StartVSGame(); });
                         break;
                     case "MOVE":
                         HandleMove(data);
