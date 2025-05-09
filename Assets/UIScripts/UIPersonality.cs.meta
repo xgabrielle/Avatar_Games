@@ -1,2 +1,16 @@
 fileFormatVersion: 2
 guid: 62d12fd38e38dbc478afd43ee81a27db
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - aiTypePanel: {instanceID: 0}
+  - opponentPanel: {instanceID: 0}
+  - chatPanel: {instanceID: 0}
+  - connectToGame: {instanceID: 0}
+  - waitForPlayer: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

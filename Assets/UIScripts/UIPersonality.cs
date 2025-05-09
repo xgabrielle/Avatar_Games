@@ -10,12 +10,12 @@ public class UIPersonality : MonoBehaviour
 {
     [SerializeField] private GameObject aiTypePanel;
     [SerializeField] private GameObject opponentPanel;
-    [SerializeField] private GameObject chatPanel;
+    
     [SerializeField] private GameObject connectToGame;
     [SerializeField] private GameObject waitForPlayer;
     [SerializeField] private List<Button> buttons;
     public static UIPersonality instance { get; private set; }
-    
+
     private void Start()
     {
         if (instance == null) instance = this;
@@ -24,7 +24,7 @@ public class UIPersonality : MonoBehaviour
         {
             setButton.onClick.AddListener(() => OnButtonClick(setButton.name));
         }
-        chatPanel.SetActive(false);
+        
         opponentPanel.SetActive(true);
     }
 
@@ -52,7 +52,7 @@ public class UIPersonality : MonoBehaviour
                 break;
         }
         
-        chatPanel.SetActive(true);
+        
         aiTypePanel.SetActive(false);
 
         LoadGameScene();
