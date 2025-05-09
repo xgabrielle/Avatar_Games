@@ -28,12 +28,12 @@ public class ChatManager : MonoBehaviour
 
     private void Awake()
     {
-        apiKey = EnvironmentLoader.Get("API_KEY");
-        Debug.Log("Loaded API KEY: " + apiKey); 
     }
 
     private void Start()
     {
+        apiKey = EnvironmentLoader.Get("API_KEY");
+        Debug.Log("Loaded API KEY: " + apiKey); 
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
