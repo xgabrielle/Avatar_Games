@@ -7,12 +7,13 @@ public class TurnManager : MonoBehaviour
 {
   public static TurnManager instance { get; set; }
   public PlayerTurn currentPlayer = PlayerTurn.White;
-  [SerializeField] private TextMeshProUGUI playerTurn;
+  [SerializeField] internal TextMeshProUGUI playerTurn;
 
   private void Start()
   {
     if (instance == null) instance = this;
-    else Destroy(instance);
+    else Destroy(gameObject);
+    DontDestroyOnLoad(gameObject);
   }
 
   public void SwitchTurn()

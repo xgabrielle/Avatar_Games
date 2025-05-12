@@ -29,9 +29,7 @@ public class ChatManager : MonoBehaviour
         apiKey = EnvironmentLoader.Get("API_KEY");
         Debug.Log("Loaded API KEY: " + apiKey); 
         if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject); 
+        else Destroy(Instance);
         
         _checkerGame = GetComponent<CheckerGame>();
 
