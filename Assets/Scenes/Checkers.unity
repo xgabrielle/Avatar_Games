@@ -273,11 +273,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 124754485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 329eb8f48c2aebf449c7d05a4724286e, type: 3}
+  m_Script: {fileID: 11500000, guid: 348c4f5d4fb0e774e9839d7779ac9134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPlayer: 0
-  playerTurn: {fileID: 1550254410}
+  playerTurnText: {fileID: 1550254410}
 --- !u!1 &230595575
 GameObject:
   m_ObjectHideFlags: 0
