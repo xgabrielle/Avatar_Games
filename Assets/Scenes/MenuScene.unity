@@ -1709,7 +1709,6 @@ MonoBehaviour:
   ipAddress: {fileID: 1909613516}
   connectButton: {fileID: 1909613517}
   disconnectButton: {fileID: 343829264}
-  returnButton: {fileID: 1866172830}
   restartButton: {fileID: 1069567376}
 --- !u!1001 &4682221135864073450
 PrefabInstance:
