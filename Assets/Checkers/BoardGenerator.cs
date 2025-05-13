@@ -33,9 +33,4 @@ public class BoardGenerator : MonoBehaviour
             }
         }
     }
-
-    void GetBoardState()
-    {
-        
-    }
 }
