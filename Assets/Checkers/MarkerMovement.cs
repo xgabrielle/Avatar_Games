@@ -19,11 +19,11 @@ public class MarkerMovement : MonoBehaviour
         public Vector3 landingPos { get; }
         public GameObject capturedPawn { get; }
 
-        public MoveResult(bool isValid = false, Vector3 landingPos =default, GameObject capturedPawn=null)
+        public MoveResult(bool isValid = false, Vector3 landingPos = default, GameObject capturedPawn = null)
         {
-            isValid = isValid;
-            landingPos = landingPos;
-            capturedPawn = capturedPawn;
+            this.isValid = isValid;
+            this.landingPos = landingPos;
+            this.capturedPawn = capturedPawn;
         }
     }
     
