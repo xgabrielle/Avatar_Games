@@ -15,9 +15,9 @@ public class MarkerMovement : MonoBehaviour
 
     public class MoveResult
     {
-        public bool IsValid { get; set; }
-        public Vector3 LandingPos { get; set; }
-        public GameObject CapturedPawn { get; set; }
+        public bool IsValid { get; }
+        public Vector3 LandingPos { get; }
+        public GameObject CapturedPawn { get; }
 
         public MoveResult(bool isValid = false, Vector3 landingPos =default, GameObject capturedPawn=null)
         {
@@ -101,10 +101,17 @@ public class MarkerMovement : MonoBehaviour
             {
                 if (midCol.CompareTag(GetEnemyTag(pawn)))
                 {
-                    if (FreeJumpSpace(start, end).Item1)
+                    if (GameManager.Instance.IsAIMode && TurnManager.instance.currentPlayer == PlayerTurn.Dark)
                     {
-                        var jumpResult = FreeJumpSpace(start, end).Item2;
-                        if (Jump(pawn, start, jumpResult)) return new MoveResult(true, jumpResult, midCol.gameObject);
+                        if (FreeJumpSpace(start, end).Item1)
+                        {
+                            var jumpResult = FreeJumpSpace(start, end).Item2;
+                            if (Jump(pawn, start, jumpResult)) return new MoveResult(true, jumpResult, midCol.gameObject);
+                        }
+                    }
+                    else
+                    {
+                        return new MoveResult(true, end, midCol.gameObject);
                     }
                 }
             } 
@@ -139,7 +146,7 @@ public class MarkerMovement : MonoBehaviour
           
        pawn.transform.position = targetPos;
        pawnDestroyed = jumpedMarker;
-       Destroy(jumpedMarker);
+       ObjectPool.Instance.Return(jumpedMarker);
        
        return true;
    }

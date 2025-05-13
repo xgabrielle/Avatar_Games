@@ -3,8 +3,6 @@ using UnityEngine;
 public class MarkersGenerator : MonoBehaviour
 {
     public static MarkersGenerator instance { get; private set; }
-    [SerializeField] internal GameObject whitePieces;
-    [SerializeField] internal GameObject redPieces;
     private readonly GameObject[,] _pieces = new GameObject[8,8];
     private void Start()
     {
@@ -19,7 +17,10 @@ public class MarkersGenerator : MonoBehaviour
             for (var column = 0; column < 3; column++)
             {
                 if ((row + column) % 2 != 0) continue;
-                GameObject piece = Instantiate(whitePieces, new Vector3(row, 0.6f, column), Quaternion.identity);
+                GameObject piece = ObjectPool.Instance.Get("White Marker");
+                piece.transform.position = new Vector3(row, 0.6f, column);
+                piece.transform.rotation = Quaternion.identity;
+                piece.SetActive(true);
                 _pieces[row, column] = piece;
             }
         }
@@ -29,7 +30,10 @@ public class MarkersGenerator : MonoBehaviour
             for (int column = 5; column < 8; column++)
             {
                 if ((row + column) % 2 != 0) continue;
-                GameObject piece = Instantiate(redPieces, new Vector3(row, 0.6f, column), Quaternion.identity);
+                GameObject piece = ObjectPool.Instance.Get("Dark Marker");
+                piece.transform.position = new Vector3(row, 0.6f, column);
+                piece.transform.rotation = Quaternion.identity;
+                piece.SetActive(true);
                 _pieces[row, column] = piece;
             }
         }

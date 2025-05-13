@@ -51,8 +51,8 @@ public class ObjectPool : MonoBehaviour
         return obj;
     }
 
-    internal void Return(string tag, GameObject obj)
+    internal void Return(GameObject obj)
     {
-        
+        obj.SetActive(false);
     }
 }

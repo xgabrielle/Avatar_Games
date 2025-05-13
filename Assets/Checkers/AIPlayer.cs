@@ -34,7 +34,7 @@ public class AIPlayer : MonoBehaviour
                 {
                     pawn.transform.position = moveResult.LandingPos;
                     if (moveResult.CapturedPawn != null)
-                        Destroy(moveResult.CapturedPawn);
+                        ObjectPool.Instance.Return(moveResult.CapturedPawn);
                     MarkersGenerator.instance.UpdatePawns(pawn, pawnPos, moveResult.LandingPos );
                     GameStateManager.instance.LastMove(pawn, pawnPos, moveResult.LandingPos);
                     if (_checkerGame.HasGameOver(_checkerGame.isGameOver ? "WhiteMarker" : "DarkMarker"))
