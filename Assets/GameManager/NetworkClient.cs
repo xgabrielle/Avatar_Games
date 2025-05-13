@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using NetworkProtocolLib;
 using dotenv.net;
+using UnityEngine.SceneManagement;
+
 public class RoleManager
 {
     public static string Role;
@@ -17,6 +19,7 @@ public class NetworkClient : MonoBehaviour
     private StreamReader _reader;
     private StreamWriter _writer;
     private CheckersMove _lastMove;
+    private bool isConnected;
     public static NetworkClient Client { get; private set; }
 
     public static Action WaitingForPlayer;
@@ -54,6 +57,7 @@ public class NetworkClient : MonoBehaviour
             _stream = _tcpClient.GetStream();
             _reader = new StreamReader(_stream);
             _writer = new StreamWriter(_stream);
+            isConnected = true;
             
             string roleMessage = _reader.ReadLine();
             
@@ -177,7 +181,22 @@ public class NetworkClient : MonoBehaviour
     
     public void OnDisconnectClicked()
     {
-        
+        if (isConnected)
+        {
+            try
+            {
+                _stream?.Close();
+                _tcpClient?.Close();
+                isConnected = false;
+                Debug.Log("Disconnected from server.");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Error during disconnect: " + ex.Message);
+            }
+        }
+
+        SceneManager.LoadScene("MenuScene");
     }
 
 }

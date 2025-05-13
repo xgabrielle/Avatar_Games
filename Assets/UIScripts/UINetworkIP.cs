@@ -13,13 +13,13 @@ public class UINetworkIP : MonoBehaviour
     [SerializeField] private TMP_InputField ipAddress;
     [SerializeField] private Button connectButton;
     [SerializeField] private Button disconnectButton;
-    //[SerializeField] private Button returnButton;
     [SerializeField] private Button restartButton;
     
     private void Awake()
     {
         _serverIP = EnvironmentLoader.Get("SERVER_IP");
         Debug.Log("Loaded  ServerIP: " + _serverIP); 
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -28,7 +28,6 @@ public class UINetworkIP : MonoBehaviour
         ipAddress.text = _serverIP;
         connectButton.onClick.AddListener(OnClickConnect);
         disconnectButton.onClick.AddListener(OnClickDisconnect);
-        //returnButton.onClick.AddListener(OnReturn);
         restartButton.onClick.AddListener(OnRestart);
         
         if (string.IsNullOrEmpty(_serverIP))
@@ -46,28 +45,25 @@ public class UINetworkIP : MonoBehaviour
         }
         NetworkClient.Client.StartMultiplayer(ip);
         UIPlayerRole.instance.SetRole();
+        disconnectButton.gameObject.SetActive(true);
     }
 
     private void OnClickDisconnect()
     {
         if (GameManager.Instance.IsLocalPlayerMode)
         {
-            NetworkClient.Client.OnDisconnectClicked(); // Disconnect from multiplayer
+            NetworkClient.Client.OnDisconnectClicked();
         }
-        SceneManager.LoadScene("MenuScene"); // Go back to the menu scene
-    }
-    private void OnReturn()
-    {
-        SceneManager.LoadScene("MenuScene"); // Go back to the menu scene
+        SceneManager.LoadScene("MenuScene");
     }
 
     private void OnRestart()
     {
         if (GameManager.Instance.IsLocalPlayerMode)
         {
-            NetworkClient.Client.OnDisconnectClicked(); // Disconnect from multiplayer if it's a local player
+            NetworkClient.Client.OnDisconnectClicked();
         }
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene to restart the game
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     
     
