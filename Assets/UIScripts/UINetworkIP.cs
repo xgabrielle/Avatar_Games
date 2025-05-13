@@ -9,14 +9,15 @@ using UnityEngine.SceneManagement;
 
 public class UINetworkIP : MonoBehaviour
 {
+    internal static UINetworkIP instance;
     private string _serverIP;
     [SerializeField] private TMP_InputField ipAddress;
     [SerializeField] private Button connectButton;
-    [SerializeField] private Button disconnectButton;
-    [SerializeField] private Button restartButton;
     
     private void Awake()
     {
+        if (instance != null) Destroy(instance);
+        else instance = this;
         _serverIP = EnvironmentLoader.Get("SERVER_IP");
         Debug.Log("Loaded  ServerIP: " + _serverIP); 
         DontDestroyOnLoad(gameObject);
@@ -27,8 +28,6 @@ public class UINetworkIP : MonoBehaviour
         Debug.Log("Loaded ServerIP: " + _serverIP); 
         ipAddress.text = _serverIP;
         connectButton.onClick.AddListener(OnClickConnect);
-        disconnectButton.onClick.AddListener(OnClickDisconnect);
-        restartButton.onClick.AddListener(OnRestart);
         
         if (string.IsNullOrEmpty(_serverIP))
         {
@@ -45,10 +44,9 @@ public class UINetworkIP : MonoBehaviour
         }
         NetworkClient.Client.StartMultiplayer(ip);
         UIPlayerRole.instance.SetRole();
-        disconnectButton.gameObject.SetActive(true);
     }
 
-    private void OnClickDisconnect()
+    internal void OnClickDisconnect()
     {
         if (GameManager.Instance.IsLocalPlayerMode)
         {
@@ -57,7 +55,7 @@ public class UINetworkIP : MonoBehaviour
         SceneManager.LoadScene("MenuScene");
     }
 
-    private void OnRestart()
+    internal void OnRestart()
     {
         if (GameManager.Instance.IsLocalPlayerMode)
         {

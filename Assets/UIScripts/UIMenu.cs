@@ -9,19 +9,21 @@ using UnityEngine.UI;
 public class UIMenu : MonoBehaviour
 {
    [SerializeField] private GameObject aiTypePanel;
-    [SerializeField] private GameObject opponentPanel;
+    [SerializeField] internal GameObject opponentPanel;
     
     [SerializeField] private GameObject connectToGame;
     [SerializeField] private GameObject waitForPlayer;
     [SerializeField] private List<Button> buttons;
+    
     public static UIMenu instance { get; private set; }
 
     private void Start()
     {
         if (instance == null) instance = this;
         else Destroy(instance);
+        DontDestroyOnLoad(gameObject);
         foreach (var setButton in buttons)
-        {
+        { 
             setButton.onClick.AddListener(() => OnButtonClick(setButton.name));
         }
         
@@ -39,13 +41,18 @@ public class UIMenu : MonoBehaviour
                 SetAIPersonality(buttonName);
                 break;
             case "ReturnButton":
-                GameManager.Instance.SetGameMode(GameMode.None);
-                UIPersonality.instance.SetPersonality(Personality.None);
-                connectToGame.SetActive(false);
-                aiTypePanel.SetActive(false);
-                opponentPanel.SetActive(true);
+                ResetGame();
                 break;
         }
+    }
+
+    internal void ResetGame()
+    {
+        GameManager.Instance.SetGameMode(GameMode.None);
+        UIPersonality.instance.SetPersonality(Personality.None);
+        connectToGame.SetActive(false);
+        aiTypePanel.SetActive(false);
+        opponentPanel.SetActive(true);
     }
     void SetAIPersonality(string button)
     {
@@ -111,6 +118,7 @@ public class UIMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Checkers");
         DeactivateButtonByName("ReturnButton");
+        //ActivateButtonByName("ExitButton");
     }
     
     public void DeactivateButtonByName(string targetName)
@@ -125,4 +133,16 @@ public class UIMenu : MonoBehaviour
         }
     }
 
+    internal void ActivateButtonByName(string targetName)
+    {
+        foreach (var button in buttons)
+        {
+            if (button.name == targetName)
+            {
+                button.gameObject.SetActive(true);
+                Debug.Log(button.gameObject.ToString());
+                break;
+            }
+        }
+    }
 }
