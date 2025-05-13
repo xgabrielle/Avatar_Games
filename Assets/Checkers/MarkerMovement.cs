@@ -5,25 +5,25 @@ using UnityEngine;
 
 public class MarkerMovement : MonoBehaviour
 {
-    public static MarkerMovement Movement { get; private set; }
-    private GameObject pawnDestroyed;
+    public static MarkerMovement movement { get; private set; }
+    private GameObject _pawnDestroyed;
     private void Start()
     {
-        if (Movement == null) Movement = this;
-        else Destroy(Movement);
+        if (movement == null) movement = this;
+        else Destroy(movement);
     }
 
     public class MoveResult
     {
-        public bool IsValid { get; }
-        public Vector3 LandingPos { get; }
-        public GameObject CapturedPawn { get; }
+        public bool isValid { get; }
+        public Vector3 landingPos { get; }
+        public GameObject capturedPawn { get; }
 
         public MoveResult(bool isValid = false, Vector3 landingPos =default, GameObject capturedPawn=null)
         {
-            IsValid = isValid;
-            LandingPos = landingPos;
-            CapturedPawn = capturedPawn;
+            isValid = isValid;
+            landingPos = landingPos;
+            capturedPawn = capturedPawn;
         }
     }
     
@@ -145,7 +145,7 @@ public class MarkerMovement : MonoBehaviour
        if (!validJump) return false;
           
        pawn.transform.position = targetPos;
-       pawnDestroyed = jumpedMarker;
+       _pawnDestroyed = jumpedMarker;
        ObjectPool.Instance.Return(jumpedMarker);
        
        return true;
@@ -153,7 +153,7 @@ public class MarkerMovement : MonoBehaviour
 
    public GameObject DestroyedPawn()
    {
-       return pawnDestroyed;
+       return _pawnDestroyed;
    } 
    bool IsSquareOccupied(Vector3 targetPos)
    {

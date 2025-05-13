@@ -107,9 +107,9 @@ public class CheckerGame : MonoBehaviour
 
         foreach (var possibleMove in MarkerMovement.PossibleMoves(pawn))
         {
-            if (MarkerMovement.Movement.GetMarkerMove(pawn, pawnPos, possibleMove)) return true;
+            if (MarkerMovement.movement.GetMarkerMove(pawn, pawnPos, possibleMove)) return true;
 
-            if (MarkerMovement.Movement.Jump(pawn, pawnPos, possibleMove)) return true;
+            if (MarkerMovement.movement.Jump(pawn, pawnPos, possibleMove)) return true;
         }
         
         return false;

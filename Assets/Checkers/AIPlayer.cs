@@ -29,14 +29,14 @@ public class AIPlayer : MonoBehaviour
             var possibleMoves = MarkerMovement.PossibleMoves(pawn);
             foreach (var move in possibleMoves)
             {
-                var moveResult = MarkerMovement.Movement.ValidateMove(pawn, pawnPos, move);
-                if (moveResult.IsValid)
+                var moveResult = MarkerMovement.movement.ValidateMove(pawn, pawnPos, move);
+                if (moveResult.isValid)
                 {
-                    pawn.transform.position = moveResult.LandingPos;
-                    if (moveResult.CapturedPawn != null)
-                        ObjectPool.Instance.Return(moveResult.CapturedPawn);
-                    MarkersGenerator.instance.UpdatePawns(pawn, pawnPos, moveResult.LandingPos );
-                    GameStateManager.instance.LastMove(pawn, pawnPos, moveResult.LandingPos);
+                    pawn.transform.position = moveResult.landingPos;
+                    if (moveResult.capturedPawn != null)
+                        ObjectPool.Instance.Return(moveResult.capturedPawn);
+                    MarkersGenerator.instance.UpdatePawns(pawn, pawnPos, moveResult.landingPos );
+                    GameStateManager.instance.LastMove(pawn, pawnPos, moveResult.landingPos);
                     if (_checkerGame.HasGameOver(_checkerGame.isGameOver ? "WhiteMarker" : "DarkMarker"))
                     { 
                         _checkerGame.isGameOver = true;

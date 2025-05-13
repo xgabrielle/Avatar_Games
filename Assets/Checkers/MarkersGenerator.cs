@@ -43,8 +43,8 @@ public class MarkersGenerator : MonoBehaviour
     {
         _pieces[(int)startPos.x, (int)startPos.z] = null;
         _pieces[(int)endPos.x, (int)endPos.z] = pawn;
-        if (!MarkerMovement.Movement.Jump(pawn, startPos, endPos)) return;
-        var destroyPawn = MarkerMovement.Movement.DestroyedPawn();
+        if (!MarkerMovement.movement.Jump(pawn, startPos, endPos)) return;
+        var destroyPawn = MarkerMovement.movement.DestroyedPawn();
         if (destroyPawn)
         {
             _pieces[(int)destroyPawn.transform.position.x, (int)destroyPawn.transform.position.z] = null;

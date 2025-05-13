@@ -40,9 +40,9 @@ public class Player : MonoBehaviour
     void HandleClickOnBoard(RaycastHit hit)
     {
         targetPosition = hit.collider.transform.position + new Vector3(0,0.6f,0);
-        moveResult = MarkerMovement.Movement.ValidateMove(currentMarker, currentMarkerPos, targetPosition);
+        moveResult = MarkerMovement.movement.ValidateMove(currentMarker, currentMarkerPos, targetPosition);
         
-        if (moveResult.IsValid || MarkerMovement.Movement.Jump(currentMarker, currentMarkerPos, targetPosition))
+        if (moveResult.isValid || MarkerMovement.movement.Jump(currentMarker, currentMarkerPos, targetPosition))
         {
             ValidMove();
             if (GameManager.Instance.IsLocalPlayerMode)
@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
 
     void ValidMove()
     {
-        currentMarker.transform.position = moveResult.LandingPos; 
+        currentMarker.transform.position = moveResult.landingPos; 
         isMarker = false;
         if (GameManager.Instance.IsAIMode)
         {
