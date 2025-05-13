@@ -7,8 +7,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public enum Personality
 {
-    Funny,
-    Expert
+    None = -1,
+    Funny = 0,
+    Expert = 1
 }
 public class UIPersonality : MonoBehaviour
 {

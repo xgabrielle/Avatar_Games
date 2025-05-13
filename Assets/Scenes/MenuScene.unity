@@ -845,6 +845,7 @@ MonoBehaviour:
   - {fileID: 1822332435}
   - {fileID: 971462175}
   - {fileID: 1909613517}
+  - {fileID: 1866172830}
 --- !u!114 &1341028021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1724,7 +1725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 386805253054026380, guid: 7489441b1b8b66c4b972e13df5442176, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2152163147450629623, guid: 7489441b1b8b66c4b972e13df5442176, type: 3}
       propertyPath: m_Pivot.x

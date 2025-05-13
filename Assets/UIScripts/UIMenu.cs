@@ -38,6 +38,13 @@ public class UIMenu : MonoBehaviour
             case "Funny" or "Expert":
                 SetAIPersonality(buttonName);
                 break;
+            case "ReturnButton":
+                GameManager.Instance.SetGameMode(GameMode.None);
+                UIPersonality.instance.SetPersonality(Personality.None);
+                connectToGame.SetActive(false);
+                aiTypePanel.SetActive(false);
+                opponentPanel.SetActive(true);
+                break;
         }
     }
     void SetAIPersonality(string button)
@@ -103,6 +110,19 @@ public class UIMenu : MonoBehaviour
     private void LoadGameScene()
     {
         SceneManager.LoadScene("Checkers");
+        DeactivateButtonByName("ReturnButton");
+    }
+    
+    public void DeactivateButtonByName(string targetName)
+    {
+        foreach (Button btn in buttons)
+        {
+            if (btn.name == targetName)
+            {
+                btn.gameObject.SetActive(false);
+                break;
+            }
+        }
     }
 
 }

@@ -3,13 +3,14 @@ using UnityEngine;
 
 public enum GameMode
 {
-    AI,
-    LocalPlayer
+    None = -1,
+    AI = 0,
+    LocalPlayer = 1
 }
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    internal GameMode currentGameMode;
+    private GameMode currentGameMode;
     internal bool startGame;
     [SerializeField] internal GameObject playerTwo;
     private AIPlayer ai;

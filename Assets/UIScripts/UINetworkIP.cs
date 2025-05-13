@@ -13,7 +13,7 @@ public class UINetworkIP : MonoBehaviour
     [SerializeField] private TMP_InputField ipAddress;
     [SerializeField] private Button connectButton;
     [SerializeField] private Button disconnectButton;
-    [SerializeField] private Button returnButton;
+    //[SerializeField] private Button returnButton;
     [SerializeField] private Button restartButton;
     
     private void Awake()
@@ -28,7 +28,7 @@ public class UINetworkIP : MonoBehaviour
         ipAddress.text = _serverIP;
         connectButton.onClick.AddListener(OnClickConnect);
         disconnectButton.onClick.AddListener(OnClickDisconnect);
-        returnButton.onClick.AddListener(OnReturn);
+        //returnButton.onClick.AddListener(OnReturn);
         restartButton.onClick.AddListener(OnRestart);
         
         if (string.IsNullOrEmpty(_serverIP))
