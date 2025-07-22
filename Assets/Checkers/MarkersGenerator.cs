@@ -47,7 +47,8 @@ public class MarkersGenerator : MonoBehaviour
         var destroyPawn = MarkerMovement.movement.DestroyedPawn();
         if (destroyPawn)
         {
-            _pieces[(int)destroyPawn.transform.position.x, (int)destroyPawn.transform.position.z] = null;
+            Vector3 jumpedPos = destroyPawn.transform.position;
+            _pieces[(int)jumpedPos.x, (int)jumpedPos.z] = null;
         }
     }
     internal GameObject[,] MarkerPos()

@@ -42,16 +42,18 @@ public class Player : MonoBehaviour
         targetPosition = hit.collider.transform.position + new Vector3(0,0.6f,0);
         moveResult = MarkerMovement.movement.ValidateMove(currentMarker, currentMarkerPos, targetPosition);
         
-        if (moveResult.isValid || MarkerMovement.movement.Jump(currentMarker, currentMarkerPos, targetPosition))
+        bool valid = moveResult.isValid || MarkerMovement.movement.Jump(currentMarker, currentMarkerPos, targetPosition);
+        if (valid)
         {
             ValidMove();
             if (GameManager.Instance.IsLocalPlayerMode)
                 NetworkClient.Client.SendMove(currentMarkerPos, targetPosition);
+            if (GameManager.Instance.IsAIMode)
+            {
+                TurnManager.instance.SwitchTurn();
+            }
         }
-        if (GameManager.Instance.IsAIMode)
-        {
-            TurnManager.instance.SwitchTurn();
-        }
+        // Do nothing if not valid: don't switch turn
     }
 
     void ValidMove()
@@ -64,10 +66,15 @@ public class Player : MonoBehaviour
         }
         GameStateManager.instance.LastMove(currentMarker, currentMarkerPos, targetPosition);
 
-        if (_checkerGame.HasGameOver(_checkerGame.isGameOver ? "WhiteMarker" : "DarkMarker"))
+        var result = _checkerGame.CheckGameOver();
+        if (result != CheckerGame.GameResult.None)
         {
             _checkerGame.isGameOver = true;
-            Debug.Log("Game over for White: ");
+            _checkerGame.gameResult = result;
+            string message = result == CheckerGame.GameResult.WhiteWins ? "White Wins!" :
+                             result == CheckerGame.GameResult.DarkWins ? "Dark Wins!" :
+                             "It's a Tie!";
+            GameOverUI.instance.UIGameOver(message);
         }
     }
 }

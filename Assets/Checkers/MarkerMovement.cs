@@ -89,14 +89,35 @@ public class MarkerMovement : MonoBehaviour
         
         return false;
     }
+    
+    private bool HasValidJump(GameObject pawn)
+    {
+        Vector3 pawnPos = pawn.transform.position;
+        string enemyTag = GetEnemyTag(pawn);
+        foreach (var move in PossibleMoves(pawn))
+        {
+            Vector3 midPos = (pawnPos + move) / 2;
+            if (OutOfBounds(move)) continue;
+            Collider[] middleColliders = Physics.OverlapSphere(midPos, 0.2f);
+            foreach (var midCol in middleColliders)
+            {
+                if (midCol.CompareTag(enemyTag))
+                {
+                    Vector3 landingPos = (move - pawnPos) + move;
+                    if (!OutOfBounds(landingPos) && !IsSquareOccupied(landingPos))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
 
     internal MoveResult ValidateMove(GameObject pawn, Vector3 start, Vector3 end)
     {
-        if (GetSurroundings(pawn))
+        if (HasValidJump(pawn))
         {
             Vector3 midPos = (start + end) / 2;
             Collider[] middleColliders = Physics.OverlapSphere(midPos, 0.2f);
-
             foreach (var midCol in middleColliders)
             {
                 if (midCol.CompareTag(GetEnemyTag(pawn)))
@@ -111,13 +132,16 @@ public class MarkerMovement : MonoBehaviour
                     }
                     else
                     {
-                        return new MoveResult(true, end, midCol.gameObject);
+                        // For player, check if the landing is valid
+                        if (!OutOfBounds(end) && !IsSquareOccupied(end))
+                            return new MoveResult(true, end, midCol.gameObject);
                     }
                 }
-            } 
+            }
+            return new MoveResult();
         }
-        else if (GetMarkerMove(pawn, start, end))
-                return new MoveResult(true, end);
+        if (GetMarkerMove(pawn, start, end))
+            return new MoveResult(true, end);
         return new MoveResult();
     }
 
@@ -144,6 +168,8 @@ public class MarkerMovement : MonoBehaviour
        
        if (!validJump) return false;
           
+       Debug.Log($"Jump: Moving pawn {pawn.name} from {startPos} to {targetPos}");
+       Debug.Log($"Jump: Deactivating jumped marker {jumpedMarker.name} at {jumpedMarker.transform.position}");
        pawn.transform.position = targetPos;
        _pawnDestroyed = jumpedMarker;
        ObjectPool.Instance.Return(jumpedMarker);
