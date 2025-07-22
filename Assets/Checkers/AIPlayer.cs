@@ -37,10 +37,15 @@ public class AIPlayer : MonoBehaviour
                         ObjectPool.Instance.Return(moveResult.capturedPawn);
                     MarkersGenerator.instance.UpdatePawns(pawn, pawnPos, moveResult.landingPos );
                     GameStateManager.instance.LastMove(pawn, pawnPos, moveResult.landingPos);
-                    if (_checkerGame.HasGameOver(_checkerGame.isGameOver ? "WhiteMarker" : "DarkMarker"))
+                    var result = _checkerGame.CheckGameOver();
+                    if (result != CheckerGame.GameResult.None)
                     { 
                         _checkerGame.isGameOver = true;
-                        Debug.Log("Game over, AI lost (No valid moves)");
+                        _checkerGame.gameResult = result;
+                        string message = result == CheckerGame.GameResult.WhiteWins ? "White Wins!" :
+                                         result == CheckerGame.GameResult.DarkWins ? "Dark Wins!" :
+                                         "It's a Tie!";
+                        GameOverUI.instance.UIGameOver(message);
                         ChatManager.Instance.SendMessageToAI("");
                     }
                     return;

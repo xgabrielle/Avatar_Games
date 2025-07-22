@@ -13,6 +13,8 @@ public class CheckerGame : MonoBehaviour
     private bool waitForAI;
     [SerializeField] private GameObject white;
     internal Coroutine aiCoroutine;
+    internal enum GameResult { None, WhiteWins, DarkWins, Tie }
+    internal GameResult gameResult = GameResult.None;
 
     private void Start()
     {
@@ -73,6 +75,19 @@ public class CheckerGame : MonoBehaviour
     public bool IsGameOver()
     {
         return isGameOver;
+    }
+
+    internal GameResult CheckGameOver()
+    {
+        bool whiteOut = HasPawnsLeft("WhiteMarker") || !HasValidMoves("WhiteMarker");
+        bool darkOut = HasPawnsLeft("DarkMarker") || !HasValidMoves("DarkMarker");
+        if (whiteOut && darkOut)
+            return GameResult.Tie;
+        if (whiteOut)
+            return GameResult.DarkWins;
+        if (darkOut)
+            return GameResult.WhiteWins;
+        return GameResult.None;
     }
 
     public bool HasGameOver(string playerTag)

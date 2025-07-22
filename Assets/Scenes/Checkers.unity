@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 124754498}
   - component: {fileID: 124754499}
   - component: {fileID: 124754500}
+  - component: {fileID: 124754501}
   m_Layer: 0
   m_Name: CheckersGameSetup
   m_TagString: Untagged
@@ -275,6 +276,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTurnText: {fileID: 1550254410}
+--- !u!114 &124754501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124754485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47bd2ef005f64b840a4e6a017038364d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOverPanel: {fileID: 0}
+  gameOverText: {fileID: 0}
 --- !u!1 &230595575
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +476,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 611638570976519103, guid: 63c919091053f654fbf7369e6a469980, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1149700568670792649, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -585,9 +604,13 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3517173465055243163, guid: 63c919091053f654fbf7369e6a469980, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8112710408956488297, guid: 63c919091053f654fbf7369e6a469980, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1177.0156
+      value: -1882.5156
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
