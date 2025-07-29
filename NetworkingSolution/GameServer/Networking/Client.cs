@@ -96,7 +96,12 @@ public class Client
 
     void HandleChat(string message)
     {
-        
+        // Include sender info
+        string taggedMessage = NetworkProtocol.CreateMessage("CHAT", $"{_role}: {message}");
+    
+        // Broadcast the player's message to all clients
+        _server.Broadcast(taggedMessage);
+
     }
     
     public void Send(string message)
