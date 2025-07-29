@@ -11,7 +11,11 @@ public class UIPlayerRole : MonoBehaviour
 
     private void Start()
     {
-        if (instance == null) instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else Destroy(instance);
         
     }
@@ -22,6 +26,8 @@ public class UIPlayerRole : MonoBehaviour
         {
             string role = RoleManager.Role;
             roleText.text = $"You are:\n{role}";
+            Debug.Log($"UI roleText set to: {roleText.text}");
+            Debug.Log($"You are {role}");
         }
         else
         {
