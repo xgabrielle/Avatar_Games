@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using dotenv.net;
+using NetworkProtocolLib;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
 
@@ -42,7 +43,8 @@ public class ChatManager : MonoBehaviour
         string previousPlayer = GameStateManager.instance.GetPlayer();
         var gameState = GameStateManager.instance.GetBoardStateAsJSON(previousMove, previousPlayer);
         
-        string toAI = $"{userMessage}\nGame State:\n{gameState}";
+        
+        string toAI = $" {userMessage}\nGame State:\n{gameState}";
 
         List<Message> messages = new List<Message>
         {
@@ -79,8 +81,15 @@ public class ChatManager : MonoBehaviour
             string responseText = request.downloadHandler.text;
             ChatResponse chatResponse = JsonConvert.DeserializeObject<ChatResponse>(responseText);
             
-            uiChat.AppendMessage($"\nAI: {chatResponse.choices[0].message?.content}");
-            Debug.Log($"Chat: {chatResponse.choices[0].message?.content}");
+            string aiMessage = chatResponse.choices[0].message?.content;
+            
+            uiChat.AppendMessage($"\nAI: {aiMessage}");
+            
+            // NEW: Send AI response to server so both players see it
+            string aiBroadcast = NetworkProtocol.CreateMessage("CHAT", $"AI: {aiMessage}");
+            NetworkClient.Client.SendMessageToServer(aiBroadcast);
+            
+            Debug.Log($"Chat: {aiMessage}");
         }
         else
         {
@@ -88,6 +97,12 @@ public class ChatManager : MonoBehaviour
             Debug.LogError($"Response: {request.downloadHandler.text}"); 
         }
     }
+    
+    public void ReceiveChat(string message)
+    {
+        uiChat.AppendMessage($"\n{message}");
+    }
+
 
     internal Coroutine GetAIMessage(string aiMessage)
     {
@@ -99,6 +114,14 @@ public class ChatManager : MonoBehaviour
         uiChat.AppendMessage($"\nPlayer: {userMessage}");
         StartCoroutine(SendRequest(userMessage, uiChat));
 
+    }
+    
+    public void SendMessageToPlayer(string userMessage)
+    {
+        uiChat.AppendMessage($"\nYou: {userMessage}");
+        
+        string sendMessage = NetworkProtocol.CreateMessage("CHAT", $"Player: {userMessage}");
+        NetworkClient.Client.SendMessageToServer(sendMessage);
     }
 }
 

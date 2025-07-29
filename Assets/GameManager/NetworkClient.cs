@@ -114,6 +114,12 @@ public class NetworkClient : MonoBehaviour
                     case "TURN":
                         MainThreadDispatcher.Run(() => HandleTurn());
                         break;
+                    case "CHAT":
+                        MainThreadDispatcher.Run(() =>
+                        {
+                            ChatManager.Instance.ReceiveChat(data);
+                        });
+                        break;
                 }
             }
         }
@@ -197,6 +203,14 @@ public class NetworkClient : MonoBehaviour
         }
 
         SceneManager.LoadScene("MenuScene");
+    }
+    
+    public void SendMessageToServer(string message)
+    {
+        if (_writer == null || !_tcpClient.Connected) return;
+
+        _writer.WriteLine(message);
+        _writer.Flush();
     }
 
 }

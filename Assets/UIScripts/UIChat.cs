@@ -23,7 +23,12 @@ public class UIChat : MonoBehaviour
         { 
             string userMessage = userInput.text;
             userInput.text = "";
-            ChatManager.Instance.SendMessageToAI(userMessage);
+            if (GameManager.Instance.IsAIMode) 
+                ChatManager.Instance.SendMessageToAI(userMessage);
+            else
+            {
+                ChatManager.Instance.SendMessageToPlayer(userMessage);
+            }
         }
     }
 
